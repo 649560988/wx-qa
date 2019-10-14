@@ -1,0 +1,199 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">第四部分：专业技能</view>
+</cu-custom>
+
+<view class="cu-form-group">
+  <text class=" text-red">温馨提示：请选择您所掌握的专业技能，并对掌握程度进行评分</text>
+</view>
+<form>
+
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action text-{{redname=='knowledge'?'red':''}}" id="knowledge">
+      <text class="cuIcon-star text-orange"></text>1.您掌握的知识类型(可多选)
+    </view>
+
+    <view class="action">
+      <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="menuModal">提示</button>
+    </view>
+  </view>
+  <!-- 新提示按钮 -->
+  <view class="cu-modal {{modalName=='menuModal'?'show':''}}">
+    <view class="cu-dialog">
+      <view class="cu-bar bg-white justify-end">
+        <view class="content">等级深度释意</view>
+        <view class="action" bindtap="hideModal">
+          <text class="cuIcon-close text-red"></text>
+        </view>
+      </view>
+      <view wx:for="{{reminder}}" wx:key="{{index}}">
+
+        <view class="cu-form-group flex">
+          <view class="flex ">
+            <view class="text-left ">
+              <view class="text-red" style="white-space:nowrap">{{item.name}}——</view>
+            </view>
+          </view>
+
+            <view class="text-left margin-bottom">
+              <text class="text-grey text-sm">{{item.value}}</text>
+            </view>
+
+        </view>
+        <!-- <view class="cu-form-group">
+          {{item.name}}——
+          <text>
+          {{item.value}}          
+          </text>
+        </view> -->
+      </view>
+
+    </view>
+  </view>
+  <!--  -->
+  <!-- 提示按钮弹窗 -->
+  <view class="cu-modal {{modalName=='menuModal2'?'show':''}}" bindtap="hideModal">
+    <view class="cu-dialog" catchtap>
+      <scroll-view scroll-y style="height:auto">
+        <view class="cu-list menu text-left solid-top">
+          <view wx:for="{{reminder}}" wx:key="{{index}}">
+            <view class="cu-item flex flex-wrap justify-between">
+              <view class="content text-left">
+                <!-- <text class="cuIcon-warn text-green"></text> -->
+                <text class="text-red ">{{item.name}}：</text>
+              </view>
+              <view class="action">
+                <view class=" align-right">
+                  <text class="text-grey text-sm">{{item.value}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 选中多选框但未选等级的按钮弹窗 -->
+  <view class="cu-modal {{modalName=='no_radio'?'show':''}}" bindtap="hideModal">
+    <view class="cu-dialog" catchtap>
+      <scroll-view scroll-y style="height:auto">
+        <view class="cu-list menu text-left solid-top">
+
+          <!-- <view wx:for="{{reminder}}" wx:key="{{index}}"> -->
+          <view class="cu-item flex flex-wrap justify-between">
+            <view class="content text-left">
+              <!-- <text class="cuIcon-warn text-green"></text> -->
+              <text class="text-red ">您有部分知识类型或者组件未选择等级</text>
+            </view>
+            <!-- <view class="action">
+              <view class=" align-right">
+                <text class="text-grey text-sm">{{item.value}}</text>
+              </view>
+            </view> -->
+          </view>
+          <!-- </view> -->
+
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <view wx:for="{{konwledges}}" wx:key="name" wx:for-item="one_knowledge" wx:for-index="key">
+    <view class="cu-form-group">
+      <!-- <label data-index='{{key}}' data-type='konwledges' bindtap="onChangeShowState"  > -->
+      <view class="title">{{one_knowledge.value}}</view>
+      <checkbox data-index='{{key}}' data-type='konwledges' bindtap="onChangeShowState" checked="{{one_knowledge.checked}}"></checkbox>
+      <!-- </label> -->
+    </view>
+
+    <view wx:if="{{key === 7}}">
+      <view class="cu-form-group" hidden="{{!one_knowledge.checked}}">
+        <textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="{{tishi_1}}" data-type="konwledge" value="{{knowledge_textarea}}"></textarea>
+      </view>
+    </view>
+
+    <view wx:else>
+      <radio-group class="bg-white flex solid-bottom justify-around" hidden="{{!one_knowledge.checked}}" bindchange="radioChange" data-type="konwledge" data-checkid="{{key}}">
+
+        <view wx:for="{{level}}" wx:key="name" wx:for-item="one_level" wx:for-index="level_idx">
+          <!-- <label wx:for="{{level}}" wx:key="name" wx:for-item="one_level"> -->
+          <block wx:if="{{ level_idx+1 == one_knowledge.radio_value}}">
+            <radio value="{{one_level.name}}" class="blue radio" checked="checked"></radio>
+            <view class="align-center">{{one_level.value}}</view>
+          </block>
+          <block wx:else>
+            <radio value="{{one_level.name}}" class="blue radio"></radio>
+            <view class="align-center">{{one_level.value}}</view>
+          </block>
+        </view>
+      </radio-group>
+
+    </view>
+
+  </view>
+
+  <!-- <view class="solids-bottom  flex align-left margin-top">
+  <view class="flex-sub bg-white">
+    <view class="solid-bottom text-lg padding text-left">
+      <text class="cuIcon-title text-blue"></text>2.您掌握的专业技能
+    </view>
+  </view>
+</view> -->
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action text-{{redname=='skill'?'red':''}}" id="skill">
+      <text class="cuIcon-star text-orange"></text>2.您掌握的专业技能(可多选)
+    </view>
+    <view class="action">
+      <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="menuModal">提示</button>
+    </view>
+  </view>
+  <view wx:for="{{skill}}" wx:key="{{item.name}}" wx:for-item="skill_itm">
+    <view class="cu-form-group">
+      <!-- <label data-index='{{key}}' data-type='konwledges' bindtap="onChangeShowState"  > -->
+      <view class="title">{{skill_itm.value}}</view>
+      <checkbox data-index='{{index}}' bindtap="onChangeShowState" data-type="skill" checked="{{skill_itm.checked}}"></checkbox>
+      <!-- </label> -->
+    </view>
+
+    <view wx:if="{{index === 18}}">
+      <view class="cu-form-group" hidden="{{!skill_itm.checked}}">
+        <!-- <view hidden="{{modalName=='menuModal}}"> -->
+        <textarea maxlength="-1" disabled="{{menuModal!=null}}" bindinput="textareaAInput" placeholder="{{tishi_2}}" data-type="skill" value="{{skill_textarea}}"></textarea>
+        <!-- </view> -->
+
+      </view>
+
+    </view>
+
+    <view wx:else>
+      <radio-group class="bg-white flex solid-bottom justify-around" hidden="{{!skill_itm.checked}}" bindchange="radioChange" data-type="skill" data-checkid="{{index}}">
+        <view wx:for="{{level}}" wx:key="name" wx:for-item="one_level" wx:for-index="level_idx">
+          <!-- <label wx:for="{{level}}" wx:key="name" wx:for-item="one_level"> -->
+          <block wx:if="{{ level_idx+1 == skill_itm.radio_value}}">
+            <radio value="{{one_level.name}}" class="blue radio" checked="checked"></radio>
+            <view class="align-center">{{one_level.value}}</view>
+          </block>
+          <block wx:else>
+            <radio value="{{one_level.name}}" class="blue radio"></radio>
+            <view class="align-center">{{one_level.value}}</view>
+          </block>
+        </view>
+
+      </radio-group>
+
+    </view>
+
+  </view>
+
+  <view>
+    <button class="cu-btn block bg-blue margin-tb-sm lg" bindtap="net_upload" data-target="no_radio">保存并跳转到下一部分</button>
+  </view>
+  <!-- <view class="padding flex flex-wrap justify-between align-center bg-white">
+    <view></view>
+    <button class="cu-btn round bg-red" bindtap="net_upload" data-target="no_radio">下一页</button>
+    <!-- <button class="cu-btn round bg-grey" form-type="reset">重置</button> -->
+  <!-- <view></view>
+  </view> -->
+</form>

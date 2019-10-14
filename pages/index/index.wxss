@@ -1,0 +1,24 @@
+
+.myButton{
+  width: 80%
+}
+
+.mypage{
+  margin-top: -20%;
+  position:fixed;
+  z-index: -1;
+  align-content:0;
+ left:0;
+  width:100vw;
+  height:100vh;
+  /* background-size: cover; */
+     background-size:100% 100%;
+    -moz-background-size:100% 100%;
+}
+.premire{
+  /* margin-bottom: 45%;
+  margin-left: 35%; */
+  position: relative;
+  top: 83vh;
+  left: 35vw;
+}

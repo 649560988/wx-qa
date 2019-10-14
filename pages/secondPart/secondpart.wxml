@@ -1,0 +1,447 @@
+<!--pages/secondPart/secondpart.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">第三部分：过往经历</view>
+</cu-custom>
+<view class="cu-form-group">
+  <text class=" text-red">温馨提示：请根据过往的工作经历，填写如下信息：</text>
+</view>
+<form bindsubmit="formSubmit">
+  <!-- 前三年的销售数据 -->
+  <view class="cu-form-group">
+    <view class="title cuIcon-title text-blue itemtitle">近三年业绩指标 (没有则填0)</view>
+  </view>
+  <block wx:for="{{[0,1,2]}}" wx:key="index">
+    <view class="cu-form-group" id="{{'salesIndicators_'+index}}">
+      <view class="text-black text-bold">{{thisYear-index}} 年(单位：万)</view>
+    </view>
+    <view class="cu-form-group">
+      <view wx:if="{{index == redyears}}">
+        <view class="title text-{{redname=='salesIndicators_1'?'red':''}}">
+          <text class="cuIcon-star text-orange"></text>年销售指标：
+        </view>
+      </view>
+      <view wx:else>
+        <view class="title">
+          <text class="cuIcon-star text-orange"></text>年销售指标：
+        </view>
+      </view>
+      <input placeholder="请输入" type="digit" name="salesIndicators_1" data-pid="{{index}}" bindinput="header_key_input" data-name="salesIndicators" data-year="{{thisYear-index}}" value="{{my_workhistory.workHistoryExtends[index].salesIndicators?my_workhistory.workHistoryExtends[index].salesIndicators:''}}"></input>
+      <view wx:if="{{index == redyears}}">
+        <view id="completion_1" class="title text-{{redname=='completion_1'?'red':''}}">
+          <text class="cuIcon-star text-orange"></text>完成金额：
+        </view>
+      </view>
+      <view wx:else>
+        <view class="title">
+          <text class="cuIcon-star text-orange"></text>完成金额：
+        </view>
+      </view>
+      <input placeholder="请输入" type="digit" name="completion_1" data-pid="{{index}}" bindinput="header_key_input" data-name="completion" data-year="{{thisYear-index}}" value="{{my_workhistory.workHistoryExtends[index].completion?my_workhistory.workHistoryExtends[index].completion:''}}"></input>
+    </view>
+
+    <!-- 头部负责产品/服务 -->
+    <view class="cu-form-group">
+      <view class="title">负责产品/服务</view>
+      <picker mode="selector" range="{{productsServices_first_answer}}" bindchange="first_header_change" data-year="{{yearlist[index]}}" data-name="header_productsServices" name="header_productsServices" value="{{productsServices_first_index_list[pIndex][0]}}"
+        data-uid="0" data-index="{{index}}">
+        <view class="picker">
+          <input placeholder="请选择" disabled="true" value="{{header_products_services[index][0]}}" name="header_productsServices"></input>
+        </view>
+      </picker>
+      <picker mode="selector" range="{{productsServices_second_answer}}" bindchange="second_header_change" data-year="{{yearlist[index]}}" data-name="" name="header_productsServices" value="{{productsServices_first_index_list[pIndex][1]}}" data-uid="1" data-index="{{index}}">
+        <view class="picker">
+          <input placeholder="请选择" disabled="true" value="{{header_products_services[index][1]}}"></input>
+        </view>
+      </picker>
+    </view>
+    <!-- 第二个选项中为其他 -->
+    <view class="cu-form-group" hidden="{{header_products_services[index][1] != '其他'}}">
+      <textarea bindinput="header_qita_textarea" class="textarea" placeholder="请填写其他信息" data-index="{{index}}" value="{{header_products_services[index][1] == '其他'?header_productsServices_content_list[index]:''}}" />
+    </view>
+  </block>
+
+  <block wx:for="{{parentIndex}}" wx:key="key" wx:for-index="pIndex" wx:for-item="pItem">
+    <!-- 工作经历 -->
+    <view wx:if="{{pIndex == 0}}">
+      <view class="cu-form-group margin-top solid-bottom">
+        <view class="title cuIcon-title text-blue itemtitle">最近一条工作经历</view>
+      </view>
+    </view>
+    <view wx:else>
+      <view class="cu-form-group margin-top">
+        <view class="title cuIcon-title text-blue itemtitle">历史工作经历 [{{pIndex}}]</view>
+      </view>
+    </view>
+    <!-- 结束工作经历 -->
+
+    <view class="cu-form-group">
+      <view class="title text-{{redname==('startTime'+pIndex)?'red':''}}" id="{{'startTime'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>请选择开始时间</view>
+      <picker mode="date" name="startTime" value="{{my_workhistory.workHistories[pIndex].startTime}}"  end="{{todayTime}}" bindchange="startTimeChange" class="item" data-pid="{{pIndex}}">
+        <view class="picker">
+          {{my_workhistory.workHistories[pIndex].startTime?my_workhistory.workHistories[pIndex].startTime:"请开始选择"}}
+        </view>
+      </picker>
+    </view>
+    <view class="cu-form-group solid-bottom">
+      <view class="title text-{{redname==('endTime'+pIndex)?'red':''}}" id="{{'endTime'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>请选择结束时间</view>
+      <picker mode="date" name="birth" value="{{date}}" start="{{my_workhistory.workHistories[pIndex].startTime?my_workhistory.workHistories[pIndex].startTime:'1970-01-01'}}" end="{{todayTime}}" bindchange="endTimeChange" class="item" data-pid="{{pIndex}}">
+        <view class="picker">
+          {{my_workhistory.workHistories[pIndex].endTime?my_workhistory.workHistories[pIndex].endTime:"请开始选择"}}
+        </view>
+      </picker>
+      <!-- </block> -->
+    </view>
+
+    <view wx:if="{{pIndex == 0}}">
+      <view class="cu-form-group solid-bottom">
+        <view class="title text-{{redname==('moodyhas'+pIndex)?'red':''}}" id="{{'moodyhas'+pIndex}}">
+          <text class="cuIcon-star text-orange"></text>目前任职公司</view>
+        <input placeholder="请输入公司名称" bindinput="bindinputCustomer" data-pid="{{pIndex}}" value="{{my_workhistory.workHistories[pIndex].moodyhas}}"></input>
+        <button class="cu-btn bg-green shadow" bindtap="handShowItem" data-pid="{{pIndex}}">搜索</button>
+      </view>
+      <view class="page">
+        <view class="page_bd">
+          <!-- 循环搜索出的结果 -->
+          <view hidden="{{organizationalCode_hide[pIndex]}}" class="display_show" wx:for-index="mmindex" wx:key="mmindex" wx:for="{{customernameList}}" data-mmindex="{{mmindex}}" data-pid="{{pIndex}}" bindtap="selectShowItem">{{customernameList[mmindex]}}</view>
+        </view>
+      </view>
+      <view class="cu-form-group solid-bottom">
+        <view class="title text-{{redname==('organizationalCode'+pIndex)?'red':''}}" id="{{'organizationalCode'+pIndex}}">
+          <text class="cuIcon-star text-orange"></text>组织机构代码</view>
+        <input placeholder="请输入组织机构代码" bindinput="bindinputOrganizationalCode" data-pid="{{pIndex}}" value="{{my_workhistory.workHistories[pIndex].organizationalCode}}"></input>
+      </view>
+    </view>
+
+    <view wx:else>
+      <view class="cu-form-group solid-bottom">
+        <view class="title text-{{redname==('moodyhas'+pIndex)?'red':''}}" id="{{'moodyhas'+pIndex}}">
+          <text class="cuIcon-star text-orange"></text>任职公司</view>
+        <input placeholder="请输入公司名称" bindinput="bindinputCustomer" data-pid="{{pIndex}}" value="{{my_workhistory.workHistories[pIndex].moodyhas}}"></input>
+        <button class="cu-btn bg-green shadow" bindtap="handShowItem" data-pid="{{pIndex}}">搜索</button>
+      </view>
+      <view class="page">
+        <view class="page_bd">
+          <!-- 循环搜索出的结果 -->
+          <view hidden="{{organizationalCode_hide[pIndex]}}" class="display_show" wx:for-index="mmindex" wx:key="mmindex" wx:for="{{customernameList}}" data-mmindex="{{mmindex}}" data-pid="{{pIndex}}" bindtap="selectShowItem">{{customernameList[mmindex]}}</view>
+        </view>
+      </view>
+      <view class="cu-form-group solid-bottom">
+        <view class="title text-{{redname==('organizationalCode'+pIndex)?'red':''}}" id="{{'organizationalCode'+pIndex}}">
+          <text class="cuIcon-star text-orange"></text>组织机构代码</view>
+        <input placeholder="请输入组织机构代码" bindinput="bindinputOrganizationalCode" data-pid="{{pIndex}}" value="{{my_workhistory.workHistories[pIndex].organizationalCode}}"></input>
+      </view>
+    </view>
+
+    <view class="cu-form-group ">
+      <view class="title text-{{redname==('job'+pIndex)?'red':''}}" id="{{'job'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>岗位名称</view>
+      <input placeholder="请输入从事的岗位" data-pid="{{pIndex}}" bindinput="bindKeyInput" data-name="job" name="job" value="{{my_workhistory.workHistories[pIndex].job}}"></input>
+    </view>
+    <view class="cu-form-group ">
+      <view class="title">管理规模</view>
+      <input placeholder="请输入直接下属人数" type="digit" data-pid="{{pIndex}}" bindinput="bindKeyInput" data-name="scale" name="scale" value="{{my_workhistory.workHistories[pIndex].scale}}"></input>人
+    </view>
+
+    <!-- 公司主营业务 -->
+    <view class="cu-form-group margin-top solid-bottom">
+      <view class="title text-{{redname==('mainBusiness'+pIndex)?'red':''}}" id="{{'mainBusiness'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>公司主营业务(可多选)</view>
+      <picker mode="selector" range="{{options}}" bindchange="mainBusiness_change" data-pid="{{pIndex}}" data-name="mainBusiness" value="{{mainBusiness_my_str[pIndex]}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择" disabled="true" name="mainBusiness" value="{{mainBusiness_my_str[pIndex]}}"></input>
+        </view>
+      </picker>
+    </view>
+    <view class="bg-gray">
+      <block wx:for="{{mainBusiness_my_chosed[pIndex]}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn"  style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;" bindtap="del_mainBusiness" data-index="{{u_index}}" data-value="{{u_item}}" data-pid="{{pIndex}}">{{u_item}}
+          <text class="cuIcon-close lg text-black"></text>
+        </button>
+      </block>
+    </view>
+
+    <!-- 隐藏其他 -->
+    <view class="cu-modal {{modalName=='other_mainBusiness'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">请您输入其他主营业务</view>
+          <!-- <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view> -->
+        </view>
+        <view class="padding-xl">
+          <input bindinput="model_textarea" data-pid="{{pIndex}}" class="textarea bg-white" placeholder="请填写其他信息" data-index="{{index}}" />
+        </view>
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <!-- <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button> -->
+            <button class="cu-btn bg-green margin-left"  data-pid="{{pIndex}}" bindtap="bitian_qita" data-name="other_mainBusiness">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- end 主营 -->
+
+    <!-- 主营业务弹窗内容 -->
+    <view class="cu-modal bottom-modal {{modalName=='ChooseModal'?'show':''}}" bindtap="hideModal">
+      <view class="cu-dialog" catchtap>
+        <view class="cu-bar bg-white">
+          <view class="action text-blue" bindtap="hideModal">取消</view>
+          <view class="action text-green" bindtap="hideModal">确定</view>
+        </view>
+        <view class="grid col-3 padding-sm">
+          <view wx:for="{{checkbox}}" class="padding-xs" wx:key="{{index}}">
+            <button class="cu-btn orange lg block {{item.checked?'bg-orange':'line-orange'}}" bindtap="ChooseCheckbox" data-value="{{item.value}}"> {{item.name}}
+              <view class="cu-tag sm round {{item.checked?'bg-white text-orange':'bg-orange'}}" wx:if="{{item.hot}}">HOT</view>
+            </button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 负责区域 -->
+
+    <!-- end 负责区域 -->
+
+    <!-- 负责区域弹窗 -->
+    <view class="cu-modal {{modalName=='RadioModal'?'show':''}}">
+      <view class="cu-dialog">
+        <checkbox-grou class="block">
+          <view class="cu-list menu text-left">
+            <view class="cu-item" wx:for="{{responsible_areaAption}}" wx:key>
+              <view class="flex justify-between align-center flex-sub">
+                <view class="flex-sub">{{item.value}}</view>
+                <view hidden="{{!responsible_area_checked[pIndex][index]}}" class="responsible-item">
+                  <input placeholder="填写精确到市级" data-pid="{{pIndex}}" data-name="responsibleArea" data-index="{{index}}" bindinput="bindKeyInput" value="{{responsible_area_content[pIndex][index]}}"></input>
+                </view>
+                <view class="">
+                  <checkbox value="{{item.name}}" bindtap="checkboxChange" data-pid="{{pIndex}}" data-name="responsibleArea" data-index="{{index}}" checked="{{responsible_area_checked[pIndex][index]}}"></checkbox>
+                </view>
+              </view>
+            </view>
+          </view>
+        </checkbox-grou>
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button>
+            <button class="cu-btn bg-green margin-left" bindtap="responsibleArea_confirm" data-pid="{{pIndex}}">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!-- end 负责区域弹窗 -->
+
+    <!-- <checkbox-group class="block" name="responsibleArea"> -->
+    <view class="cu-form-group solid-bottom margin-top">
+      <view class="title text-{{redname==('responsibleArea'+pIndex)?'red':''}}" id="{{'responsibleArea'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>负责区域(可多选)</view>
+      <view class="picker">
+        <button class="cu-btn bg-white" style="margin-right:36rpx;" bindtap="show_fuzhe_model" data-target="RadioModal" data-pid="{{pIndex}}" data-name="fuzhe">请选择</button>
+      </view>
+    </view>
+    <view class="bg-gray">
+      <block wx:for="{{responsibleArea_my_str[pIndex]}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn"  style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;" data-index="{{u_index}}" data-value="{{u_item}}" data-pid="{{pIndex}}">{{u_item}}
+          <!-- <text class="cuIcon-close lg text-black"></text> -->
+        </button>
+      </block>
+    </view>
+
+
+
+    <view class="cu-form-group solid-bottom margin-top">
+      <view class="title text-{{redname==('industry'+pIndex)?'red':''}}" id="{{'industry'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>负责行业</view>
+      <picker mode="selector" range="{{indus_first_answer}}" bindchange="industry_change" data-pid="{{pIndex}}" data-name="industry" value="{{industry_show_chosed_str[pIndex]}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择" disabled="true" name="industry" value="{{industry_show_chosed_str[pIndex]}}"></input>
+        </view>
+      </picker>
+    </view>
+    <view class="bg-gray">
+      <block wx:for="{{industry_chosed_list[pIndex]}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn"  style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;" bindtap="del_industry" data-index="{{u_index}}" data-value="{{u_item}}" data-pid="{{pIndex}}">{{u_item}}
+          <text class="cuIcon-close lg text-black"></text>
+        </button>
+      </block>
+    </view>
+
+    <view class="cu-form-group solid-bottom margin-top">
+      <view class="title text-{{redname==('productsServices'+pIndex)?'red':''}}" id="{{'productsServices'+pIndex}}">
+        <text class="cuIcon-star text-orange"></text>负责产品/服务</view>
+      <picker mode="selector" range="{{productsServices_first_answer}}" bindchange="firstchange" data-pid="{{pIndex}}" data-name="productsServices" name="productsServices" value="{{productsServices_first_index_list[pIndex][0]}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择" disabled="true" value="{{productsServices_first_str_list[pIndex][0]}}" name="productsServices"></input>
+        </view>
+      </picker>
+      <picker mode="selector" range="{{productsServices_second_answer}}" bindchange="secondchange" data-pid="{{pIndex}}" data-name="" name="productsServices" value="{{productsServices_first_index_list[pIndex][1]}}" data-uid="1">
+        <view class="picker">
+          <input placeholder="请选择" disabled="true" value="{{productsServices_first_str_list[pIndex][1]}}"></input>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 按钮 -->
+        <view class="bg-gray">
+      <block wx:for="{{productsServices_my_str[pIndex]}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn" style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;"   bindtap="del_productsServices_my_str" data-index="{{u_index}}" data-value="{{u_item}}" data-pid="{{pIndex}}">{{u_item}}
+          <text class="cuIcon-close lg text-black"></text>
+        </button>
+      </block>
+    </view>
+
+
+    <!-- 隐藏其他 -->
+    <view class="cu-modal {{modalName=='other_product'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">请您输入其他产品服务</view>
+          <!-- <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view> -->
+        </view>
+        <view class="padding-xl">
+          <input bindinput="model_textarea" data-pid="{{pIndex}}" class="textarea bg-white" placeholder="请填写其他信息" data-index="{{index}}" />
+        </view>
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <!-- <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button> -->
+            <button class="cu-btn bg-green margin-left"  data-pid="{{pIndex}}" bindtap="bitian_qita">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- <view class="cu-form-group" hidden="{{productsServices_first_str_list[pIndex][1] != '其他'}}">
+      <textarea bindinput="qita_textarea" data-pid="{{pIndex}}" class="textarea" placeholder="请填写其他信息" data-index="{{index}}" value="{{productsServices_first_str_list[pIndex][1] == '其他'?productsServices_content_list[pIndex]:''}}" />
+    </view> -->
+
+
+    <!-- 个人平均弹窗 -->
+    <view class="cu-modal {{modalName=='salesIndicators_model'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">温馨提示</view>
+          <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view>
+        </view>
+        <view class="padding-xl">
+          这部分数据反映了您在该段工作经历中的业绩完成情况，与前述“近三年业绩指标”侧重点不同，影响后续个人报告的完整性，请您自行选择填写。
+        </view>
+        <view class="cu-bar bg-white justify-end">
+          <view class="action">
+            <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button>
+            <button class="cu-btn bg-green margin-left" bindtap="hideModal">确定</button>
+          </view>
+        </view>
+      </view>
+    </view>
+    <!--  -->
+    <view class="cu-form-group margin-top">
+      <view class="title">个人年平均销售指标</view>
+      <input placeholder="请输入" type="digit" name="salesIndicators" data-pid="{{pIndex}}" bindinput="bindKeyInput" bindfocus="salesIndicators_model" data-index='0' data-name="salesIndicators" value="{{my_workhistory.workHistories[pIndex].salesIndicators}}"></input>万
+    </view>
+    <view class="cu-form-group ">
+      <view class="title">个人年平均完成金额</view>
+      <input placeholder="请输入" type="digit" name="completion" data-pid="{{pIndex}}" bindinput="bindKeyInput" data-name="completion" bindfocus="salesIndicators_model" data-index='1' value="{{my_workhistory.workHistories[pIndex].completion}}"></input>万
+    </view>
+    <view class="cu-form-group ">
+      <view class="title">公司平均业绩指标</view>
+      <input placeholder="请输入" type="digit" name="averagePerformance" data-pid="{{pIndex}}" bindinput="bindKeyInput" bindfocus="salesIndicators_model" data-index='2' data-name="averagePerformance" value="{{my_workhistory.workHistories[pIndex].averagePerformance}}"></input>万
+    </view>
+
+    <checkbox-group bindchange="keyExperiencesData" data-pid="{{pIndex}}" class="block" name="keyExperiences">
+      <view class="cu-form-group margin-top">
+        <view class="title">关键经历(可多选)</view>
+      </view>
+      <view class="cu-form-group text-sm">
+        <text class="text-red  margin-bottom">温馨提示：本部分数据在人岗匹配过程中，HR会比较关注</text>
+      </view>
+      <view hidden="{{hide_model[pIndex].guanjian}}">
+        <view wx:for="{{key_experiences}}" wx:key="name">
+          <view class="cu-form-group ">
+            <view>{{item.value}}</view>
+            <view class="text-gray">{{key_experiences_checked[pIndex][index]?item.content:''}}</view>
+            <view>
+              <checkbox value="{{item.name}}" checked="{{key_experiences_checked[pIndex][index]}}"></checkbox>
+            </view>
+          </view>
+          <view class="cu-form-group" hidden="{{!key_experiences_checked[pIndex][index]}}">
+            <textarea bindinput="keyExperiencesContentChange" data-pid="{{pIndex}}" class="textarea" placeholder="{{item.content}}" data-index="{{index}}" value="{{key_experiences_content[pIndex][index]}}" />
+          </view>
+        </view>
+      </view>
+
+    </checkbox-group>
+
+    <!-- 关键经历结束 -->
+    <!-- </template> -->
+
+    <!-- <template name="resign_reason"> -->
+    <checkbox-group bindchange="checkboxChange" data-pid="{{pIndex}}" class="block" data-name="dimissionCause" name="dimissionCause" hidden="{{pIndex != 0 ? false:true}}">
+      <view class="cu-form-group margin-top">
+        <view class="title">离职原因(可多选)</view>
+        <!-- <view class="action">
+          <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="menuModal" data-pid="{{pIndex}}" data-name="lizhi">{{hide_model[pIndex].lizhi?'显示':'隐藏'}}</button>
+        </view> -->
+      </view>
+      <view hidden="{{hide_model[pIndex].lizhi}}">
+        <view wx:for="{{dimissionCause}}" wx:key="name">
+          <view class="cu-form-group ">
+            <view>{{item.value}}</view>
+            <view>
+              <checkbox value="{{item.name-1}}" checked="{{dimission_cause_checked[pIndex][index]}}"></checkbox>
+            </view>
+          </view>
+          <!-- <view wx:if="{{index == 7}}"> -->
+          <view class="cu-form-group" hidden="{{!dimission_cause_checked[pIndex][index]}}">
+            <textarea data-pid="{{pIndex}}" data-name="dimissionCause" data-index="{{index}}" bindinput="bindKeyInput" name="{{keyExperiences}}" class="textarea" placeholder="填写具体离职原因" value="{{dimission_cause_content[pIndex][index]}}" />
+            <!-- </view> -->
+          </view>
+        </view>
+      </view>
+
+    </checkbox-group>
+    <!-- </template> -->
+
+    <!-- <template name="salary"> -->
+    <view class="cu-form-group margin-top" hidden="{{pIndex ==0 ? false:true}}">
+      <text class="title">薪资水平</text>
+      <view class="itemContain">
+        <view class="itemView">
+          <view class="itemViewHabitation">
+            <picker name="habitationProvince" mode="selector" bindchange="habitationProvincesChange" range="{{salary}}" data-pid="{{pIndex}}" value="index" range-key="value" data-name="salary">
+              <view class="item">
+                <input value="{{salary[salary_index].value}}" placeholder="请选择" disabled="true" name="habitationProvince"></input>
+              </view>
+            </picker>
+          </view>
+        </view>
+      </view>
+    </view>
+
+
+
+    <!-- {{pIndex}} : {{pItem}} -->
+
+  </block>
+
+
+
+  <!-- <block wx:for="{{template_list}}" wx:key="{{index}}">
+  <include src="../template/work_history.wxml" />
+</block> -->
+  <view class="padding flex flex-wrap justify-between align-center">
+    <button class="cu-btn  bg-red lg" bindtap="user_addnew">新增一条工作经历</button>
+
+    <button class="cu-btn  bg-grey lg" bindtap="user_del" data-pid="{{pIndex}}">删除一条工作经历</button>
+
+  </view>
+  <view>
+    <button form-type="submit" class="cu-btn block bg-blue lg">保存并跳转到下一部分</button>
+  </view>
+</form>

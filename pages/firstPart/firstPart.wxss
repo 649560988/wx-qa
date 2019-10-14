@@ -1,0 +1,27 @@
+/* pages/firstPart/firstPart.wxss */
+radio {
+  transform:scale(0.8);
+}
+
+.page_bd{
+  background-color: snow;
+}
+
+.body_head{
+  border: 1px solid;
+  border-color: beige;
+
+}
+
+.display_show{
+  display: block;
+  border: 1px solid;
+  border-color: beige;
+  padding: 10px;
+}
+
+.display_none{
+
+  display: none;
+
+}

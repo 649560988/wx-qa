@@ -1,0 +1,9 @@
+.container{
+  display: flex;
+  justify-content: center;
+}
+.myinput{
+  display: flex;
+  justify-content: space-between;
+
+}

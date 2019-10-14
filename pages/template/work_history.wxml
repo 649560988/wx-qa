@@ -1,0 +1,159 @@
+<!--pages/secondPart/secondpart.wxml-->
+
+  <!-- <template name="tem_01"> -->
+
+  <view class="solids-bottom  flex align-left margin-top">
+    <view class="flex-sub bg-white">
+      <view class="solid-bottom text-lg padding text-left">
+        <view class=" itemContain">
+          <text class="cuIcon-title text-blue itemtitle">2</text>
+          <picker mode="date" name="startTime" value="{{date}}" start="1970-09-01" end="{{endTime}}" bindchange="startDateChange" class="item">
+            <view class="picker">
+              <input placeholder="请选择开始时间" disabled="true" value="{{startDate}}"></input>
+            </view>
+          </picker>
+          <label class="itemtitle" style="text-align:center;">--</label>
+          <picker mode="date" name="birth" value="{{date}}" start="{{startDate}}" end="{{endTime}}" bindchange="endDateChange" class="item">
+            <view class="picker">
+              <input placeholder="请选择结束时间" disabled="true" value="{{endDate}}"></input>
+            </view>
+          </picker>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="cu-form-group ">
+    <view class="title">目前任职公司</view>
+    <input placeholder="请输入" name="moodyhas"></input>
+  </view>
+  <view class="cu-form-group ">
+    <view class="title">岗位名称</view>
+    <input placeholder="请输入" name="job"></input>
+  </view>
+  <view class="cu-form-group ">
+    <view class="title">管理规模</view>
+    <input placeholder="请输入" name="scale"></input>
+  </view>
+
+  <checkbox-group class="block" bindchange="checkboxChange" data-name="mainBusiness" name="mainBusiness">
+
+    <view class="cu-form-group margin-top">
+      <view class="title">公司主营业务</view>
+    </view>
+    <view wx:for="{{options}}" wx:key="name">
+      <view class="cu-form-group ">
+        <view>{{item.value}}</view>
+        <view>
+          <checkbox value="{{item.name}}"></checkbox>
+        </view>
+      </view>
+      <view wx:if="{{item.name == 6}}">
+        <view class="cu-form-group" hidden="{{item.hidden}}">
+          <textarea name="{{'mainBusiness'+item.name}}" class="textarea" placeholder="填写其他类型的主营业务" />
+        </view>
+      </view>
+    </view>
+
+  </checkbox-group>
+
+  <checkbox-group class="block" name="responsibleArea">
+    <view class="cu-form-group margin-top">
+      <view class="title">负责区域</view>
+    </view>
+    <view class="cu-form-group" wx:for="{{responsible_areaAption}}" wx:key="name">
+      <view class="title responsible-item-content">{{item.value}}</view>
+      <view hidden="{{item.hidden}}" class="responsible-item">
+        <input placeholder="填写精确到市级"></input>
+      </view>
+
+      <view class="">
+        <checkbox value="{{item.name}}" bindtap="checkboxChange" data-name="responsibleArea" data-index="{{index}}"></checkbox>
+      </view>
+    </view>
+  </checkbox-group>
+  <view class="cu-form-group margin-top">
+    <view class="title">负责行业</view>
+    <picker mode="selector" value="index" range-key="name">
+      <view class="picker">
+        <input placeholder="请选择" disabled="true"></input>
+      </view>
+    </picker>
+  </view>
+  <view class="cu-form-group ">
+    <view class="title">负责产品/服务</view>
+    <picker mode="selector" value="index" range-key="name">
+      <view class="picker">
+        <input placeholder="请选择" disabled="true"></input>
+      </view>
+    </picker>
+  </view>
+
+  <view class="cu-form-group margin-top">
+    <view class="title">年度销售指标</view>
+    <input placeholder="请输入" name="name"></input>
+  </view>
+  <view class="cu-form-group ">
+    <view class="title">年度完成金额</view>
+    <input placeholder="请输入" name="name"></input>
+  </view>
+
+  <checkbox-group bindchange="keyExperiencesCheckboxChange" class="block" name="keyExperiences">
+    <view class="cu-form-group margin-top">
+      <view class="title">关键经历</view>
+    </view>
+    <view wx:for="{{key_experiences}}" wx:key="name">
+      <view class="cu-form-group ">
+        <view>{{item.value}}</view>
+        <view>
+          <checkbox value="{{item.name}}" checked="{{selected[item.name]==1}}"></checkbox>
+        </view>
+      </view>
+      <view class="cu-form-group" wx:if="{{selected[item.name]==1}}">
+        <textarea bindblur="keyExperiencesContentChange" class="textarea" placeholder="{{item.content}}" data-index="{{index}}" value="{{keyExperiencesTextValue[item.name]}}" />
+      </view>
+    </view>
+  </checkbox-group>
+
+  <!-- 关键经历结束 -->
+  <!-- </template> -->
+
+  <!-- <template name="resign_reason"> -->
+  <checkbox-group bindchange="checkboxChange" class="block" data-name="dimissionCause" name="dimissionCause">
+    <view class="cu-form-group margin-top">
+      <view class="title">离职原因</view>
+    </view>
+    <view wx:for="{{dimissionCause}}" wx:key="name">
+      <view class="cu-form-group ">
+        <view>{{item.value}}</view>
+        <view>
+          <checkbox value="{{item.name}}"></checkbox>
+        </view>
+      </view>
+      <view wx:if="{{item.name == 8}}">
+        <view class="cu-form-group" hidden="{{item.hidden}}">
+          <textarea name="{{'key_experiences'+item.name}}" class="textarea" placeholder="填写具体离职原因" />
+        </view>
+      </view>
+    </view>
+  </checkbox-group>
+  <!-- </template> -->
+
+  <!-- <template name="salary"> -->
+  <!-- <view class="cu-form-group margin-top">
+    <text class="title">薪资水平</text>
+    <view class="itemContain">
+      <view class="itemView">
+        <view class="itemViewHabitation">
+          <picker name="habitationProvince" mode="selector" bindchange="habitationProvincesChange" range="{{salary}}" value="index" range-key="value">
+            <view class="item">
+              <input value="{{salary[index].value}}" placeholder="请选择"></input>
+            </view>
+          </picker>
+        </view>
+      </view>
+      <view wx:if="{{showErroe==='habitationProvince' || showErroe==='habitationCity'}}" class="errormessage">
+        <text class="item">{{errorMessage}}</text>
+      </view>
+    </view>
+  </view> -->
+  

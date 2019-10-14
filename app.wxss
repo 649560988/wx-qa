@@ -1,0 +1,29 @@
+@import "colorui/main.wxss";
+@import "colorui/icon.wxss";
+.cuIcon-star:before {
+  /* height: 100%; */
+	content: "*";
+  /* align-content: center; */
+  vertical-align: middle;
+  margin-right: 10rpx;
+  /* margin-left: -25rpx; */
+  /* padding-right: 1rpx; */
+}
+.cuIcon-null:before {
+  /* height: 100%; */
+	content: " ";
+  /* align-content: center; */
+  vertical-align: middle;
+  margin-right: 10rpx;
+  /* margin-left: -25rpx; */
+  /* padding-right: 1rpx; */
+}
+.my-btn-bg{
+  background-color: rgb(215, 220, 228);
+  color: rgb(158, 158, 157);
+  margin-right:8rpx;
+  margin-top:8rpx;
+
+}
+.my-btn-text{
+}

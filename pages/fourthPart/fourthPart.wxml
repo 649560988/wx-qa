@@ -1,0 +1,65 @@
+<!--pages/forthPart/forthPath.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">第五部分：性格特质</view>
+</cu-custom>
+<view class="cu-form-group">
+<text class=" text-red">填写说明：请阅读左右两边的陈述，1代表左边的陈述，5代表右边的陈述，请根据自己的情况，选择最能表述自身偏好的得分：</text>
+</view>
+<form bindsubmit="formSubmit">
+<view class="solids-bottom  flex align-left margin-top">
+  <view class="flex-sub bg-white">
+    <view class="solid-bottom text-lg padding text-left">
+      <text class="cuIcon-title text-blue"></text>1. 请阅读左右两边的陈述，1代表左边的陈述，5代表右边的陈述，请根据自己的情况，选择最能表述自身偏好的得分：
+    </view>
+  </view>
+</view>
+<view wx:for="{{question}}" wx:for-index="mindex" id="{{item.name}}">
+<view class=" mycontainer {{showError==item.name?'text-red':null}}">
+<view class="containerItem"  >
+<view class="item1">
+<text>{{item.leftQuestion}}</text>
+</view>
+<view class="item2">
+</view>
+<view class="item3">
+<text>{{item.rightQuestion}}</text>
+</view>
+</view>
+</view>
+ <view class="flex bg-white">
+                  <button class="cu-btn flex-sub bg-{{selected[mindex]=='1'?'blue':'grey'}} " bindtap="handBindchange"  data-mindex="{{mindex}}"  data-buttom="1" >1</button>
+                  <button class="cu-btn flex-sub bg-{{selected[mindex]=='2'?'blue':'grey'}} " bindtap="handBindchange"  data-mindex="{{mindex}}"  data-buttom="2">2</button>
+                  <button class="cu-btn flex-sub bg-{{selected[mindex]=='3'?'blue':'grey'}} " bindtap="handBindchange"  data-mindex="{{mindex}}" data-buttom="3">3</button>
+                  <button class="cu-btn flex-sub bg-{{selected[mindex]=='4'?'blue':'grey'}} " bindtap="handBindchange"  data-mindex="{{mindex}}"  data-buttom="4">4</button>
+                  <button class="cu-btn flex-sub bg-{{selected[mindex]=='5'?'blue':'grey'}}" bindtap="handBindchange"  data-mindex="{{mindex}}" data-buttom="5">5</button>
+                </view>
+              
+  <!-- <radio-group class="block " data-mindex="{{mindex}}" bindchange="handBindchange" name="{{item.name}}">
+   <view  class=" mywidth " >
+		<label>1<radio  value="1" checked="{{selected[mindex]==1}}"></radio></label>
+    <label>2<radio  value="2" checked="{{selected[mindex]==2}}"></radio></label>
+    <label>3<radio  value="3" checked="{{selected[mindex]==3}}"></radio></label>
+    <label>4<radio  value="4" checked="{{selected[mindex]==4}}"></radio></label>
+    <label>5<radio  value="5" checked="{{selected[mindex]==5}}"></radio></label>
+   </view>
+  </radio-group> -->
+</view>
+
+<view class="solids-bottom  flex align-left margin-top">
+  <view class="flex-sub bg-white">
+    <view class="solid-bottom text-lg padding text-left">
+      <text class="cuIcon-title text-blue"></text>2.请选择你在工作中最能激励你的驱动因素(多选题)
+    </view>
+  </view>
+</view>
+ <checkbox-group class="block" name="drivingFactors" bindchange="selectedChange">
+  <view class="cu-form-group" wx:for="{{options}}" wx:key="name">
+			<view class="title">{{item.value}}</view>
+			<checkbox value="{{item.name}}" checked="{{checked[index]}}"></checkbox>
+	</view>
+ </checkbox-group>
+  <view>
+<button form-type="submit" class="cu-btn block bg-blue margin-tb-sm lg">保存并跳转到下一部分</button>
+</view>
+</form>

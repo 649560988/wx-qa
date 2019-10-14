@@ -1,0 +1,43 @@
+/* pages/secondPart/secondpart.wxss */
+.itemContain{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center
+}
+.item{
+  flex: 2;
+
+}
+.itemtitle{
+  flex: 1;
+}
+.responsible-item-title{
+ width: 20%;
+ /* background-color: red */
+}
+.responsible-item{
+  width: 50%;
+  /* background-color: green */
+}
+.responsible-item-content{
+ width: 30%;
+  /* background-color: yellow */
+}
+
+.page_bd{
+  background-color: snow;
+}
+
+.display_show{
+  display: block;
+  border: 1px solid;
+  border-color: beige;
+  padding: 10px;
+}
+
+.display_none{
+
+  display: none;
+
+}

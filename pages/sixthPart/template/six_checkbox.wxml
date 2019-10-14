@@ -1,0 +1,19 @@
+<view wx:key="key" wx:for="{{pageone}}" wx:for-index="idx2" wx:for-item="itm2">
+  <view wx:if="{{itm2.checked==true}}">
+
+    <view  name="checkbox_job" wx:for="{{sales_work}}" wx:key="index" wx:for-index="idx" wx:for-item="itm">
+    <label class="cu-form-group"  bindtap="onChangeShowState" data-index='{{idx}}' data-name="gangwei" name="gangwei">
+     	<view class="title">{{itm.name}}</view>
+        <checkbox value="{{itm.name}}" checked="{{itm.checked}}" />
+      </label>
+      <view class="cu-form-group align-start" wx:if="{{idx === 5}}" hidden="{{itm.hidden}}">
+      <textarea  placeholder="请输入其他信息"  bindinput="textareainput" name="otherSales" data-name="otherSales" value="{{other_sales_work_str}}"></textarea>
+      </view>
+    </view>
+  </view>
+</view>
+<!-- 
+	<view class="cu-form-group margin-top">
+	复选选操作(checkbox)</view>
+		<checkbox></checkbox>
+	</view> -->

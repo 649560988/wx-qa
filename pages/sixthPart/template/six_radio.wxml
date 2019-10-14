@@ -1,0 +1,5 @@
+<view wx:key="key" wx:for="{{pagetwo}}">
+  <view wx:if="{{item.checked==true}}" class="cu-form-group align-start">
+    <textarea placeholder="请注明具体岗位名称" bindinput="textareainput" name="notSales" data-name="notSales"></textarea>
+  </view>
+</view>

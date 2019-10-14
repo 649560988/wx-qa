@@ -1,0 +1,7 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{false}}">
+  <view slot="content">预约成功</view>
+</cu-custom>
+<view class="myitem">
+您已预约成功，感谢您的填写
+</view>
+<button class="mybuttom" bindtap="goback">返回</button>

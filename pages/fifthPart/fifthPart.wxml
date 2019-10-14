@@ -1,0 +1,329 @@
+<!--pages/fifthPart/fifthPart.wxml-->
+<view id="cu-custom">
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}" id="cu-custom">
+  <view slot="backText">返回</view>
+  <view slot="content">第二部分：客户资源</view>
+</cu-custom>
+<view class="cu-form-group" id="wenxin">
+  <text class=" text-red">{{wenxin}}</text>
+</view>
+</view>
+<form bindsubmit="formSubmit">
+  <!-- 显示出现弹窗 -->
+  <view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+    <view class="cu-dialog">
+      <view class="cu-bar bg-white justify-end">
+        <view class="content">填写说明</view>
+        <view class="action" bindtap="hideModal">
+          <text class="cuIcon-close text-red"></text>
+        </view>
+      </view>
+      <view class="padding-xl">
+        {{tianxie}}
+      </view>
+      <view class="cu-bar bg-white justify-end">
+        <view class="action">
+          <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button>
+          <button class="cu-btn bg-green margin-left" bindtap="hideModal">确定</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="cu-modal {{modalName=='img_modal'?'show':''}}">
+    <view class="cu-dialog">
+      <view class="cu-bar bg-white justify-end">
+        <view class="content">上传说明</view>
+        <view class="action" bindtap="hideModal">
+          <text class="cuIcon-close text-red"></text>
+        </view>
+      </view>
+      <view class="padding-xl">
+        提示：邮件往来截图、通话里记录截图等，影响算法排序优先级和商机推送
+      </view>
+      <view class="cu-bar bg-white justify-end">
+        <view class="action">
+          <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button>
+          <button class="cu-btn bg-green margin-left" bindtap="confirm_img">确定</button>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="mymargintop">
+    <scroll-view scroll-x scroll-with-animation class="tab-view" scroll-left="{{scrollLeft}}">
+      <view wx:for="{{tabbar}}" wx:key="{{index}}" class="tab-bar-item {{currentTab==index ? 'active' : ''}}" data-current="{{index}}" catchtap="swichNav">
+        <text class="tab-bar-title">{{item}}</text>
+      </view>
+    </scroll-view>
+    <swiper class="tab-content" current="{{currentTab}}" duration="300" bindchange="switchTab" style="height:{{winHeight-mybutton-custom-statusBarHeight-40}}px">
+      <!-- tab标签页子项 -->
+      <swiper-item wx:for-index="parentIndex" wx:for="{{tabbar}}" wx:key="{{index}}" wx:for-index="parentIndex">
+        <scroll-view scroll-y class="scoll-y">
+          <!--start 内容部分可直接删除-->
+          <view class="list-view">
+            <!-- 按钮布局结束 wx:for="{{countParent}}" wx:for-item="parent" wx:key="parentIndex" -->
+            <view>
+              <view class="cu-bar bg-white solid-bottom">
+                <view class="action">
+                  <text class="cuIcon-title text-blue "></text>{{parentIndex+1}}、列举您最熟悉的重点客户
+                </view>
+              </view>
+              <view class="cu-form-group solid-bottom">
+                <view class="title  {{showError=='custom'+parentIndex?'text-red':null}}">
+                  <text class="cuIcon-star text-orange"></text>客户全称</view>
+                <input placeholder="请输入" bindinput="bindinputCustomer" data-parentIndex="{{parentIndex}}" value="{{customer[parentIndex]}}" id="{{'customer'+parentIndex}}"></input>
+                <button class="cu-btn bg-green shadow" bindtap="handShowItem" data-parentIndex="{{parentIndex}}">搜索</button>
+              </view>
+              <view class="page">
+                <view class="page_bd">
+                  <!-- 循环搜索出的结果 -->
+                  <view class="{{open[parentIndex]?'display_show':'display_none'}}" wx:for-index="mmindex" wx:key="mmindex" wx:for="{{customernameList}}" data-mmindex="{{mmindex}}" data-parentIndex="{{parentIndex}}" bindtap="selectShowItem">{{customernameList[mmindex]}}</view>
+                </view>
+              </view>
+              <view class="cu-form-group">
+                <view class="title {{showError=='organizationalCode'+parentIndex?'text-red':null}}">
+                  <text class="cuIcon-star text-orange"></text>组织机构代码</view>
+                <input placeholder="请输入" bindinput="bindinputOrganizationalCode" data-parentIndex="{{parentIndex}}"id="{{'organizationalCode'+parentIndex}}" value="{{organizationalCode[parentIndex]}}"></input>
+              </view>
+              <view class="cu-form-group">
+                <view class="title">企业性质</view>
+                <picker bindchange="bindenterpriseQualityChange" range="{{enterpriseQualitySource}}" data-parentIndex="{{parentIndex}}">
+                  <view class="picker">
+                    <input placeholder="请选择" disabled="true" value="{{enterpriseQuality[parentIndex]}}"></input>
+                  </view>
+                </picker>
+              </view>
+              <view class="cu-form-group ">
+                <view class="title">公司收入规模</view>
+                <input placeholder="请输入" bindinput="bindinputIncomeScale" data-parentIndex="{{parentIndex}}" value="{{incomeScale[parentIndex]}}"></input>亿
+              </view>
+              <view class="cu-form-group ">
+                <view class="title">公司人员规模</view>
+                <input placeholder="请输入" data-parentIndex="{{parentIndex}}" bindinput="bindinputStaffSize" value="{{staffSize[parentIndex]}}"></input>人
+              </view>
+              <view class="cu-form-group">
+                <view class="title">当年客户信息化预算</view>
+              </view>
+              <view class="cu-form-group">
+                <input placeholder="项目标的" data-parentIndex="{{parentIndex}}" bindinput="bindinputTarget" value="{{target[parentIndex]}}"></input>
+                <input placeholder="项目周期" data-parentIndex="{{parentIndex}}" bindinput="bindinputCycle" value="{{cycle[parentIndex]}}"></input>
+                <input placeholder="项目金额" data-parentIndex="{{parentIndex}}" bindinput="bindinputAmount" value="{{amount[parentIndex]}}"></input>
+              </view>
+              <view class="cu-bar bg-white solid-bottom myitem">
+                <view class="action">
+                  <text class="cuIcon-title text-blue "></text>您与该客户过往签约情况
+                </view>
+                <view class="action">
+                  <button class="cu-btn  shadow" bindtap="signingRecordAdd" data-parentIndex="{{parentIndex}}">+</button>
+                  <button class="cu-btn shadow margin-left" bindtap="signingRecordDelete" data-parentIndex="{{parentIndex}}">-</button>
+                </view>
+              </view>
+              <view wx:for="{{signingRecordCount[parentIndex]}}" wx:key="index" wx:for-index="index">
+                <view class="cu-form-group">
+                  <view class="title">签约年份</view>
+                  <picker mode="date" name="birth" value="{{date}}" start="1980-09-01" end="2020-09-01" bindchange="handSignYearChange" fields="year" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input value="{{date}}" placeholder="请选择年份" disabled="true" value="{{signYearList[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                </view>
+                <view class="cu-form-group">
+                  <view class="title">签单标的</view>
+                  <picker bindchange="bindTargetParentChange" range="{{targetParentSource}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="产品类别" disabled="true" value="{{targetParent[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                  <picker bindchange="bindTargetChildChange" range="{{targetChildSource[parentIndex][index]}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="产品选择" disabled="true" value="{{targetChild[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                </view>
+                <view class="cu-form-group" wx:if="{{targetChild[parentIndex][index]=='其他'}}">
+                  <input placeholder="请填写" data-index="{{index}}" data-parentIndex="{{parentIndex}}" bindinput="bindTargetOther" value="{{targetOther[parentIndex][index]}}"></input>
+                </view>
+                <view class="cu-form-group">
+                  <view class="title">签单总金额</view>
+                  <picker bindchange="bindAmountChange" range="{{amountSource}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="签单总金额" disabled="true" value="{{amountList[parentIndex][index]}}" bindinput="bindinputStaffSize"></input>
+                    </view>
+                  </picker>
+                </view>
+              </view>
+              <view style="background-color:#f0f0f0;height:5rpx;padding-top:40rpx;"></view>
+              <view class="cu-bar bg-white solid-bottom">
+                <view class="action">
+                  <text class="cuIcon-title text-blue mymargintop"></text>我们期待您可以提供您在该公司所熟悉的具体客户人员 信息，以便让我们知道您对这个客户的客户关系深度，有助于提升您的匹配优先级和权重。
+                </view>
+              </view>
+              <view class=" myitem" wx:key="index" wx:for="{{customerResourcesCertificateCount[parentIndex]}}" wx:for-index="index" wx:key="index">
+                <view class="cu-form-group">
+                  <view class="title">所属部门</view>
+                  <picker bindchange="bindDepartmentChange" range="{{departmentSource}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="请选择" disabled="true" value="{{departmentList[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                </view>
+                <view class="cu-form-group">
+                  <view class="title">客户职务</view>
+                  <picker bindchange="bindDutyChange" range="{{dutySource}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="请选择" disabled="true" value="{{dutyList[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                </view>
+                <view class="cu-form-group">
+                  <view class="title {{showError=='name'+parentIndex+index?'text-red':null}}">
+                    <text class="cuIcon-star text-orange"></text>姓名</view>
+                  <input placeholder="请填写" name="name" bindinput="bindNameChange" data-index="{{index}}" data-parentIndex="{{parentIndex}}" value="{{nameList[parentIndex][index]}}" id="{{'name'+parentIndex+index}}"></input>
+                  <view class="title">电话</view>
+                  <input placeholder="建议固定电话" name="tel" bindinput="bindTelChange" data-index="{{index}}" data-parentIndex="{{parentIndex}}" value="{{telList[parentIndex][index]}}"></input>
+                </view>
+                <view class="cu-form-group ">
+                  <view class="title">邮箱</view>
+                  <input placeholder="公司邮箱" name="tel" bindinput="bindMailChange" data-index="{{index}}" data-parentIndex="{{parentIndex}}" value="{{mailList[parentIndex][index]}}"></input>
+                </view>
+                <view class="cu-form-group ">
+                  <view class="action">
+                    上传往来凭证
+                  </view>
+                  <view class="action">
+                    <!-- <text class="item" bindtap="showModal" data-target="Modal">查看示意图</text> -->
+                    <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="Modal">查看示意图</button>
+                    <!-- <text>{{pictureList[parentIndex][index].length}}/4</text> -->
+                  </view>
+                </view>
+                <view class="cu-bar bg-white">
+                  <view class="grid col-4 grid-square flex-sub  item1">
+                    <view class="bg-img" wx:for="{{pictureList[parentIndex][index]}}" wx:for-index="mindex" wx:key="{{mindex}}" bindtap="ViewImage" data-url="{{pictureList[parentIndex][index]}}" wx:key="mindex">
+                      <image src='{{pictureList[parentIndex][index][mindex]}}' mode='aspectFill'></image>
+                      <view class="cu-tag bg-red" catchtap="DelImg" data-mindex="{{mindex}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                        <text class="cuIcon-close"></text>
+                      </view>
+                    </view>
+                    <view class="solids" bindtap="myChooseImage" wx:if="{{pictureList[parentIndex][index][mindex].length<9 || pictureList[parentIndex][index][mindex].length==null }}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                      <text class="cuIcon-cameraadd"></text>
+                    </view>
+                  </view>
+                </view>
+                <view class="cu-form-group myitem">
+                  <view class="title">
+                    <text class="cuIcon-star text-orange"></text>客户关系深度</view>
+                  <view class="action" wx:if="{{index===0}}">
+                    <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="hintModal">提示</button>
+                  </view>
+                </view>
+                <view class="flex  mymargintop bg-white">
+                  <button class=" cu-btn flex-sub bg-{{relationshipList[parentIndex][index]=='1'?'blue':'grey'}} " bindtap="changeCurrentButtom" data-parentIndex="{{parentIndex}}" data-index="{{index}}" data-buttom="1">1</button>
+                  <button class="cu-btn flex-sub bg-{{relationshipList[parentIndex][index]=='2'?'blue':'grey'}} " bindtap="changeCurrentButtom" data-parentIndex="{{parentIndex}}" data-index="{{index}}" data-buttom="2">2</button>
+                  <button class="cu-btn flex-sub bg-{{relationshipList[parentIndex][index]=='3'?'blue':'grey'}} " bindtap="changeCurrentButtom" data-parentIndex="{{parentIndex}}" data-index="{{index}}" data-buttom="3">3</button>
+                  <button class="cu-btn flex-sub bg-{{relationshipList[parentIndex][index]=='4'?'blue':'grey'}} " bindtap="changeCurrentButtom" data-parentIndex="{{parentIndex}}" data-index="{{index}}" data-buttom="4">4</button>
+                  <button class="cu-btn flex-sub bg-{{relationshipList[parentIndex][index]=='5'?'blue':'grey'}}" bindtap="changeCurrentButtom" data-parentIndex="{{parentIndex}}" data-index="{{index}}" data-buttom="5">5</button>
+                </view>
+              </view>
+
+              <view class="flex justify-end mymargintop">
+                <view class="action">
+                  <button class="cu-btn  shadow" bindtap="customerResourcesCertificateAdd" data-parentIndex="{{parentIndex}}">+</button>
+                  <button class="cu-btn shadow margin-left" bindtap="customerResourcesCertificateDelete" data-parentIndex="{{parentIndex}}">-</button>
+                </view>
+              </view>
+
+              <view class="cu-modal {{modalName=='hintModal'?'show':''}}">
+                <view class="cu-dialog">
+                  <view class="cu-bar bg-white justify-end">
+                    <view class="content">关系深度释意</view>
+                    <view class="action" bindtap="hideModal">
+                      <text class="cuIcon-close text-red"></text>
+                    </view>
+                  </view>
+                  <view class="cu-form-group">
+                    1-语音通话超过3次/面谈1次 </view>
+                  <view class="cu-form-group">
+                    2-面谈超过1次
+                  </view>
+                  <view class="cu-form-group">
+                    3-有过单次非公场合共处90分钟以上的经历
+                  </view>
+                  <view class="cu-form-group">
+                    4-有过单次私聊超过60分钟的经历
+                  </view>
+                  <view class="cu-form-group">
+                    5-双方有背靠背的互信和达成合作的明确策略/计划
+                  </view>
+                </view>
+              </view>
+
+
+              <view class="cu-modal {{modalName=='Modal'?'show':''}}">
+                <view class="cu-dialog">
+                  <view class="cu-bar bg-white justify-end">
+                    <view class="content">凭证示例图</view>
+                    <view class="action" bindtap="hideModal">
+                      <text class="cuIcon-close text-red"></text>
+                    </view>
+                  </view>
+                  <view class="padding-xl">
+                    <image style=" background-color: #eeeeee;" mode="aspectFit" src="https://resources-certificate.oss-cn-shanghai.aliyuncs.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190917095453.png"></image>
+                  </view>
+                </view>
+              </view>
+
+              <!-- <view class="cu-bar bg-white solid-bottom myitem">
+                <view class="action">
+                  <text class="cuIcon-title text-blue "></text>该客户过往三年签单情况
+                </view>
+                <view class="action">
+                  <button class="cu-btn  shadow" bindtap="signingRecordAdd" data-parentIndex="{{parentIndex}}">+</button>
+                </view>
+              </view>
+              <view wx:for="{{signingRecordCount[parentIndex]}}" wx:key="index">
+                <view class="cu-form-group">
+                  <view class="title">签约年份</view>
+                  <picker mode="date" name="birth" value="{{date}}" start="1980-09-01" end="2020-09-01" bindchange="handSignYearChange" fields="year" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input value="{{date}}" placeholder="请选择年份" disabled="true" value="{{signYearList[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                </view>
+                <view class="cu-form-group">
+                  <view class="title">签单标的</view>
+                  <picker bindchange="bindTargetParentChange" range="{{targetParentSource}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="产品类别" disabled="true" value="{{targetParent[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                  <picker bindchange="bindTargetChildChange" range="{{targetChildSource[parentIndex][index]}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="产品选择" disabled="true" value="{{targetChild[parentIndex][index]}}"></input>
+                    </view>
+                  </picker>
+                </view>
+                <view class="cu-form-group" wx:if="{{targetChild[parentIndex][index]=='其他'}}">
+                  <input placeholder="请填写" data-index="{{index}}" data-parentIndex="{{parentIndex}}" bindinput="bindTargetOther" value="{{targetOther[parentIndex][index]}}"></input>
+                </view>
+                <view class="cu-form-group">
+                  <view class="title">签单总金额</view>
+                  <picker bindchange="bindAmountChange" range="{{amountSource}}" data-index="{{index}}" data-parentIndex="{{parentIndex}}">
+                    <view class="picker">
+                      <input placeholder="签单总金额" disabled="true" value="{{amountList[parentIndex][index]}}" bindinput="bindinputStaffSize"></input>
+                    </view>
+                  </picker>
+                </view>
+              </view> -->
+
+            </view>
+          </view>
+          <!--end 内容部分可直接删除-->
+        </scroll-view>
+      </swiper-item>
+    </swiper>
+  </view>
+  <view class=" padding flex flex-direction bg-white" id="mybutton">
+    <!-- <button class=" cu-btn bg-red margin-tb-sm lg" bindtap="handClickAdd">增加数据</button> -->
+    <button form-type="submit" class="cu-btn block bg-blue margin-tb-sm lg">保存并跳转到下一部分</button>
+  </view>
+</form>

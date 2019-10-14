@@ -1,0 +1,267 @@
+<!--pages/sixthPart/sixthPart.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">第六部分：未来意向</view>
+</cu-custom>
+<view class="cu-form-group">
+  <text class=" text-red">温馨提示：请根据您的实际求职诉求，填写本部分信息。本部分信息会用于进行职位匹配与推荐，请务必认真填写。</text>
+</view>
+<form>
+  <!-- 第一部分标题 -->
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action text-{{redname=='expectPost'?'red':''}}" id="expectPost">
+      <text class="cuIcon-star text-orange"></text>1.您期望的岗位
+    </view>
+
+    <!-- <view class="action">
+      <button class="cu-btn bg-blue shadow" bindtap="showModal" data-target="menuModal">提示</button>
+    </view> -->
+  </view>
+  <view class="cu-modal {{modalName=='menuModal'?'show':''}}" bindtap="hideModal">
+    <view class="cu-dialog" catchtap>
+      <scroll-view scroll-y style="height:auto">
+        <view class="cu-list menu text-left solid-top">
+
+          <!-- <view wx:for="{{reminder}}" wx:key="{{index}}"> -->
+          <view class="cu-item flex flex-wrap justify-between">
+            <view class="content text-left">
+              <!-- <text class="cuIcon-warn text-green"></text> -->
+              <text class="text-red ">温馨提示：</text>
+            </view>
+            <view class="action">
+              <view class=" align-right">
+                <text class="text-grey text-lg">请根据您的实际求职诉求，填写本部分信息。本部分信息会用于进行职位匹配与推荐，请务必认真填写</text>
+              </view>
+            </view>
+            <!-- </view> -->
+          </view>
+
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  <!-- 模板 -->
+  <template name="tem1">
+    <view name="checkbox_job" wx:for="{{sales_work}}" wx:key="index" wx:for-index="idx" wx:for-item="itm">
+      <label class="cu-form-group" bindtap="onChangeShowState" data-index='{{idx}}' data-name="gangwei" name="gangwei">
+        <view class="title">{{itm.name}}</view>
+        <checkbox value="{{itm.name}}" checked="{{itm.checked}}" />
+      </label>
+      <view class="cu-form-group" wx:if="{{idx == 5}}" hidden="{{!itm.checked}}">
+        <textarea placeholder="请输入其他信息" bindinput="textareainput" name="otherSales" data-name="otherSales" value="{{itm.value}}"></textarea>
+      </view>
+    </view>
+  </template>
+  <template name="tem2">
+    <view class="">
+      <textarea placeholder="请注明具体岗位名称" bindinput="textareainput" name="notSales" data-name="notSales"></textarea>
+    </view>
+  </template>
+  <!-- 第一部分内容 -->
+  <view class="cu-form-group flex solid-bottom padding justify-around">
+
+    <!-- <checkbox-group style="background:red"> -->
+    <view wx:for="{{items}}" wx:key="{{index}}">
+      <label bindtap="firstcheckboxChange" data-index="{{index}}">
+        <checkbox value="{{item.name}}" checked="{{item.checked}}" class="round" /> {{item.value}}
+
+        <!-- <view  wx:if="{{item.value == '销售类岗位'}}">
+            <view hidden="{{item.hidden}}">
+            <view>
+              <template is="tem1" data="{{sales_work}}" />
+            </view>
+            </view>
+          </view> -->
+        <!-- <view wx:if="{{item.value == '非销售类岗位'}}">
+            <view hidden="{{item.hidden}}">
+              <view class="title">
+                <textarea placeholder="请注明具体岗位名称" bindinput="textareainput" name="notSales" data-name="notSales"></textarea>
+              </view>
+            </view>
+          </view> -->
+      </label>
+    </view>
+  </view>
+  <view hidden="{{first_checked}}">
+    <view>
+      <template is="tem1" data="{{sales_work}}" />
+    </view>
+  </view>
+  <view hidden="{{second_checked}}">
+    <view class="cu-form-group">
+      <textarea placeholder="请注明具体岗位名称" bindinput="textareainput" name="notSales" data-name="notSales" value="{{second_values}}"></textarea>
+    </view>
+  </view>
+
+  <!-- 第一部分结束 -->
+
+  <!-- 重写第二部分 -->
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue "></text>2.您的职业规划
+    </view>
+  </view>
+  <!-- 题目 -->
+  
+    <view class="cu-form-group solid-bottom margin-top">
+      <view class="title text-{{redname=='industry'?'red':''}}" id="industry" >
+        <text class="cuIcon-star text-orange"></text>行业</view>
+      <picker mode="selector" range="{{industry_option}}" bindchange="picker_change" data-pid="{{pIndex}}" data-name="industry" value="{{industry_show_chosed_str[pIndex]}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择行业" disabled="true" name="industry" value="{{industry_chose_str?industry_chose_str:'请选择行业'}}"></input>
+        </view>
+      </picker>
+    </view>
+    <view class="bg-gray">
+      <block wx:for="{{industry_list}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn"  style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;" bindtap="del_picker_change" data-index="{{u_index}}" data-value="{{u_item}}" data-name="industry_list">{{u_item}}
+          <text class="cuIcon-close lg text-black"></text>
+        </button>
+      </block>
+    </view>
+
+    <!-- 期望入职公司规模 -->
+    
+    <view class="cu-form-group solid-bottom margin-top">
+      <view class="title text-{{redname=='organizationScale'?'red':''}}" id="organizationScale">
+        <text class="cuIcon-star text-orange"></text>期望入职公司规模</view>
+      <picker mode="selector" range="{{organizationScale_option}}" bindchange="picker_change" data-pid="{{pIndex}}" data-name="organizationScale" value="{{industry_show_chosed_str[pIndex]}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择公司规模" disabled="true" name="industry" value="{{organizationScale_str?organizationScale_str:'请选择公司规模'}}"></input>
+        </view>
+      </picker>
+    </view>
+    <view class="bg-gray">
+      <block wx:for="{{organizationScale_list}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn"  style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;" bindtap="del_picker_change" data-index="{{u_index}}" data-value="{{u_item}}" data-name="organizationScale_list">{{u_item}}
+          <text class="cuIcon-close lg text-black"></text>
+        </button>
+      </block>
+    </view>
+
+    <!-- 期望入职公司企业性质 -->
+    
+    <view class="cu-form-group solid-bottom margin-top">
+      <view class="title text-{{redname=='enterpriseQuality'?'red':''}}" id="enterpriseQuality">
+        <text class="cuIcon-star text-orange"></text>期望入职公司企业性质</view>
+      <picker mode="selector" range="{{enterpriseQuality_option}}" bindchange="picker_change" data-pid="{{pIndex}}" data-name="enterpriseQuality" value="{{industry_show_chosed_str[pIndex]}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择企业性质" disabled="true" name="industry" value="{{enterpriseQuality_str?enterpriseQuality_str:'请选择企业性质'}}"></input>
+        </view>
+      </picker>
+    </view>
+    <view class="bg-gray">
+      <block wx:for="{{enterpriseQuality_list}}" wx:for-index="u_index" wx:for-item="u_item" wx:key="u_index">
+        <button class="cu-btn"  style="background-color: rgb(215, 220, 228);color: rgb(158, 158, 157);margin-right:8rpx;margin-top:8rpx;" bindtap="del_picker_change" data-index="{{u_index}}" data-value="{{u_item}}" data-name="enterpriseQuality_list">{{u_item}}
+          <text class="cuIcon-close lg text-black"></text>
+        </button>
+      </block>
+    </view>
+
+  <!-- 职能领域 -->
+      <view class="cu-form-group solid-bottom margin-top">
+      <view class="title">
+        <text class="cuIcon-null text-orange"></text>职能领域</view>
+      <picker mode="selector" range="{{functionField_option}}" bindchange="zhineng_picker" data-pid="{{pIndex}}" data-name="industry" value="{{upload_data.functionField}}" data-uid="0">
+        <view class="picker">
+          <input placeholder="请选择职能领域" disabled="true" name="industry" value="{{upload_data.functionField}}"></input>
+        </view>
+      </picker>
+    </view>
+
+
+
+  <!-- <view class="cu-form-group margin-top">
+		<view class="title">普通选择</view>
+		<picker bindchange="PickerChange" value="{{index}}" range="{{picker}}">
+			<view class="picker">
+				{{index?picker[index]:'禁止换行，超出容器部分会以 ... 方式截断'}}
+			</view>
+		</picker>
+	</view> -->
+  <!-- 第二个内容结束 -->
+  <!-- 第三个题目开始 -->
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue "></text>3.您期望的薪资和工作地点
+    </view>
+
+    <!-- <view class="action">
+      <button class="cu-btn bg-blue shadow" bindtap="showModal" data-target="menuModal">提示</button>
+    </view> -->
+  </view>
+  <!-- 第三个题目结束 -->
+
+    <view class="cu-form-group text-{{redname=='expectSalary'?'red':''}}" id="expectSalary">
+      <view class="title"><text class="cuIcon-star text-orange"></text>期望薪资</view>
+      <picker name="plan" bindchange="salary_change" data-type="plan" value="{{itm.index}}" data-current="{{idx}}" range="{{hope_salary}}">
+        <view class="picker">
+        {{upload_data.expectSalary?upload_data.expectSalary :'请选择'}}
+        </view>
+      </picker>
+    </view>
+
+
+  <view class="cu-form-group text-{{redname=='workPlace'?'red':''}}" id="workPlace">
+    <view class="title"><text class="cuIcon-star text-orange"></text>工作地点：</view>
+    <picker mode="selector" bindchange="workPlaceProvincesChange" range="{{workPlaceProvinces}}" value="index" range-key="name">
+      <view class="picker">
+        <input name="workPlaceProvince" value="{{workPlaceProvinces_str?workPlaceProvinces_str:''}}" placeholder="请选择省份" disabled="true"></input>
+      </view>
+    </picker>
+    <picker mode="selector" bindchange="workPlaceCityChange" range="{{workPlaceCitys}}" range-key="name">
+      <view class="picker">
+        <input name="workPlaceCity" value="{{workPlaceCitys_str?workPlaceCitys_str:''}}" placeholder="请选择城市" disabled="true"></input>
+      </view>
+    </picker>
+  </view>
+  <!-- 第三个内容结束 -->
+  <!-- 4 开始 -->
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue "></text>4.您的自我评价(300字以内)
+    </view>
+
+    <!-- <view class="action">
+      <button class="cu-btn bg-blue shadow" bindtap="showModal" data-target="menuModal">提示</button>
+    </view> -->
+  </view>
+  <!-- 4 结束 -->
+  <view class="cu-form-group align-start">
+    <textarea maxlength="300" placeholder="请如实填写您的自我评价" bindinput="textareainput" name="selfEvaluation" data-name="selfEvaluation" value="{{selfEvaluation}}"></textarea>
+  </view>
+
+  <!-- 按钮 -->
+  <!-- <view class="padding flex flex-wrap justify-between align-center bg-white">
+    <view></view>
+    <button class="cu-btn block bg-blue margin-tb-sm lg" bindtap="net_upload" data-target="no_radio">提交</button>
+    <!-- <button class="cu-btn round bg-grey" form-type="reset">重置</button> -->
+  <!-- <view></view>
+  </view> -->
+
+  <view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+    <view class="cu-dialog">
+      <view class="cu-bar bg-white justify-end">
+        <view class="content">是否预约</view>
+        <view class="action" bindtap="hideModal">
+          <text class="cuIcon-close text-red"></text>
+        </view>
+      </view>
+      <view class="padding-xl text-lg">
+        在这里你不仅会遇到资深的行业大拿和各领域的销售精英，还会遇到人力资源专家为你答疑解惑, 欲获取更详尽的报告和更多的职业机会，请预约职涯导航的现场
+      </view>
+      <view class="cu-bar bg-white justify-around">
+        <view class="action">
+          <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button>
+          <button class="cu-btn bg-green margin-left" bindtap="yes">确定</button>
+
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class=" padding flex flex-direction bg-white">
+    <button bindtap="net_upload" class="cu-btn block bg-blue margin-tb-sm lg" data-target="DialogModal1">提交</button>
+    <button bindtap="checkoutOpenid" class="cu-btn block bg-blue margin-tb-sm lg" data-target="DialogModal1">专家现场咨询预约</button>
+  </view>
+  <!-- 结束 -->
+</form>

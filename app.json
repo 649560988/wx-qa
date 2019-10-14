@@ -1,0 +1,26 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/videoPart/videoPart",
+    "pages/secondPart/secondpart",
+    "pages/sixthPart/sixthPart",
+    "pages/thirdPart/thirdPart",
+    "pages/fifthPart/fifthPart",
+    "pages/scrollview/scrollview",
+    "pages/firstPart/firstPart",
+    "pages/finish/finish",
+    "pages/order/order",
+    "pages/fourthPart/fourthPart"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "ColorUI",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

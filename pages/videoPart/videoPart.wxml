@@ -1,0 +1,13 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{false}}">
+  <!-- <view slot="backText">返回</view> -->
+  <view slot="content">第二部分：客户资源</view>
+</cu-custom>
+
+<view class="section tc">
+  <video id="myVideo" src="blob:https://www.bilibili.com/61d6cec4-c157-407a-8755-3e3e2c1d6415" danmu-list="{{danmuList}}" enable-danmu danmu-btn controls></video>
+  <view class="btn-area">
+    <button bindtap="bindButtonTap">获取视频</button>
+    <input bindblur="bindInputBlur"/>
+    <button bindtap="bindSendDanmu">发送弹幕</button>
+  </view>
+</view>

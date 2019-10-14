@@ -1,0 +1,207 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">第一部分：基本信息</view>
+</cu-custom>
+<view class="cu-form-group">
+  <text class=" text-red">温馨提示：请根据您的真实情况，填写如下个人信息：</text>
+</view>
+<form bindsubmit="handSubmit">
+  <view class="cu-form-group margin-top">
+    <view class="title text-{{redname=='#name'?'red':''}}" id="name">
+      <text class="cuIcon-star text-orange"></text>姓名</view>
+    <input placeholder="请输入姓名" bindinput="bindinputName" name="name" value="{{searchContent.name}}"></input>
+    <view class="title  text-{{redname=='#englishName'?'red':''}}" id="englishName">
+      <text class="cuIcon-star text-orange"></text>英文名</view>
+    <input placeholder="请输入英文名" bindinput="bindinputName" name="englishName" data-name="englishName" value="{{searchContent.englishName}}" maxlength="20"></input>
+  </view>
+  <view class="cu-form-group margin-top">
+    <view class="title  text-{{redname=='#nickname'?'red':''}}" id="nickname">
+      <text class="cuIcon-star text-orange"></text>昵称（帮助您隐藏真实姓名）</view>
+    <input placeholder="请输入昵称" bindinput="bindinputName" name="nickname" data-name="nickname" value="{{searchContent.nickname}}"></input>
+  </view>
+
+  <radio-group class="block" bindchange="bindGenderChange" name="gender">
+    <view class="cu-form-group margin-top">
+      <view class="title  text-{{redname=='#gender'?'red':''}}" id="gender">
+        <text class="cuIcon-star text-orange"></text>性别</view>
+      <view>
+        <label>
+          <radio value="0" checked="{{searchContent.gender==0}}"></radio>男</label>
+        <label>
+          <radio class="margin-left-sm" value="1" checked="{{searchContent.gender==1}}"></radio>女</label>
+      </view>
+    </view>
+  </radio-group>
+
+  <view class="cu-form-group margin-top">
+    <view class="title  text-{{redname=='#birthday'?'red':''}}" id="birthday">
+      <text class="cuIcon-star text-orange"></text>出生年月</view>
+    <picker mode="date" value="{{date}}" bindchange="DateChange">
+      <view class="picker">
+        <input name="birthday" value="{{birth==''?searchContent.birthday:birth}}" placeholder="请选择日期" disabled="true"></input>
+      </view>
+    </picker>
+  </view>
+  <radio-group class="block" bindchange="bindMarryStatusChange" name="marryStatus">
+    <view class="cu-form-group margin-top">
+      <view class="title">婚姻状况</view>
+      <view>
+        <label>
+          <radio value="1" checked="{{searchContent.marryStatus==1}}"></radio>已婚</label>
+        <label>
+          <radio class="margin-left-sm" value="0" checked="{{searchContent.marryStatus==0}}"></radio>未婚</label>
+      </view>
+    </view>
+  </radio-group>
+
+  <view class="cu-form-group margin-top">
+    <view class="title">您所居住的城市</view>
+    <picker mode="selector" bindchange="habitationProvincesChange" range="{{habitationProvinces}}" value="index" range-key="name">
+      <view class="picker">
+        <input name="habitationProvince" value="{{habitationProvinces[index1].name==null?searchContent.habitationShen:habitationProvinces[index1].name}}" placeholder="请选择省份" disabled="true"></input>
+      </view>
+    </picker>
+    <picker mode="selector" bindchange="habitationCityChange" range="{{habitationCity}}" range-key="name">
+      <view class="picker">
+        <input name="habitationCity" value="{{habitationProvinces[index1].name==null?searchContent.habitationShi:habitationCity[index2].name}}" placeholder="请选择城市" disabled="true"></input>
+      </view>
+    </picker>
+  </view>
+  <!-- <view class="cu-form-group margin-top">
+    <view class="title">您期望的工作地点</view>
+    <picker mode="selector" bindchange="workPlaceProvincesChange" range="{{workPlaceProvinces}}" value="index" range-key="name">
+      <view class="picker">
+        <input name="workPlaceProvince" value="{{workPlaceProvinces[index3].name==null?searchContent.workPlaceShen:workPlaceProvinces[index3].name}}" placeholder="请选择省份" disabled="true"></input>
+      </view>
+    </picker>
+    <picker mode="selector" bindchange="workPlaceCityChange" range="{{workPlaceCity}}" range-key="name">
+      <view class="picker">
+        <input name="workPlaceCity" value="{{workPlaceProvinces[index3].name==null?searchContent.workPlaceShi:workPlaceCity[index4].name}}" placeholder="请选择城市" disabled="true"></input>
+      </view>
+    </picker>
+  </view> -->
+
+  <radio-group class="block" bindchange="bindeducationChange" name="education">
+    <view class="cu-form-group margin-top">
+      <view class="title  text-{{redname=='#education'?'red':''}}" id="education">
+        <text class="cuIcon-star text-orange"></text>您的最高学历（含目前在读）</view>
+
+      <view class="action">
+        <button class="cu-btn bg-white text-sm" bindtap="showModal" data-target="RadioModal">{{educationList[education].value?educationList[education].value:'请选择'}}</button>
+        <!-- <button class="cu-btn bg-green shadow" bindtap="showModal" data-target="RadioModal">{{educationList[education].value}}</button> -->
+      </view>
+    </view>
+    <!-- 最高学历弹出框 -->
+    <view class="cu-modal {{modalName=='RadioModal'?'show':''}}">
+      <view class="cu-dialog">
+        <radio-group class="block" name="education">
+          <view class="cu-list menu text-left">
+            <view class="cu-item" wx:for="{{educationList}}" wx:key>
+              <label class="flex justify-between align-center flex-sub" bindtap="educationChange" data-index="{{index}}">
+                <view class="flex-sub">{{item.value}}</view>
+                <radio class="round" value="{{item.name}}" checked="{{searchContent.education==index}}"></radio>
+              </label>
+            </view>
+          </view>
+        </radio-group>
+      </view>
+    </view>
+    <!-- <view class="cu-form-group" wx:for="{{educationList}}" wx:key="index">
+      <view class="title">{{item.value}}</view>
+      <radio value="{{item.name}}" checked="{{searchContent.education==index}}"></radio>
+    </view> -->
+  </radio-group>
+
+  <view class="cu-form-group margin-top">
+    <view class="title text-{{redname=='#academyName'?'red':''}}" id="academyName">
+      <text class="cuIcon-star text-orange"></text>您的毕业院校是</view>
+    <input name="academyName" value="{{searchContent.academy}}" bindinput="handAcademyName" placeholder="请输入学校"></input>
+  </view>
+  <!-- <view class="cu-form-group"> -->
+  <!-- <picker mode="selector" bindchange="academyProvincesChange" range="{{academyProvinces}}" value="index" range-key="name">
+      <view class="picker">
+        <input name="academyProvince" value="{{academyProvinces[index5].name==null?searchContent.academyShen:academyProvinces[index5].name}}" placeholder="请选择省份" disabled="true"></input>
+      </view>
+    </picker>
+    <picker mode="selector" bindchange="academyCityChange" range="{{academyCity}}" range-key="name">
+      <view class="picker">
+        <input name="academyCity" value="{{academyProvinces[index5].name==null?searchContent.academyShi:academyCity[index6].name}}" placeholder="请选择城市" disabled="true"></input>
+      </view>
+    </picker> -->
+
+  <!-- <input name="academyName" value="{{academyProvinces[index5].name==null?searchContent.academyXuex:schoolName}}" bindinput="handAcademyName" placeholder="请输入学校"></input> -->
+  <!-- <picker  mode="selector" bindchange="academyNameChange" range="{{academyName}}"  range-key="name">
+    <view class="picker">
+     <input  name="academyName" value="{{academyProvinces[index5].name==null?searchContent.academyXuex:academyName[index7].name}}" placeholder="请选择学校" disabled="true"></input>
+    </view>
+  </picker> -->
+  <!-- </view> -->
+  <view>
+
+    <view class="page" wx:if="{{show}}">
+      <view class="page_bd">
+        <view class="display_show}}" wx:for-index="mmindex" wx:key="mmindex" wx:for="{{academyNameList}}" data-mmindex="{{mmindex}}" bindtap="selectShowItem">{{academyNameList[mmindex]}}</view>
+      </view>
+    </view>
+
+    <view class="cu-form-group margin-top">
+      <view class="title">最高学历所学专业是</view>
+    </view>
+    <view class="cu-form-group ">
+      <view class="title">学科</view>
+      <picker bindchange="bindsubjectChange" range="{{subiectSource}}" value="index">
+        <view class="picker">
+          <input name="subject" placeholder="请选择学科" disabled="true" value="{{subject==''?searchContent.subject:subject}}"></input>
+        </view>
+      </picker>
+    </view>
+    <view class="cu-form-group ">
+      <view class="title">专业名称</view>
+      <picker bindchange="bindprofessionalChange" range="{{processnameSource}}" value="index">
+        <view class="picker">
+          <input name="professionalName" placeholder="请选择专业名称" disabled="true" value="{{subject==''?searchContent.professionalName:professionalName}}"></input>
+        </view>
+      </picker>
+    </view>
+
+    <!-- 弹出框 -->
+    <view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+      <view class="cu-dialog">
+        <view class="cu-bar bg-white justify-end">
+          <view class="content">用户许可协议</view>
+          <view class="action" bindtap="hideModal">
+            <text class="cuIcon-close text-red"></text>
+          </view>
+        </view>
+        <view class="padding-xl">
+          <scroll-view scroll-y style="height: 200px;" bindscrolltolower="change_agree">
+            一、总则 1.1 保宝网的所有权和运营权归深圳市永兴元科技有限公司所有。 1.2 用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与保宝网之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。 1.3 本协议则可由保宝网随时更新，用户应当及时关注并同意本站不承担通知义务。本站的通知、公告、声明或其它类似内容是本协议的一部分。 二、服务内容 2.1 保宝网的具体内容由本站根据实际情况提供。 2.2 本站仅提供相关的网络服务，除此之外与相关网络服务有关的设备(如个人电脑、手机、及其他与接入互联网或移动网有关的装置)及所需的费用(如为接入互联网而支付的电话费及上网费、为使用移动网而支付的手机费)均应由用户自行负担。
+            三、用户帐号 3.1 经本站注册系统完成注册程序并通过身份认证的用户即成为正式用户，可以获得本站规定用户所应享有的一切权限；未经认证仅享有本站规定的部分会员权限。保宝网有权对会员的权限设计进行变更。 3.2 用户只能按照注册要求使用真实姓名，及身份证号注册。用户有义务保证密码和帐号的安全，用户利用该密码和帐号所进行的一切活动引起的任何损失或损害，由用户自行承担全部责任，本站不承担任何责任。如用户发现帐号遭到未授权的使用或发生其他任何安全问题，应立即修改帐号密码并妥善保管，如有必要，请通知本站。因黑客行为或用户的保管疏忽导致帐号非法使用，本站不承担任何责任。
+            一、总则 1.1 保宝网的所有权和运营权归深圳市永兴元科技有限公司所有。 1.2 用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与保宝网之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。 1.3 本协议则可由保宝网随时更新，用户应当及时关注并同意本站不承担通知义务。本站的通知、公告、声明或其它类似内容是本协议的一部分。 一、总则 1.1 保宝网的所有权和运营权归深圳市永兴元科技有限公司所有。
+            1.2 用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与保宝网之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。 1.3 本协议则可由保宝网随时更新，用户应当及时关注并同意本站不承担通知义务。本站的通知、公告、声明或其它类似内容是本协议的一部分。 一、总则 1.1 保宝网的所有权和运营权归深圳市永兴元科技有限公司所有。 1.2 用户在注册之前，应当仔细阅读本协议，并同意遵守本协议后方可成为注册用户。一旦注册成功，则用户与保宝网之间自动形成协议关系，用户应当受本协议的约束。用户在使用特殊的服务或产品时，应当同意接受相关协议后方能使用。
+            1.3 本协议则可由保宝网随时更新，用户应当及时关注并同意本站不承担通知义务。本站的通知、公告、声明或其它类似内容是本协议的一部分。
+          </scroll-view>
+          <!-- <view class="padding flex flex-direction">
+            <view wx:if="{{agree_sign}}">
+              <button class="cu-btn bg-red margin-tb-sm lg">嫣红</button>
+            </view>
+            <view wx:else>
+              <button class="cu-btn bg-grey lg">玄灰</button>
+            </view>
+          </view> -->
+        </view>
+        <view class="flex flex-direction">
+          <view class="action">
+            <view wx:if="{{agree_sign}}">
+              <button class=" bg-red margin-sm lg" bindtap="agree">同意本条款</button>
+            </view>
+            <view wx:else>
+              <button class="bg-grey margin-sm lg">请看完再同意本条款</button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <button form-type="submit" class="cu-btn block bg-blue margin-tb-sm lg">保存并跳转到下一部分</button>
+  </view>
+</form>
