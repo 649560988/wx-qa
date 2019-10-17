@@ -3,6 +3,11 @@
   <view slot="backText">返回</view>
   <view slot="content">第三部分：过往经历</view>
 </cu-custom>
+
+<view hidden="{{!Loading}}" style="text-align: center;  line-height: 150px    ">
+<text class="content">{{content}}</text>
+</view>
+<view hidden="{{Loading}}">
 <view class="cu-form-group">
   <text class=" text-red">温馨提示：请根据过往的工作经历，填写如下信息：</text>
 </view>
@@ -83,16 +88,25 @@
           {{my_workhistory.workHistories[pIndex].startTime?my_workhistory.workHistories[pIndex].startTime:"请开始选择"}}
         </view>
       </picker>
+      <view>
+  
+      </view>
     </view>
+        
     <view class="cu-form-group solid-bottom">
       <view class="title text-{{redname==('endTime'+pIndex)?'red':''}}" id="{{'endTime'+pIndex}}">
         <text class="cuIcon-star text-orange"></text>请选择结束时间</view>
       <picker mode="date" name="birth" value="{{date}}" start="{{my_workhistory.workHistories[pIndex].startTime?my_workhistory.workHistories[pIndex].startTime:'1970-01-01'}}" end="{{todayTime}}" bindchange="endTimeChange" class="item" data-pid="{{pIndex}}">
-        <view class="picker">
+        <view class="picker" wx:if="{{pIndex===0}}">
+          {{my_workhistory.workHistories[pIndex].endTime?my_workhistory.workHistories[pIndex].endTime:changeToNow?'':"请开始选择"}}
+        </view>
+         <view class="picker" wx:else>
           {{my_workhistory.workHistories[pIndex].endTime?my_workhistory.workHistories[pIndex].endTime:"请开始选择"}}
         </view>
       </picker>
       <!-- </block> -->
+       <checkbox wx:if="{{pIndex===0}}" data-pid="{{pIndex}}" bindtap="changeToNow" checked="{{changeToNow}}"></checkbox>
+         <view wx:if="{{pIndex===0}}">至今</view>        
     </view>
 
     <view wx:if="{{pIndex == 0}}">
@@ -445,3 +459,4 @@
     <button form-type="submit" class="cu-btn block bg-blue lg">保存并跳转到下一部分</button>
   </view>
 </form>
+</view>

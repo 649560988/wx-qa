@@ -2,13 +2,20 @@
 import api from '../../utils/http.js'
 import wxValidate from '../../utils/wxValidate.js'
 import replace from '../../utils/replaceSpecialChar.js'
+const app = getApp()
 Page({
   /**
    * 页面的初始数据
    */
   data: {
+    mybutton:0,
+    custom:0,
+    Loading:true,
+    content:  '正在加载数据...',
     tabbar: ["客户1", "客户2", "客户3"],
-    winHeight: "", //窗口高度
+    winHeight: app.globalData.my_height, //窗口高度
+    CustomBar: app.globalData.CustomBar,
+    // my_height:
     currentTab: 0, //预设当前项的值
     scrollLeft: 0, //tab标题的滚动条位置
     wenxinHeight:0,
@@ -89,7 +96,6 @@ Page({
       [
         []
       ],
-
     ],
     certificateIdList: [
       [
@@ -178,18 +184,20 @@ this.setData({
       },
       success(res) {
         if (res.statusCode === 200){
-          console.log('res.data', res.data)
+          //console.log('res.data', res.data)
           if(res.data.result!=null){
             let value = _this.data.organizationalCode
             value[parentindex] = res.data.result.creditCode
             _this.setData({
-              organizationalCode: value
+              organizationalCode: value,
+              Loading:false
             })
           }else{
             let value = _this.data.organizationalCode
             value[parentindex] = ''
             _this.setData({
-              organizationalCode: value
+              organizationalCode: value,
+              Loading:false
             })
             wx.showToast({
               title: res.data.reason,
@@ -198,6 +206,9 @@ this.setData({
             })
           }
         }else{
+          _this.setData({
+            Loading: false
+          })
           wx.showToast({
             title: '查询失败',
             icon: 'none',
@@ -206,7 +217,10 @@ this.setData({
         }
       },
       fail(error) {
-        console.log('error',error)
+        //console.log('error',error)
+        _this.setData({
+          Loading: false
+        })
       }
     })
   },
@@ -225,7 +239,7 @@ this.setData({
     })
   },
   confirm_img:function(e){
-    console.log("用户点击确定，上传图片")
+    ////console.log("用户点击确定，上传图片")
     this.hideModal()
     this.myChooseImage2()
   },
@@ -236,31 +250,41 @@ this.setData({
       sourceType: ['album'], //从相册选择
       success: (res) => {
         const tempFilePaths = res.tempFilePaths
+        ////console.log('tempFilePaths', tempFilePaths)
         let parentValue = this.data.pictureList;
+        //console.log('this.data.signChild', this.data.signChild)
+        //console.log('this.data.signParent', this.data.signParent)
+        //console.log('this.data.pictureList', this.data.pictureList)
         let value=this.data.pictureList[this.data.signParent][this.data.signChild]
+        //console.log('value', value)
         value = value.concat(res.tempFilePaths)
+
         parentValue[this.data.signParent][this.data.signChild] = value
         this.setData({
           pictureList: parentValue
         })
         let _this = this
-        res.tempFilePaths.forEach(function(item, mindex) {
+        _this.setData({
+          Loading:true,
+          content: '正在加载数据...'
+        })
+        tempFilePaths.forEach(function(item, mindex) {
           wx.uploadFile({
             url: 'https://topsales.top/custom/resources/certificate/upload', 
-            filePath: tempFilePaths[0],
+            filePath: item,
             name: 'file',
             success(value) {
-              console.log('choseSucessvalue', value)
+              //console.log('choseSucessvalue', value)
               let result = JSON.parse(value.data).data.id
-              console.log('result', result)
+              ////console.log('result', result)
               let certificateIdList = _this.data.certificateIdList;
-              console.log('success-certificateIdList', _this.data.certificateIdList)
+              ////console.log('success-certificateIdList', _this.data.certificateIdList)
               let mvalue = _this.data.certificateIdList[_this.data.signParent][_this.data.signChild]
               mvalue = mvalue.concat(result)
               certificateIdList[_this.data.signParent][_this.data.signChild] = mvalue
-              console.log("certificateIdList", certificateIdList)
               _this.setData({
-                certificateIdList: certificateIdList
+                certificateIdList: certificateIdList,
+                Loading:false
               })
             }
           })
@@ -283,9 +307,6 @@ this.setData({
   DelImg(e) {
     let parentindex = e.currentTarget.dataset.parentindex;
     let index = e.currentTarget.dataset.index;
-    console.log('index', index)
-    console.log('parentindex', parentindex)
-
     wx.showModal({
       title: '确定删除',
       content: '确定要删除图片吗？',
@@ -293,18 +314,25 @@ this.setData({
       confirmText: '删除',
       success: res => {
         if (res.confirm) {
+          this.setData({
+            Loading: true,
+            content: '正在加载数据...'
+          })
           this.data.pictureList[parentindex][index].splice(e.currentTarget.dataset.mindex, 1);
           let delId = this.data.certificateIdList[parentindex][index][e.currentTarget.dataset.mindex]
-          console.log('执行图片删除操作', delId)
+          ////console.log('执行图片删除操作', delId)
           this.data.certificateIdList[parentindex][index].splice(e.currentTarget.dataset.mindex, 1);
-          let url = '/custom/resources/certificate?certificateId=' + delId
-          console.log('执行图片删除操作url', url)
-          api.remove(url).then((res)=>{
-  
-          })
           this.setData({
             pictureList: this.data.pictureList,
             certificateIdList: this.data.certificateIdList
+          })
+          //在数据删除
+          let url = '/custom/resources/certificate?certificateId=' + delId
+          ////console.log('执行图片删除操作url', url)
+          api.remove(url).then((res)=>{
+            this.setData({
+              Loading: false
+            })
           })
         }
       }
@@ -314,13 +342,13 @@ this.setData({
    * 显示弹窗
    */
   showModal(e) {
-    console.log('modalName', e.currentTarget.dataset.target)
+    ////console.log('modalName', e.currentTarget.dataset.target)
     this.setData({
       modalName: e.currentTarget.dataset.target
     })
   },
   tianxie_showModal(name) {
-    // console.log('modalName', e.currentTarget.dataset.target)
+    // ////console.log('modalName', e.currentTarget.dataset.target)
     this.setData({
       modalName: name
     })
@@ -354,15 +382,16 @@ this.setData({
       return
     } else {
       let mrelationship=this.data.relationshipList
-      let mycount = this.data.pictureList
+      let mpictureList = this.data.pictureList
+      mpictureList[parentindex].push([])
     mrelationship[parentindex][count[parentindex]]=3
       let mCertificateIdList = this.data.certificateIdList
-      mycount[parentindex].push([])
+      // mycount[parentindex].push([])
       mCertificateIdList[parentindex].push([])
       count[parentindex] = count[parentindex] + 1
       this.setData({
         customerResourcesCertificateCount: count,
-        pictureList: mycount,
+        pictureList: mpictureList,
         certificateIdList: mCertificateIdList,
         relationshipList: mrelationship
       })
@@ -418,7 +447,7 @@ this.setData({
     let parentindex = e.currentTarget.dataset.parentindex;
     let value = this.data.customer
     if (e.detail.value == '' && this.data.open[parentindex]==true){
-      console.log('open', this.data.open[parentindex])
+      ////console.log('open', this.data.open[parentindex])
       this.data.open[parentindex] = false
       this.setData({
         open: this.data.open[parentindex]
@@ -542,10 +571,10 @@ this.setData({
     let index = e.currentTarget.dataset.index;
     let value = this.data.dutyList[parentindex];
     let parentValue = this.data.dutyList;
-    console.log('e.detail.value', e.detail.value)
+    ////console.log('e.detail.value', e.detail.value)
     value[index] = this.data.dutySource[e.detail.value];
     parentValue[parentindex] = value
-    console.log('parentValue', parentValue)
+    ////console.log('parentValue', parentValue)
     this.setData({
       dutyList: parentValue
     })
@@ -596,8 +625,8 @@ this.setData({
   handSignYearChange(e) {
     let parentindex = e.currentTarget.dataset.parentindex;
     let index = e.currentTarget.dataset.index;
-    console.log('parentindex', parentindex)
-    console.log('index', index)
+    ////console.log('parentindex', parentindex)
+    ////console.log('index', index)
     let value = this.data.signYearList[parentindex];
     let parentValue = this.data.signYearList;
     value[index] = e.detail.value;
@@ -612,14 +641,14 @@ this.setData({
   bindTargetParentChange(e) {
     let parentindex = e.currentTarget.dataset.parentindex;
     let index = e.currentTarget.dataset.index;
-    console.log('产品类别', this.data.targetParent)
-    console.log('index', index)
-    console.log('this.data.targetChildSource', this.data.targetChildSource)
+    ////console.log('产品类别', this.data.targetParent)
+    ////console.log('index', index)
+    ////console.log('this.data.targetChildSource', this.data.targetChildSource)
     let value=this.data.targetParent[parentindex];
     let parentValue = this.data.targetParent;
     value[index] = this.data.targetParentSource[e.detail.value];
     parentValue[parentindex] = value
-    console.log('parentValue', parentValue[parentindex][index])
+    ////console.log('parentValue', parentValue[parentindex][index])
     let _this = this
     this.setData({
       targetParent: parentValue
@@ -696,7 +725,6 @@ this.setData({
    * 数据汇总提交
    */
   formSubmit(e) {   
-    console.log('this.data.certificateIdList', this.data.certificateIdList)
     let list=[]
     for (let i = 0; i < 3; i++) {
       let value = {}
@@ -737,7 +765,7 @@ this.setData({
       value.target = this.data.target[i]
       value.cycle = this.data.cycle[i]
       value.amount = this.data.amount[i]
-      console.log('customerResourcesCertificateCount[i]', this.data.customerResourcesCertificateCount[i])
+      ////console.log('customerResourcesCertificateCount[i]', this.data.customerResourcesCertificateCount[i])
       for (let j = 0; j < this.data.customerResourcesCertificateCount[i]; j++) {
         let customerResourcesChildDTOS = {}
          if (this.data.nameList[i][j] == null || this.data.nameList[i][j] == '') {
@@ -787,40 +815,58 @@ this.setData({
       value.sort = i + 1
       list[i] = value
     }
-    console.log('value', list)
+    this.setData({
+      Loading: true,
+      content: '正在保存数据...'
+    })
+    ////console.log('formSubmit-value', list)
       if (this.data.status.customerResources) {
         let _this = this
         let delUrl = '/custom/resources/baseId?baseId=' + this.data.userIdEnc
         api.remove(delUrl).then((res) => {
           let addUrl = '/custom/resources/list'
           api.post(addUrl, list).then((res) => {
-            wx.showToast({
-              title: '更新成功',
-              icon: 'success',
-              duration: 2000
+            this.setData({
+              Loading: false
             })
+                  wx.showToast({
+            title: '保存成功',
+            icon: 'success',
+            duration: 2000
+          })
+            wx.navigateTo({
+        url: '../secondPart/secondpart',
+      })
           })
         })
       } else {
         let addUrl = '/custom/resources/list'
         api.post(addUrl, list).then((res) => {
-          let _this = this
-          let status = _this.data.status
-          status.customerResources = true
-          wx.setStorage({
-            key: "status",
-            data: status
+          this.setData({
+            Loading: false
           })
-          wx.showToast({
+                wx.showToast({
             title: '保存成功',
             icon: 'success',
             duration: 2000
           })
-        })
-      }
-      wx.navigateTo({
+          wx.navigateTo({
         url: '../secondPart/secondpart',
       })
+          // let _this = this
+          // let status = _this.data.status
+          // status.customerResources = true
+          // wx.setStorage({
+          //   key: "status",
+          //   data: status
+          // })
+          // wx.showToast({
+          //   title: '保存成功',
+          //   icon: 'success',
+          //   duration: 2000
+          // })
+        })
+      }
   },
   /**
    * 监听是开始判断是否填写
@@ -834,12 +880,15 @@ this.setData({
       let status = wx.getStorageSync('status')
       if (status.customerResources) {
         this.searchContent(userIdEnc)
-        console.log('status', status)
+      }else{
+        this.setData({
+          Loading:false,
+        })
       }
-      this.setData(({
+      this.setData({
         userIdEnc,
         status
-      }))
+      })
     }
     let that = this;
     let query1 = wx.createSelectorQuery()
@@ -847,7 +896,7 @@ this.setData({
     let mybutton = query2.select('#mybutton').boundingClientRect()
     let custom = query1.select('#cu-custom').boundingClientRect()
     mybutton.exec(function (res) {
-      console.log('mybutton', res[0].height)
+      //console.log('mybutton', res[0].height)
       that.setData({
         mybutton: res[0].height
       })
@@ -856,26 +905,7 @@ this.setData({
       that.setData({
         custom: res[0].height
       })
-      console.log('cu-custom', res[0].height)
     })
-    //  高度自适应
-    wx.getSystemInfo({
-      success: function (res) {
-        let windowWidth = res.windowWidth; 
-        let calc = res.screenHeight; //顶部脱离文档流了(- res.windowWidth / 750 * 100);
-        let windowHeight = res.windowHeight; 
-        let statusBarHeight = res.statusBarHeight;
-        console.log('高度自适应calc', calc)
-        console.log('高度自适应windowHeight', windowHeight )
-        console.log('高度自适应statusBarHeight', statusBarHeight)
-      
-        that.setData({
-          winHeight: calc,
-          statusBarHeight: statusBarHeight
-        });
-      }
-    })
- 
   },
   // 滚动切换标签样式
   switchTab: function (e) {
@@ -910,7 +940,7 @@ this.setData({
     }
   },
   onShow: function () {
-    console.log("页面显示")
+    ////console.log("页面显示")
     if(this.data.xianshi_switch){
       this.tianxie_showModal("DialogModal1")
       this.setData({
@@ -925,7 +955,7 @@ this.setData({
     let mPictureList = this.data.pictureList
     let mCertificateIdList = this.data.certificateIdList
     let mDutyList = this.data.dutyList
-    // console.log('mDutyList', mDutyList[])
+    // ////console.log('mDutyList', mDutyList[])
     let mdepartmentList = this.data.departmentList
     mdepartmentList.push([])
     let mnameList = this.data.nameList
@@ -971,13 +1001,14 @@ this.setData({
    * 通过baseId来搜索已填写的信息
    */
   searchContent(baseId) {
+    //console.log('加载已填写数据')
     let url = '/custom/resources/baseId/' + baseId
     let _this = this
     let customerResourcesCertificateCount = this.data.customerResourcesCertificateCount
     let signingRecordCount = this.data.signingRecordCount
     let targetChindsource = this.data.targetChildSource
     api.get(url).then((res) => {
-      console.log('searchContent', res.data)
+      ////console.log('searchContent', res.data)
       res.data.customerResources.forEach(function(item, parentIndex) {
         if(parentIndex!=0){
           _this.addLength()
@@ -1001,6 +1032,7 @@ this.setData({
           _this.data.telList[parentIndex][index] = item2.tel
           _this.data.departmentList[parentIndex][index] = item2.department
           _this.data.dutyList[parentIndex][index] = item2.duty
+          ////console.log('item2.certificates', item2.certificates)
           if (item2.certificates!=null){
             item2.certificates.forEach(function (item3, index2) {
               valueUrl[index2] = item3.url
@@ -1008,6 +1040,9 @@ this.setData({
               _this.data.pictureList[parentIndex][index] = valueUrl
               _this.data.certificateIdList[parentIndex][index] = valueId
             })
+          }else{
+            _this.data.pictureList[parentIndex][index]=[]
+            _this.data.certificateIdList[parentIndex][index] = []
           }
           _this.data.relationshipList[parentIndex][index] = item2.relationship
         })
@@ -1028,6 +1063,9 @@ this.setData({
 
         })
       })
+      ////console.log('this.data.certificateIdList', this.data.certificateIdList)
+      ////console.log('this.data.certificateIdList', this.data.pictureList)
+
       _this.setData({
         countParent: res.data.count,
         customerResourcesCertificateCount,
@@ -1053,10 +1091,10 @@ this.setData({
         certificateIdList:this.data.certificateIdList,
         targetChildSource: targetChindsource,
         targetOther: this.data.targetOther,
-        enterpriseQuality: this.data.enterpriseQuality
+        enterpriseQuality: this.data.enterpriseQuality,
+        Loading:false
       })
     })
-    console.log('this.data.certificateIdList', this.data.certificateIdList)
   },
   shoewErrorMessage(mes) {
     wx.showToast({
@@ -1069,17 +1107,24 @@ this.setData({
  * 搜索公司
  */
   handShowItem: function (e) {
+    this.setData({
+      Loading:true,
+      content: '正在加载数据...'
+    })
     let _this = this
     let parentindex = e.currentTarget.dataset.parentindex;
-    if (this.data.open[parentindex]){
-      wx.showToast({
-        title: '已完成',
-        icon: 'none',
-        duration: 2000
-      })
-    }else{
+    let flag = _this.data.open[parentindex]
+    let word=_this.data.customer[parentindex]
+    // if (flag){
+    //   wx.showToast({
+    //     title: '已完成',
+    //     icon: 'none',
+    //     duration: 2000
+    //   })
+    //   this.setData()
+    // }else{
       wx.request({
-        url: 'https://open.api.tianyancha.com/services/open/search/2.0?word=' + _this.data.customer[parentindex],
+        url: 'https://open.api.tianyancha.com/services/open/search/2.0?word=' + word,
         method: 'GET',
         header: {
           'Content-Type': 'application/json; charset=UTF-8',
@@ -1092,38 +1137,52 @@ this.setData({
               res.data.result.items.forEach(function (item, index) {
                 value[index] = replace.replaceSpecialChar(item.name)
               })
-              console.log('value', value)
               let open=_this.data.open
               open[parentindex]=true
               _this.setData({
                 customernameList: value,
                 open,
+                Loading:false
               })
             } else {
+              _this.setData({
+                Loading: false
+              })
               wx.showToast({
-                title: '请输入',
+                title: '请输入正确名称',
                 icon: 'none',
                 duration: 2000
               })
             }
           } else {
+            _this.setData({
+              Loading: false
+            })
             wx.showToast({
               title: '查询失败',
               icon: 'none',
               duration: 2000
             })
           }
+
         },
         fail(error) {
-          console.log('error', error)
+          _this.setData({
+            Loading: false
+          })
         }
       })
-    } 
+    // } 
   },
+  //北京国研新能低碳技术研究所
   /**
    * 模糊搜搜结果列表
    */
-  selectShowItem(e){ 
+  selectShowItem(e){
+    this.setData({
+      Loading:true,
+      content: '正在加载数据...'
+    }) 
     let parentindex = e.currentTarget.dataset.parentindex;
     let value = this.data.customer
     value[parentindex] = this.data.customernameList[e.currentTarget.dataset.mmindex]
@@ -1131,7 +1190,8 @@ this.setData({
     open[parentindex]=false
     this.setData({
       customer: value,
-      open
+      open,
+
     })
     this.handGetCode(this.data.customernameList[e.currentTarget.dataset.mmindex], parentindex)
   },
@@ -1141,7 +1201,7 @@ this.setData({
   getEnterpriseQualitySource(){
     let url = '/dictionary/first?question=' + '企业性质'
     api.get(url).then((res) => {
-      console.log('res111',res)
+      ////console.log('res111',res)
       this.setData({
         enterpriseQualitySource: res.data
       })
@@ -1181,11 +1241,11 @@ this.setData({
     query.selectViewport().scrollOffset()
     // let pos = null
     query.exec(function (res) {
-      console.log("元素位置", res)
+      ////console.log("元素位置", res)
       // res[0].top // #the-id节点的上边界坐标
       res[1].scrollTop // 显示区域的竖直滚动位置
       let miss = res[1].scrollTop-200;
-      console.log("滚动距离", miss)
+      ////console.log("滚动距离", miss)
       wx.pageScrollTo({
         // selector:'#expectPost',
         scrollTop: miss,
@@ -1196,7 +1256,7 @@ this.setData({
   },
   // 滚动到必选项
   scroll: function (name) {
-    console.log("滚动到", name)
+    ////console.log("滚动到", name)
     this.find_position(name)
   }
 })

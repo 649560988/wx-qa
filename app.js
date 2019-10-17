@@ -2,16 +2,19 @@
 App({
   onLaunch: function() {
     // 展示本地存储能力
+    wx.showLoading({
+      title: '正在加载页面',
+    })
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
     // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
+    // wx.login({
+    //   success: res => {
+    //     // 发送 res.code 到后台换取 openId, sessionKey, unionId
+    //   }
+    // })
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -32,13 +35,22 @@ App({
         }
       }
     })
+    // compareVersion('1.11.0', '1.9.9') // 1
     // 获取系统状态栏信息
     wx.getSystemInfo({
       success: e => {
-        this.globalData.StatusBar = e.statusBarHeight;
-        let custom = wx.getMenuButtonBoundingClientRect();
-        this.globalData.Custom = custom;
-        this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+        try{
+          this.globalData.StatusBar = e.statusBarHeight;
+          let custom = wx.getMenuButtonBoundingClientRect();
+          console.log('custom', custom)
+          this.globalData.my_width = e.windowWidth
+          this.globalData.my_height = e.windowHeight
+          this.globalData.Custom = custom;
+          this.globalData.CustomBar = custom.bottom + custom.top - e.statusBarHeight;
+          wx.hideLoading()
+        }catch(e){
+          console.log('出错',e)
+        }
       }
     })
   },

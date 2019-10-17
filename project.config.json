@@ -22,9 +22,9 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.7.4",
+	"libVersion": "2.7.0",
 	"appid": "wx25fd88f52c760f2d",
-	"projectname": "10.1%E9%97%AE%E5%8D%B7%E2%80%94%E2%80%94%E6%B5%8B%E8%AF%95%E7%89%88",
+	"projectname": "wx-qa",
 	"debugOptions": {
 		"hidedInDevtools": []
 	},

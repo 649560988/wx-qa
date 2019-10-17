@@ -316,8 +316,8 @@ Page({
         this.setData({
           modalName: e.currentTarget.dataset.target,
         })
-        console.log("隐藏提示", this.data.tishi_1)
-        console.log("隐藏提示",this.data.tishi_2)
+        //console.log("隐藏提示", this.data.tishi_1)
+        //console.log("隐藏提示",this.data.tishi_2)
 
       },
       hideModal(e) {
@@ -345,16 +345,16 @@ Page({
         this.setData({
           modalName: null,
         })
-        console.log("显示提示", this.data.tishi_1)
-        console.log("显示提示", this.data.tishi_2)
+        //console.log("显示提示", this.data.tishi_1)
+        //console.log("显示提示", this.data.tishi_2)
       },
       // 控制显示和隐藏
       onChangeShowState: function(e) {
         var that = this;
         var index = e.currentTarget.dataset.index;
         var type = e.currentTarget.dataset.type;
-        console.log("当前点击的是：", index)
-        console.log("当前点击的类型是：", type)
+        //console.log("当前点击的是：", index)
+        //console.log("当前点击的类型是：", type)
         // 根据类型判断是哪个列表
         if (type === 'konwledges') {
           // 隐藏和显示内容
@@ -378,25 +378,25 @@ Page({
       // 多选框 改变事件
       // checkboxChange: function(e) {
       //   // obj 是一个数组
-      //   console.log("====================================")
+      //   //console.log("====================================")
       //   var obj_list = e.detail.value
-      //   console.log(obj_list)
+      //   //console.log(obj_list)
       //   var show_radio = this.data.show_radio
-      //   console.log("初始值为：", show_radio)
+      //   //console.log("初始值为：", show_radio)
       //   var empty = []
       //   show_radio = empty
-      //   console.log("清空数组后的结果：", show_radio)
+      //   //console.log("清空数组后的结果：", show_radio)
       //   var len = obj_list.length
       //   if (len > 0) {
-      //     console.log("已选项存在：", obj_list)
+      //     //console.log("已选项存在：", obj_list)
       //     for (var i = 0; i < len; i++) {
 
       //       var name = obj_list[i]
       //       show_radio.push(name)
       //       this.data.show_radio = show_radio
-      //       // console.log('checkbox发生change事件，携带value值为：', value)
-      //       console.log('show_radio值为：', show_radio)
-      //       console.log('checkbox发生change事件，携带name值为：', name)
+      //       // //console.log('checkbox发生change事件，携带value值为：', value)
+      //       //console.log('show_radio值为：', show_radio)
+      //       //console.log('checkbox发生change事件，携带name值为：', name)
       //       // update.push(value)
       //     }
       //   } else {
@@ -404,7 +404,7 @@ Page({
       //     this.data.show_radio = show_radio
 
       //   }
-      //   console.log("最后的选中的结果：", this.data.show_radio)
+      //   //console.log("最后的选中的结果：", this.data.show_radio)
 
       // },
       // 单选框改变事件
@@ -414,32 +414,32 @@ Page({
         // 对传入的类型进行判断
         if (type === "konwledge") {
           var new_konwledges = this.data.konwledges;
-          console.log('radio发生change事件，携带value值为：', e.detail.value)
-          console.log("当前复选框的id是", checkid)
+          //console.log('radio发生change事件，携带value值为：', e.detail.value)
+          //console.log("当前复选框的id是", checkid)
           // 新添加字段level 对应单选框的等级
           new_konwledges[checkid].radio_value = e.detail.value
           this.setData({
             konwledges: new_konwledges
           })
-          console.log("改变的知识类型是，",new_konwledges)
+          //console.log("改变的知识类型是，",new_konwledges)
           // this.dataChange()
         } else {
           var new_skill = this.data.skill;
 
-          console.log('radio发生change事件，携带value值为：', e.detail.value)
-          console.log("当前复选框的id是", checkid)
+          //console.log('radio发生change事件，携带value值为：', e.detail.value)
+          //console.log("当前复选框的id是", checkid)
           // 新添加字段level 对应单选框的等级
           new_skill[checkid].radio_value = e.detail.value
           this.setData({
             skill: new_skill
           })
-          console.log("改变的技能类型是，", new_skill)
+          //console.log("改变的技能类型是，", new_skill)
         }
         this.data_change()
       },
       // 下拉框事件
       bindPickerChange(e) {
-        console.log('picker发送选择改变，携带值为', e.detail.value)
+        //console.log('picker发送选择改变，携带值为', e.detail.value)
         this.setData({
           index: e.detail.value
         })
@@ -456,16 +456,16 @@ Page({
             knowledge_textarea:value,
             net_upload_data: data
           })
-          console.log("konwledges", data)
+          //console.log("konwledges", data)
 
         } else {
-          // console.log("skill_Others", value)
+          // //console.log("skill_Others", value)
           data["skillOthers"] = value
           this.setData({
             skill_textarea:value,
             net_upload_data: data
           })
-          console.log("skill_Others", data)
+          //console.log("skill_Others", data)
 
         }
       },
@@ -483,10 +483,10 @@ Page({
         var new_post_data = this.data.post_data
         var result = new_post_data.hasOwnProperty(index)
         if (result) {
-          console.log("删除待提交数据中的", index)
+          //console.log("删除待提交数据中的", index)
           delete new_post_data.index
           new_post_data[index] = ''
-          console.log("删除后的结果：", new_post_data)
+          //console.log("删除后的结果：", new_post_data)
         }
         this.setData({
           post_data: new_post_data
@@ -495,11 +495,11 @@ Page({
       },
       // 数据整理
       uploadData: function(data) {
-        console.log("上传的数据", data)
+        //console.log("上传的数据", data)
         var updata = data
         // 真正包裹数据的
         var real_data = this.data.net_upload_data
-        console.log("real_data=",real_data)
+        //console.log("real_data=",real_data)
 
         // var knowledge_str = ""
         // var skill_str = ""
@@ -509,20 +509,20 @@ Page({
         // var konwledges = that.data.konwledges
         // var konwledges_list = []
         // konwledges.forEach(function(val, index) {
-        //   // console.log(val)
+        //   // //console.log(val)
         //   konwledges_list.push(val.name)
         // })
         // var skill = that.data.skill
         // var skill_list = []
         // skill.forEach(function(val, index) {
-        //   // console.log(val)
+        //   // //console.log(val)
         //   skill_list.push(val.name)
         // })
         // if (JSON.stringify(data) != "{}") {
         //   Object.keys(updata).forEach(function(key) {
         //     // 键为key
-        //     // console.log(key)
-        //     // console.log(updata[key])
+        //     // //console.log(key)
+        //     // //console.log(updata[key])
         //     var update_value = updata[key]
         //     if (updata[key]) {
         //       real_data[key] = update_value
@@ -534,7 +534,7 @@ Page({
         //         skill_str += key
         //       }
 
-        //       // console.log(update_value)
+        //       // //console.log(update_value)
 
         //     }
         //     real_data['knowledge'] = knowledge_str
@@ -547,7 +547,7 @@ Page({
         // that.setData({
         //   net_upload_data:real_data
         // })
-        // console.log("最后上传的数据为：",that.data.net_upload_data)
+        // //console.log("最后上传的数据为：",that.data.net_upload_data)
       },
 
       // 定时器 根据定时器 开关判断定时器是否应该清除
@@ -558,7 +558,7 @@ Page({
             times++
             // 如果定时器的状态开启 ，每隔30秒执行一次上传
           if (times >= 30 && that.data.timer_switch) {
-              console.log("定时器上传数据")
+              //console.log("定时器上传数据")
               // 将上传分离出来 。
               // that.net_upload("time")
               // clearInterval(i)
@@ -570,7 +570,7 @@ Page({
               clearInterval(i)
           }
             else {
-              console.log("定时器休眠")
+              //console.log("定时器休眠")
             }
         },      
       1000)
@@ -587,9 +587,9 @@ Page({
     var that = this
     let url = "/skills/baseId/"+baseId
     api.get(url).then((res) => {
-      // console.log("数据库数据为为", res.data != null)
+      // //console.log("数据库数据为为", res.data != null)
       if(res.data != null){
-        console.log("用户已填写过，使用更新接口")
+        //console.log("用户已填写过，使用更新接口")
         let user_id = res.data.id
         var base_data = {}
         base_data['baseId'] = baseId
@@ -598,10 +598,10 @@ Page({
           // user_id: user_id,
           base_data: base_data
         })
-        console.log("用户的基础数据为", that.data.base_data)
+        //console.log("用户的基础数据为", that.data.base_data)
 
       }else{
-        console.log("用户没有填写过")
+        //console.log("用户没有填写过")
       }
 
     })
@@ -610,16 +610,16 @@ Page({
   shangchuan_data:function(data,type){
     var that = this;
     let url = "/skills"
-    console.log("要传输的数据是",data)
+    //console.log("要传输的数据是",data)
     if(type == "put"){
       api.put(url, data).then((res) => {
-        console.log("请求的返回数据：", res)
+        //console.log("请求的返回数据：", res)
         // put方式请求成功
-        console.log("then的请求", res)
+        //console.log("then的请求", res)
 
         // 异步执行顺序有问题
         if (res.data == true) {
-          console.log("put 传送成功")
+          //console.log("put 传送成功")
           upload.success()
           return "true";
         } else {
@@ -627,10 +627,10 @@ Page({
           return "false";
         }
         
-      }).catch((res) => {console.log("catch的请求",res)})
+      }).catch((res) => {})
     }else{
       api.post(url, data).then((res) => {
-        console.log("请求的返回数据：", res)
+        //console.log("请求的返回数据：", res)
         //post 请求成功
         if (res.data == true) {
           // post 成功
@@ -649,7 +649,7 @@ Page({
   //   var that = this
   //   var value = that.data.net_upload_data
   //   if (JSON.stringify(value) == "{}"){
-  //     console.log("要传的数据为空")
+  //     //console.log("要传的数据为空")
   //     return 
   //   }
   //   var baseId = that.data.base_data.baseId
@@ -658,12 +658,12 @@ Page({
   //   value['id'] = id
 
   //   that.上传数据(value, "put")
-  //   // console.log("时间自动传输的结果",result)
+  //   // //console.log("时间自动传输的结果",result)
   //   // if (result == "true") {
-  //   //   console.log("定时上传的传输成功了")
-  //   //   console.log(that.data.timer_switch)
+  //   //   //console.log("定时上传的传输成功了")
+  //   //   //console.log(that.data.timer_switch)
   //   // } else {
-  //   //   console.log("定时上传的传输失败了，请检查接口")
+  //   //   //console.log("定时上传的传输失败了，请检查接口")
   //   // }
   // },
   show_error: function (msg) {
@@ -673,9 +673,9 @@ Page({
       showCancel: false,
       success(res) {
         if (res.confirm) {
-          console.log('用户点击确定')
+          //console.log('用户点击确定')
         } else if (res.cancel) {
-          console.log('用户点击取消')
+          //console.log('用户点击取消')
         }
       }
     })
@@ -688,12 +688,12 @@ Page({
     let knowOthers = net_upload_data.knowOthers
     let skill = net_upload_data.skill
     let skillOthers = net_upload_data.skillOthers
-    console.log("knowledge", knowledge)
-    console.log("knowOthers", knowOthers)
-    console.log("skill", skill)
-    console.log("skillOthers", skillOthers)
+    //console.log("knowledge", knowledge)
+    //console.log("knowOthers", knowOthers)
+    //console.log("skill", skill)
+    //console.log("skillOthers", skillOthers)
     if((knowledge != "" && knowledge != null) || (knowOthers != "" && knowOthers != null)){
-      console.log("知识类型验证通过")
+      //console.log("知识类型验证通过")
     }else{
       that.show_error("请检查知识类型")
       that.setData({
@@ -703,7 +703,7 @@ Page({
       return false
     }
     if((skill != "" && skill != null) || (skillOthers != "" && skillOthers != null)){
-      console.log("专业技能验证通过")
+      //console.log("专业技能验证通过")
     }else{
       that.show_error("请检查专业技能")
       that.setData({
@@ -722,7 +722,7 @@ Page({
     query.selectViewport().scrollOffset()
     let pos = null
     query.exec(function (res) {
-      console.log("元素位置", res)
+      //console.log("元素位置", res)
       res[0].top // #the-id节点的上边界坐标
       res[1].scrollTop // 显示区域的竖直滚动位置
       wx.pageScrollTo({
@@ -735,14 +735,14 @@ Page({
   },
   // 滚动到必选项
   scroll: function (name) {
-    console.log("滚动到", name)
+    //console.log("滚动到", name)
     this.find_position(name)
   },
   panduan_cunzai: function () {
 
     // 取 status 缓存，判断本页面是否填写 已填写，则查询填写数据并显示
     let status = wx.getStorageSync('status')
-    console.log("当前页面填写的状态", status.professionalSkills)
+    //console.log("当前页面填写的状态", status.professionalSkills)
     if (status.professionalSkills) {
       // this.get_user_data();
       this.get_old_data();
@@ -759,18 +759,18 @@ Page({
     var net_upload_data = that.data.net_upload_data
     net_upload_data.baseId = that.data.baseId
     let result = that.form_verify()
-    console.log("验证结果",result)
+    //console.log("验证结果",result)
     if(result){
       // 数据整理在这 
       let status = wx.getStorageSync('status')
       if (status.professionalSkills) {
-        console.log("用户put上传的数据", net_upload_data)
+        //console.log("用户put上传的数据", net_upload_data)
 
         that.shangchuan_data(net_upload_data, "put")
-        // console.log("用户点击的传输结果",result)
+        // //console.log("用户点击的传输结果",result)
         // if(result  == "true"){
-        console.log("用户手动点击的传输成功了")
-        console.log(that.data.timer_switch)
+        //console.log("用户手动点击的传输成功了")
+        //console.log(that.data.timer_switch)
         that.switch_false()
         upload.load()
         that.setData({
@@ -780,13 +780,13 @@ Page({
           url: '../fourthPart/fourthPart',
         })
       }else{
-        console.log("用户post上传的数据", net_upload_data)
+        //console.log("用户post上传的数据", net_upload_data)
 
         that.shangchuan_data(net_upload_data, "post")
-        // console.log("用户点击的传输结果",result)
+        // //console.log("用户点击的传输结果",result)
         // if(result  == "true"){
-        console.log("用户手动点击的传输成功了")
-        console.log(that.data.timer_switch)
+        //console.log("用户手动点击的传输成功了")
+        //console.log(that.data.timer_switch)
         that.switch_false()
         upload.load()
         that.setData({
@@ -803,25 +803,25 @@ Page({
   dataChange: function(e) {
     var that = this
     var new_post = this.data.post_data
-    console.log("已经存储的数据",new_post)
+    //console.log("已经存储的数据",new_post)
     // 遍历 知识类型
     var konwledges = this.data.konwledges
     var knowledge_textarea = this.data.knowledge_textarea
     konwledges.forEach(function(val, index) {
-      // console.log("索引",index)
+      // //console.log("索引",index)
       // 判断是否被选中 另外还要判断 是否是含有文本框的那个
       if (val.checked === true && val.level) {
         new_post[val.name] = val.level
       }
       // } else if(val.hidden === false ){
-      //   console.log("选中状态，但是未选等级")
+      //   //console.log("选中状态，但是未选等级")
       //   that.showModal(e)
       // }
       else if (index === 7 && val.checked == true) {
-        console.log("第一个文本框选中", knowledge_textarea)
+        //console.log("第一个文本框选中", knowledge_textarea)
         new_post[val.name] = knowledge_textarea
       } else {
-        // console.log("不做处理")
+        // //console.log("不做处理")
         that.compare(val.name)
 
       }
@@ -830,25 +830,25 @@ Page({
     // 遍历技能类型
     var skills = this.data.skill;
     var skill_textarea = this.data.skill_textarea
-    // console.log("====================")
-    // console.log(skills)
-    // console.log("====================")
+    // //console.log("====================")
+    // //console.log(skills)
+    // //console.log("====================")
 
     skills.forEach(function(val, index) {
       // 判断选中状态，而且单选框有值
       if (val.checked === true && val.level) {
-        console.log("添加字段", val.value)
+        //console.log("添加字段", val.value)
         new_post[val.name] = val.level
       } else if (index === 18 && val.checked === true) {
         // 判断是不是多行文本框的
-        console.log("第二个文本框选中", skill_textarea)
+        //console.log("第二个文本框选中", skill_textarea)
         new_post[val.name] = skill_textarea
       } else {
-        // console.log("删除已存在带提交数据中的值",val.value)
+        // //console.log("删除已存在带提交数据中的值",val.value)
         that.compare(val.name)
       }
     })
-    console.log("提交的数据", new_post)
+    //console.log("提交的数据", new_post)
     // that.uploadData(new_post)
   },
 
@@ -867,7 +867,7 @@ Page({
     let net_upload_data = that.data.net_upload_data
     let know_str = ""
     konwledges.forEach(function (val, index) {
-      // console.log("索引",index)
+      // //console.log("索引",index)
       // 判断是否被选中 另外还要判断 是否是含有文本框的那个
       if (val.checked === true && val.radio_value) {
         net_upload_data[val.name] = val.radio_value
@@ -875,10 +875,10 @@ Page({
         know_str += text
       }
       else if (index === 7 && val.checked == true) {
-        console.log("第一个文本框选中", knowledge_textarea)
+        //console.log("第一个文本框选中", knowledge_textarea)
         net_upload_data['knowOthers'] = knowledge_textarea
       } else if (index === 7 && val.checked == false) {
-        console.log("删除其他知识类型")
+        //console.log("删除其他知识类型")
         net_upload_data['knowOthers'] = ""
         // that.compare(val.name)
       } else if (val.checked == false){
@@ -890,8 +890,8 @@ Page({
       net_upload_data: net_upload_data,
       know_str:know_str
     })
-    console.log("知识技能遍历后的结果", net_upload_data)
-    // console.log("知识技能遍历后的组合文本", know_str)
+    //console.log("知识技能遍历后的结果", net_upload_data)
+    // //console.log("知识技能遍历后的组合文本", know_str)
   },
   // 遍历技能
   skill_each:function(){
@@ -904,18 +904,18 @@ Page({
     skill.forEach(function (val, index) {
       // 判断选中状态，而且单选框有值
       if (val.checked === true && val.radio_value) {
-        console.log("添加字段", val.value)
+        //console.log("添加字段", val.value)
         net_upload_data[val.name] = val.radio_value
         let text = val.name +"|"
         know_str+=text
       } else if (index === 18 && val.checked === true) {
         // 判断是不是多行文本框的
-        console.log("第二个文本框选中", skill_textarea)
+        //console.log("第二个文本框选中", skill_textarea)
         net_upload_data["skillOthers"] = skill_textarea
       } else if (index === 18 && val.checked === false) {
-        console.log("删除第二个文本框", skill_textarea)
+        //console.log("删除第二个文本框", skill_textarea)
         net_upload_data["skillOthers"] = ""
-        // console.log("删除已存在带提交数据中的值",val.value)
+        // //console.log("删除已存在带提交数据中的值",val.value)
         // that.compare(val.name)
       } else if (val.checked == false){
         net_upload_data[val.name] = ""
@@ -926,14 +926,14 @@ Page({
       net_upload_data: net_upload_data,
       skill_str: know_str
     })
-    console.log("知识类型遍历后的结果", net_upload_data)
+    //console.log("知识类型遍历后的结果", net_upload_data)
   },
   formSubmit: function(e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    //console.log('form发生了submit事件，携带数据为：', e.detail.value)
   },
   formReset: function() {
     // 不能动态改变
-    console.log('form发生了reset事件')
+    //console.log('form发生了reset事件')
     var skills = this.data.skill;
     var konwledges = this.data.konwledges
     // var new_post = this.data.post_data
@@ -942,7 +942,7 @@ Page({
     })
     konwledges.forEach(function(val, index) {
       val.hidden = true;
-      console.log(val)
+      //console.log(val)
     })
     this.setData({
       skills: skills,
@@ -974,14 +974,14 @@ Page({
   onReady: function() {
     this.panduan_cunzai()
     // var timer_switch=this.data.timer_switch
-    // console.log(timer_switch)
+    // //console.log(timer_switch)
     // if(timer_switch){
     // this.timer_sender();
     // }
     // // 数据渲染完成后，先获取本地baseid ，然后请求网络，获取 userid
     // var baseId = this.data.baseId
     // this.get_id(baseId)
-    // // console.log("用户id为",user_id)
+    // // //console.log("用户id为",user_id)
   },
   initValidate() {
     let rules = {
@@ -1064,7 +1064,7 @@ Page({
   handclick: function() {
     let url = '/v1/message/1'
     api.get(url).then((res) => {
-      console.log('222', res.data)
+      //console.log('222', res.data)
     })
   },
   /**
@@ -1072,17 +1072,17 @@ Page({
    */
   formSubmit: function(e) {
     let params = e.detail.value;
-    console.log('111', e.detail.value)
+    //console.log('111', e.detail.value)
     if (!this.wxValidate.checkForm(params)) {
       //表单元素验证不通过，此处给出相应提示
       let error = this.wxValidate.errorList[0];
       switch (error.param) {
         case "name":
-          console.log('name为空', error)
+          //console.log('name为空', error)
           //TODO
           break;
         case "gender":
-          console.log('sex为空', error.param)
+          //console.log('sex为空', error.param)
           //TODO
           break;
       }
@@ -1119,12 +1119,12 @@ Page({
     let that = this
     let url = "/skills/baseId/" + baseId
     api.get(url).then(function(res){
-      console.log("数据库保存的数据",res.data)
+      //console.log("数据库保存的数据",res.data)
       that.setData({ net_upload_data:res.data})
       Object.keys(res.data).forEach(function(key){
-        // console.log("储存的键为",key)
+        // //console.log("储存的键为",key)
         if(res.data[key]){
-          // console.log("储存的值为",key, res.data[key])
+          // //console.log("储存的值为",key, res.data[key])
           that.split(key, res.data[key],res.data)
         }
         // {
@@ -1142,10 +1142,10 @@ Page({
   knowledge_checked:function(key,my_value){
     let konwledges = this.data.konwledges
     let that = this
-    // console.log("value", key)
-    // console.log("value对应的值", my_value)
+    // //console.log("value", key)
+    // //console.log("value对应的值", my_value)
     konwledges.forEach(function(value,index){
-      // console.log("知识类型的复原",value.name)
+      // //console.log("知识类型的复原",value.name)
       if (value.name == key){
         value.radio_value = my_value
         value.checked = true
@@ -1154,17 +1154,17 @@ Page({
     that.setData({
       konwledges: konwledges
     })
-    console.log("复原后的konwledges", konwledges)
+    //console.log("复原后的konwledges", konwledges)
   },
   skill_checked: function (key, my_value) {
     let konwledges = this.data.skill
     let that = this
-    // console.log("value", key)
+    // //console.log("value", key)
     konwledges.forEach(function (value, index) {
 
       if (value.name == key) {
-        // console.log("技能类型的复原", value.name)
-        // console.log("value对应的值", my_value)
+        // //console.log("技能类型的复原", value.name)
+        // //console.log("value对应的值", my_value)
         value.radio_value = my_value
         value.checked = true
       }
@@ -1172,7 +1172,7 @@ Page({
     that.setData({
       skill: konwledges
     })
-    console.log("复原后的skill", konwledges)
+    //console.log("复原后的skill", konwledges)
 
   },
   split:function(key,myvalue,dict){
@@ -1182,7 +1182,7 @@ Page({
       let values_list = myvalue.split("|")
       values_list.forEach(function(value,index){
         if(value){
-          // console.log("分割后的/value",value,dict[value])
+          // //console.log("分割后的/value",value,dict[value])
           that.knowledge_checked(value, dict[value])
         }
       })
@@ -1192,14 +1192,14 @@ Page({
       let values_list = myvalue.split("|")
       values_list.forEach(function (value, index) {
         if (value) {
-          // console.log("分割后的value", value, dict[value])
+          // //console.log("分割后的value", value, dict[value])
           that.skill_checked(value, dict[value])
         }
       })
     }
     else if (key == "knowOthers"){
       let text = dict[key]
-      // console.log("++++++++++++++",text)
+      // //console.log("++++++++++++++",text)
       let konwledges = that.data.konwledges
       konwledges[7].checked = true
       // knowledge_textarea = text
@@ -1222,33 +1222,33 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function() {
-    console.log("页面显示")
+    //console.log("页面显示")
 
     // this.setData({
     //   timer_switch:false
     // })
     // var timer_switch = this.data.timer_switch
-    // console.log(timer_switch)
+    // //console.log(timer_switch)
     // if (timer_switch) {
     //   this.timer_sender();
     // }
     // 数据渲染完成后，先获取本地baseid ，然后请求网络，获取 userid
     // var baseId = this.data.baseId
     // if (baseId) {
-    //   console.log("baseId存在，页面显示不需要重新获取")
+    //   //console.log("baseId存在，页面显示不需要重新获取")
     // } else {
 
     // }
     // var baseId = this.data.baseId
     // this.get_id(baseId)
-    // console.log("用户id为",user_id)
+    // //console.log("用户id为",user_id)
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
-    console.log("页面隐藏")
+    //console.log("页面隐藏")
     this.switch_false()
   },
 

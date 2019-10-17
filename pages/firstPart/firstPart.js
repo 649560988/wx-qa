@@ -186,7 +186,7 @@ Page({
   
   // 按钮变为可选状态
   kexuan:function(e){
-    console.log("滚动到底部了")
+    //console.log("滚动到底部了")
   },
   getProvinces: function() {
     let url = '/v1/school/provinces'
@@ -201,7 +201,7 @@ Page({
   getSubject:function(){
     let url = '/dictionary/first?question=' + '学科'
     api.get(url).then((res) => {
-      console.log('res',res.data)
+      //console.log('res',res.data)
       this.setData({
         subiectSource: res.data
       })
@@ -269,7 +269,7 @@ Page({
    * 居住城市 -省
    */
   habitationProvincesChange: function(e) {
-    console.log("habitationProvincesChange",e)
+    //console.log("habitationProvincesChange",e)
     let uid = this.data.habitationProvinces[e.detail.value].uid
     let list = this.data.habitation
     list[0] = this.data.habitationProvinces[e.detail.value].name
@@ -394,7 +394,7 @@ Page({
     let subject = this.data.subiectSource[e.detail.value]
     let url = '/dictionary/second?sectionLevel=' + subject
     api.get(url).then((res) => {
-      console.log('res', res.data)
+      //console.log('res', res.data)
       this.setData({
         processnameSource: res.data,
         professionalName:''
@@ -490,7 +490,7 @@ Page({
   },
   // 获取待选学校列表
   getReadySchool:function(name){
-    console.log("学校名称",name)
+    //console.log("学校名称",name)
     let that = this
     if(name){
       let url = "/v1/school/schools/keyword?keyword=" + name
@@ -500,7 +500,7 @@ Page({
             academyNameList: res.data,
           })
         }else{
-         console.log("学校不存在") 
+         //console.log("学校不存在") 
           that.setData({
             academyNameList: [],
           })
@@ -520,7 +520,7 @@ Page({
     let index = e.currentTarget.dataset.mmindex
     searchContent.academy = academyNameList[index]
     schoolName = academyNameList[index]
-    console.log("下拉框选择的学校名称",schoolName)
+    //console.log("下拉框选择的学校名称",schoolName)
     this.setData({
       // academy: list,
       searchContent,
@@ -531,7 +531,7 @@ Page({
 
 autoCommit(){
   let value={}
-  console.log("同意并上传")
+  //console.log("同意并上传")
   value.birthday=this.data.birth
   value.name = this.data.name;
   value.nickname = this.data.nickname
@@ -546,7 +546,7 @@ autoCommit(){
   value.education = this.data.education;
   value.subject = this.data.subject;
   value.professionalName = this.data.professionalName;
-  console.log("上传的数据",value)
+  //console.log("上传的数据",value)
     let url = '/v1/answerBankBase'
     try {
       if (this.data.status.base) {
@@ -558,13 +558,12 @@ autoCommit(){
           //   icon: 'success',
           //   duration: 2000
           // })
-
         })
       } else {
         value.wechatId = this.data.wechatid
-        console.log('wechatId', this.data.wechatid)
+        //console.log('wechatId', this.data.wechatid)
         api.post(url, value).then((res) => {
-          console.log('res',res.data)
+          //console.log('res',res.data)
           // wx.showToast({
           //   title: '保存成功',
           //   icon: 'success',
@@ -577,7 +576,7 @@ autoCommit(){
         })
       }
     } catch (e) {
-      console.log(e)
+      //console.log(e)
     }
 },
   // 滚动位置：
@@ -588,11 +587,11 @@ autoCommit(){
     query.selectViewport().scrollOffset()
     let pos = null
     query.exec(function (res) {
-      console.log("元素位置", res)
+      //console.log("元素位置", res)
       res[0].top // #the-id节点的上边界坐标
       res[1].scrollTop // 显示区域的竖直滚动位置
       let miss = res[1].scrollTop + res[0].top - 100;
-      console.log("Math.abs(res[0].bottom)", miss)
+      //console.log("Math.abs(res[0].bottom)", miss)
       wx.pageScrollTo({
         // selector:'#expectPost',
         scrollTop: miss,
@@ -602,7 +601,7 @@ autoCommit(){
   },
   // 滚动到必选项
   scroll: function (name) {
-    console.log("滚动到", '#' + name)
+    //console.log("滚动到", '#' + name)
     this.find_position('#'+name)
     this.setData({
       redname: '#' + name
@@ -610,7 +609,7 @@ autoCommit(){
   },
   handSubmit(e){
     let params = e.detail.value;
-    console.log('params', params)
+    //console.log('params', params)
     if (!this.wxValidate.checkForm(params)) {
       //表单元素验证不通过，此处给出相应提示
       let error = this.wxValidate.errorList[0];
@@ -674,7 +673,7 @@ autoCommit(){
       }
       return
     }else{
-      console.log("全部通过显示弹窗")
+      //console.log("全部通过显示弹窗")
       this.showModal2('DialogModal1')
       this.setData({
         redname:''
@@ -720,7 +719,7 @@ autoCommit(){
    * educationChange 最高学历单选框
    */
   educationChange:function(e){
-    console.log("educationChange",e)
+    //console.log("educationChange",e)
     let that = this
     let index = e.currentTarget.dataset.index
     let searchContent = that.data.searchContent
@@ -758,7 +757,7 @@ autoCommit(){
   // 改变change_agree
   change_agree:function(e){
     let agree_sign = true
-    console.log("agree_sign的状态",agree_sign)
+    //console.log("agree_sign的状态",agree_sign)
 
     this.setData({
       agree_sign
@@ -774,7 +773,7 @@ autoCommit(){
           data: res.data.id
         })
         let searchContent = {}
-        console.log("res.data",res.data)
+        //console.log("res.data",res.data)
         searchContent = res.data
         searchContent.nickname = res.data.nickname
         searchContent.englishName = res.data.englishName
@@ -815,7 +814,7 @@ autoCommit(){
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    console.log("页面隐藏")
+    //console.log("页面隐藏")
     this.hideModal()
   },
 })

@@ -14,20 +14,23 @@ const request = (apiurl, options) => {
         if (request.statusCode  === 200) {
           resolve(request.data)
         } else {
+          console.log('request', request)
           reject(request.data)
         }
       },
       fail(error) {
+        console.log('fail', error)
         reject(error.data)
       }
     })
-  }).catch((e) => {
+  })
+  .catch((e) => {
     wx.showToast({
       title: e.message,
       icon: 'none',
       duration: 3000
     })
-    console.log(e)
+    console.log('catch', e)
     });
 }
 

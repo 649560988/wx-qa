@@ -29,7 +29,7 @@ Page({
       { name: 'character16', leftQuestion: '在工作中，随具体情况变化，而不会刻板地遵守时间期限', rightQuestion: '在工作中，遵守许下的所有诺言，保证满足所有的承诺' },
       { name: 'character17', leftQuestion: '在工作中，对局限自己施展拳脚的规章制度能够做出变通', rightQuestion: '在工作中，认真执行所有的规章制度' },
       { name: 'character18', leftQuestion: '在工作中，理解压力对自己的意义，认为恐惧和焦虑在何时是适当的，会受他人观点的影响', rightQuestion: '在工作中，总能看到问题的积极面，避免过度责备和批评自己，对于失败的结果和挫折有很强的复原力' },
-      { name: 'character19', leftQuestion: '在工作中，避免对未来抱有过于乐观的看法，接受合理批评，会花时间来接受失败的后果', rightQuestion: '在工作中，总能看到问题的积极面，避免过度责备和批评自己，对于失败的结果和挫折有很强的复原力' },
+      { name: 'character19', leftQuestion: '在工作中，避免对未来抱有过于乐观的看法，接受合理批评，会花时间来接受失败的后果', rightQuestion: '在工作中，面对高度的压力，表现的相当冷静和放松，在引发强烈情绪的情景中依然保持镇定' },
       { name: 'character20', leftQuestion: '更喜欢在轻松的节奏下工作，避免忙碌和狂乱的工作方式', rightQuestion: '具备高度的能量和活力，关注任务的高效完成' },
       { name: 'character21', leftQuestion: '做决策之前，倾向于预演并考量所有可能的后果', rightQuestion: '即使信息不足，也能快速做出决策' },
       { name: 'character22', leftQuestion: '更加关注质量而非结果、数量或目标', rightQuestion: '在面对挑战较大的目标时，也有达成结果的雄心壮志' },
@@ -152,6 +152,7 @@ Page({
   onLoad: function (options) {
     let userIdEnc = wx.getStorageSync('userIdEnc')
     if (userIdEnc) {
+      console.log('userIdEnc', userIdEnc)
       let status = wx.getStorageSync('status')
       if (status.characterPower) {
         this.searchContent(userIdEnc)

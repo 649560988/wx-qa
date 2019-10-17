@@ -6,6 +6,8 @@ const app = getApp()
 import api from '../../utils/http.js'
 Page({
   data: {
+    my_width: app.globalData.my_width,
+    my_height: app.globalData.my_height,
     StatusBar: app.globalData.StatusBar,
     CustomBar: app.globalData.CustomBar,
     userInfo: {},
@@ -21,6 +23,7 @@ Page({
   },
   /**
    * 校验函数
+   * app.globalData.StatusBar
    */
   initValidate() {
     let rules = {
@@ -53,18 +56,6 @@ Page({
     })
   },
   onLoad: function () {
-    let that = this
-    wx.getSystemInfo({
-      success: function (res) {
-        console.log(res.windowWidth);
-        console.log(res.windowHeight);
-        that.setData({
-          my_width: res.windowWidth,
-          my_height: res.windowHeight,
-
-        })
-      },
-    })
     this.initValidate();
     if (app.globalData.userInfo) {
       this.setData({
@@ -92,25 +83,27 @@ Page({
         }
       })
     }
+    console.log('onLoad')
   },
-  onShow: function () {
+  wxLogin:function(){
     let _this = this
     wx.login({
       success(res) {
-        wx.showLoading({
-          title: '正在获取绑定信息',
-        })
+        console.log('正在获取绑定信息')
         if (res.code) {
           let url = '/login?code=' + res.code
           api.get(url).then((res1) => {
-            _this.checkoutOpenid(res1.openid)
+            console.log('login',res1)
             _this.setData({
               openid: res1.openid
             })
+            _this.checkoutOpenid(res1.openid)
             wx.setStorage({
               key: "wechatid",
               data: res1.openid
             })
+          }).catch(e => {
+            console.log('wx.login', e)
           })
           //发起网络请求
         } else {
@@ -119,8 +112,24 @@ Page({
       }
     })
   },
+  onShow: function () {
+    wx.showLoading({
+      title: '正在获取绑定信息',
+    })
+    let wechatid = wx.getStorageSync('wechatid')
+    let userIdEnc = wx.getStorageSync('userIdEnc')
+    if (wechatid && userIdEnc){
+      this.checkoutOpenid(wechatid)
+      this.setData({
+        openid: wechatid
+      })
+    }else{
+      console.log('为重新加载数据')
+      this.wxLogin()
+    }
+  },
   getUserInfo: function (e) {
-    console.log(e)
+    console.log('getUserInfo')
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
@@ -130,6 +139,7 @@ Page({
   checkoutOpenid(openid) {
     let _this = this
     let url = '/bind/wechatId?wechatId=' + openid
+    console.log('openid', openid)
     api.get(url).then((res) => {
       let arr = Object.keys(res.data);
       console.log('res.data', res.data)
@@ -138,15 +148,18 @@ Page({
           isbind: true
         })
       } else {
-        if (res.data.status.base) {
+        // if (res.data.status.base) {
           let url = '/v1/answerBankBase?wechatId=' + openid
           api.get(url).then((res) => {
+            console.log('userIdEnc', res.data.id)
             wx.setStorage({
               key: "userIdEnc",
               data: res.data.id
             })
           })
-        }
+        // }
+        console.log('status', res.data.status)
+
         wx.setStorage({
           key: "status",
           data: res.data.status
@@ -155,6 +168,8 @@ Page({
           status: res.data.status
         })
       }
+    }).catch(e => {
+      console.log('checkoutOpenid', e)
     })
     wx.hideLoading()
   },
@@ -185,6 +200,8 @@ Page({
         _this.setData({
           isbind: false
         })
+      }).catch(e => {
+        console.log('formSubmit', e)
       })
     }
   },
@@ -195,20 +212,24 @@ Page({
   },
   handGetCode() {
     let _this = this
-    let value = {}
-    value.phone = this.data.phone
-    value.code = '1'
-    if (!this.wxValidate.checkForm(value)) {
-      //表单元素验证不通过，此处给出相应提示
-      let error = this.wxValidate.errorList[0];
-      switch (error.param) {
-        case "phone":
-          this.shoewErrorMessage(error.msg)
-          //TODO
-          break;
-      }
-      return false;
+    // let value = {}
+    // value.phone = this.data.phone
+    if (this.data.phone == '' || this.data.phone == null){
+      this.shoewErrorMessage('请输入手机号码');
+      return false
     }
+    // value.code = '1'
+    // if (!this.wxValidate.checkForm(value)) {
+    //   //表单元素验证不通过，此处给出相应提示
+    //   let error = this.wxValidate.errorList[0];
+    //   switch (error.param) {
+    //     case "phone":
+    //       this.shoewErrorMessage(error.msg)
+    //       //TODO
+    //       break;
+    //   }
+    //   return false;
+    // }
     let url = '/bind/sendCode?phone=' + this.data.phone + '&wechatId=' + this.data.openid
     api.put(url).then((res) => {
       if (res.data == true) {
@@ -233,6 +254,8 @@ Page({
       } else {
         console.log('111155555')
       }
+    }).catch(e=>{
+      console.log('handGetCode',e)
     })
   },
   shoewErrorMessage(mes) {

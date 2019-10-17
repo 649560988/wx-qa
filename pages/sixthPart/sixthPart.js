@@ -160,7 +160,7 @@ Page({
   },
   // 第二题列表改变
   picker_change:function(e){
-    console.log("第二题列表改变",e)
+    //console.log("第二题列表改变",e)
     let that = this
     let index = e.detail.value
     let category = e.currentTarget.dataset.name
@@ -215,7 +215,7 @@ Page({
   },
   // 删除按钮
   del_picker_change:function(e){
-    console.log("删除按钮",e)
+    //console.log("删除按钮",e)
     let that = this
     let category = e.currentTarget.dataset.name
     let value = e.currentTarget.dataset.value
@@ -267,7 +267,7 @@ Page({
     let organizationScale_list = that.data.organizationScale_list
     let organizationScale_index_list = []
     organizationScale_list.forEach(function(value,index){
-      // console.log("期望入职value",value)
+      // //console.log("期望入职value",value)
       let myindex = organizationScale_option.indexOf(value)
       if(myindex >-1){
         organizationScale_index_list.push(myindex)
@@ -303,7 +303,7 @@ Page({
   },
   // 职能领域单选框
   zhineng_picker:function(e){
-    console.log("职能领域",e)
+    //console.log("职能领域",e)
     let index = e.detail.value
     let functionField_option = this.data.functionField_option
     let upload_data = this.data.upload_data
@@ -336,7 +336,7 @@ Page({
   },
   // 
   firstcheckboxChange: function(e) {
-    console.log("单选框切换", e)
+    //console.log("单选框切换", e)
     let items = this.data.items
     let index = e.currentTarget.dataset.index
 
@@ -368,10 +368,10 @@ Page({
   // 控制薪资改变
   salary_change: function(e) {
     let hope_salary = this.data.hope_salary
-    console.log("期望薪资",e)
+    //console.log("期望薪资",e)
     let value = e.detail.value
     let myname = hope_salary[value]
-    console.log("薪资", myname)
+    //console.log("薪资", myname)
     let upload_data = this.data.upload_data
     upload_data.expectSalary = myname
     this.setData({
@@ -381,12 +381,12 @@ Page({
 
   },
   bindChange_select: function(ev) {
-    console.log("职业规划", ev)
+    //console.log("职业规划", ev)
 
     const curindex = ev.currentTarget.dataset.current
     const type = ev.currentTarget.dataset.type
     let value = ev.detail.value
-    console.log("索引分类", curindex)
+    //console.log("索引分类", curindex)
 
     this.data.plan[curindex].index = value
     this.setData({
@@ -394,16 +394,16 @@ Page({
     })
     if (curindex == 0) {
       let myname = this.data.fuzhe_list[value]
-      console.log("myname", myname)
+      //console.log("myname", myname)
       this.write_to_upload_data("industry", myname)
     } else if (curindex == 1) {
       let myname = value
-      console.log("myname", myname)
+      //console.log("myname", myname)
       this.write_to_upload_data("organizationScale", myname)
 
     } else if (curindex == 2) {
       let myname = this.data.zhineng_list[value]
-      console.log("myname", myname)
+      //console.log("myname", myname)
       this.write_to_upload_data("functionField", myname)
     }
 
@@ -413,19 +413,19 @@ Page({
   // 读取原值
   read_from_upload_data: function(key) {
     let value = this.data.upload_data[key]
-    console.log("读取的键为：", key, "值为：", value)
+    //console.log("读取的键为：", key, "值为：", value)
     return value
   },
   // 写入
   write_to_upload_data: function(key, value) {
     let that = this
     let new_upload_data = that.data.upload_data
-    console.log("写入上传数据", key, value)
+    //console.log("写入上传数据", key, value)
     new_upload_data[key] = value
     that.setData({
       upload_data: new_upload_data
     })
-    console.log("写入结果", new_upload_data)
+    //console.log("写入结果", new_upload_data)
   },
   // 获取value的值
   radioChange1: function(e) {
@@ -433,7 +433,7 @@ Page({
     this.setData({
       seleted: "选中的value：" + pages1
     })
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    //console.log('radio发生change事件，携带value值为：', e.detail.value)
   },
   bindtap1: function(e) {
     var newpage = this.data.pageone; /*获取brand数组*/
@@ -463,7 +463,7 @@ Page({
       pagetwo: newpage2,
       sales_work: new_sales_work
     });
-    console.log('newpage', newpage)
+    //console.log('newpage', newpage)
   },
 
   radioChange2: function(e) {
@@ -471,7 +471,7 @@ Page({
     this.setData({
       seleted: "选中的value：" + pages2
     })
-    console.log('radio发生change事件，携带value值为：', e.detail.value)
+    //console.log('radio发生change事件，携带value值为：', e.detail.value)
   },
   bindtap2: function(e) {
     var newpage = this.data.pageone; /*获取brand数组*/
@@ -487,7 +487,7 @@ Page({
       this.setData({
         gangwei_checked_value_list: gangwei_checked_value_list
       })
-      console.log("清除销售岗位已选中的", gangwei_checked_value_list)
+      //console.log("清除销售岗位已选中的", gangwei_checked_value_list)
       this.write_to_upload_data("expectPost", "")
     } else {
       last_checked = 1
@@ -502,7 +502,7 @@ Page({
       pageone: newpage,
       pagetwo: newpage2
     });
-    console.log('newpage', newpage)
+    //console.log('newpage', newpage)
   },
   // 多行文本事件改变
   textareainput: function(e) {
@@ -520,7 +520,7 @@ Page({
         other_sales_work_str: value
       })
       that.gangwei_parse_data();
-      console.log("销售的其他", that.data.other_sales_work_str)
+      //console.log("销售的其他", that.data.other_sales_work_str)
       that.setData({
         other_sales_work_str: value
       })
@@ -538,11 +538,11 @@ Page({
     let gangwei_checked_str_list = []
     let gangwei_checked_value_list = that.data.gangwei_checked_value_list
     let sales_work = that.data.sales_work
-    console.log("选择的长度为", gangwei_checked_value_list.length)
+    //console.log("选择的长度为", gangwei_checked_value_list.length)
     if (gangwei_checked_value_list.length > 0) {
       let str = "0-"
       gangwei_checked_value_list.forEach(function(value, index) {
-        // console.log("得到的值",sales_work[value].name)
+        // //console.log("得到的值",sales_work[value].name)
         let str_value = sales_work[value].name
         if (str_value != "其他") {
           str_value = str_value + "|"
@@ -555,14 +555,14 @@ Page({
         gangwei_checked_str_list: gangwei_checked_str_list
       })
       that.write_to_upload_data("expectPost", str)
-      console.log("组合后的值为", str)
+      //console.log("组合后的值为", str)
     } else {
       that.write_to_upload_data("expectPost", "")
     }
   },
   // 企业性质多选框事件
   qiye_check_func: function(e) {
-    console.log(e)
+    //console.log(e)
     let index = e.currentTarget.dataset.index
     let qiye_check_list = this.data.qiye_check_list
     qiye_check_list[index] = !qiye_check_list[index]
@@ -581,7 +581,7 @@ Page({
         qiye_str += str
       }
     })
-    console.log("组合好的企业字符串为", qiye_str)
+    //console.log("组合好的企业字符串为", qiye_str)
     let upload_data = this.data.upload_data
     upload_data.enterpriseQuality = qiye_str
     this.setData({
@@ -590,7 +590,7 @@ Page({
   },
   // 复选框事件处理
   onChangeShowState: function(event) {
-    console.log("复选框555555", event)
+    //console.log("复选框555555", event)
     let that = this;
     let index = event.currentTarget.dataset.index;
     let type = event.currentTarget.dataset.name;
@@ -614,10 +614,10 @@ Page({
     //   if (position > -1) {
     //     // 如果在已选择列表中 要移除
     //     if (index == 5) {
-    //       console.log("索引为5的其他", that.data.sales_work[5].hidden)
+    //       //console.log("索引为5的其他", that.data.sales_work[5].hidden)
     //       that.data.sales_work[5].hidden = !that.data.sales_work[5].hidden
     //       gangwei_checked_value_list.splice(position, 1);
-    //       console.log("已经勾选的列表", gangwei_checked_value_list)
+    //       //console.log("已经勾选的列表", gangwei_checked_value_list)
 
     //       that.setData({
     //         sales_work: that.data.sales_work,
@@ -627,7 +627,7 @@ Page({
     //     }else{
     //       gangwei_checked_value_list.splice(position, 1);
     //       // 
-    //       console.log("移除后的结果", gangwei_checked_value_list)
+    //       //console.log("移除后的结果", gangwei_checked_value_list)
     //       that.setData({ gangwei_checked_value_list: gangwei_checked_value_list })
     //     }
 
@@ -638,7 +638,7 @@ Page({
     //     sales_work[index].hidden = !that.data.sales_work[index].hidden
 
 
-    //     console.log("添加后的结果", gangwei_checked_value_list)
+    //     //console.log("添加后的结果", gangwei_checked_value_list)
     //     that.setData({
     //       gangwei_checked_value_list: gangwei_checked_value_list,
     //       sales_work: sales_work
@@ -649,10 +649,10 @@ Page({
   },
 
   formSubmit: function(e) {
-    console.log('form发生了submit事件，携带数据为：', e.detail.value)
+    //console.log('form发生了submit事件，携带数据为：', e.detail.value)
   },
   formReset: function() {
-    console.log('form发生了reset事件')
+    //console.log('form发生了reset事件')
   },
   // 定时器 根据定时器 开关判断定时器是否应该清除
   timer_sender: function(value, stop) {
@@ -662,7 +662,7 @@ Page({
         times++
         // 如果定时器的状态开启 ，每隔30秒执行一次上传
         if (times >= 30 && that.data.timer_switch) {
-          console.log("定时器上传数据")
+          //console.log("定时器上传数据")
           // 将上传分离出来 。
           // clearInterval(i)
           // that.time_upload()
@@ -672,7 +672,7 @@ Page({
         else if (that.data.timer_switch == false) {
           clearInterval(i)
         } else {
-          console.log("定时器休眠")
+          //console.log("定时器休眠")
         }
       },
       1000)
@@ -699,19 +699,15 @@ Page({
 
   },
   panduan_cunzai: function() {
-
     // 取 status 缓存，判断本页面是否填写 已填写，则查询填写数据并显示
     let status = wx.getStorageSync('status')
     let baseId = this.data.baseId
-
     if (status.jobInformation) {
       this.recover_data()
-      // this.get_id(baseId)
-      // this.searchContent(userIdEnc)
     }
-    this.setData(({
-      status
-    }))
+    this.setData({
+      status: status
+    })
   },
   // 传入baseId 来 查询 id
   // 如果 id存在，说明用户以前填写过此部分表格，使用更新字段
@@ -719,42 +715,41 @@ Page({
   // 第一次提交使用 post ，在第一次结束以后还要立刻获取一次id,
   // 然后post以后的提交使用更新字段 。
   // 记录的数据不通过return 格式返回 。直接setData
-  get_id: function(baseId) {
-    // var baseID = 123
-    var that = this
-    let url = "/job/info/baseId/" + baseId
-    api.get(url).then((res) => {
-      // console.log("数据库数据为为", res.data != null)
-      if (res.data != null) {
-        console.log("用户已填写过，使用更新接口")
-        let user_id = res.data.id
-        var base_data = {}
-        base_data['baseId'] = baseId
-        base_data['id'] = user_id
-        that.write_to_upload_data("baseId", baseId)
-        that.write_to_upload_data("id", user_id)
-        that.setData({
-          // user_id: user_id,
-          base_data: base_data
-        })
-        console.log("用户的基础数据为", that.data.base_data)
+  // get_id: function(baseId) {
+  //   // var baseID = 123
+  //   var that = this
+  //   let url = "/job/info/baseId/" + baseId
+  //   api.get(url).then((res) => {
+  //     // //console.log("数据库数据为为", res.data != null)
+  //     if (res.data != null) {
+  //       //console.log("用户已填写过，使用更新接口")
+  //       let user_id = res.data.id
+  //       var base_data = {}
+  //       base_data['baseId'] = baseId
+  //       base_data['id'] = user_id
+  //       that.write_to_upload_data("baseId", baseId)
+  //       that.write_to_upload_data("id", user_id)
+  //       that.setData({
+  //         // user_id: user_id,
+  //         base_data: base_data
+  //       })
+  //       //console.log("用户的基础数据为", that.data.base_data)
 
-      } else {
-        console.log("未填写过")
-      }
-    })
-  },
+  //     } else {
+  //       //console.log("未填写过")
+  //     }
+  //   })
+  // },
 
   shangchuan_data: function(data, type, e) {
     var that = this;
     let url = "/job/info"
-    console.log("要传输的数据是", data)
+    console.log("要传输的数据是", type)
     if (type == "put") {
       api.put(url, data).then((res) => {
         // put方式请求成功
         // 异步执行顺序有问题
         if (res.data == true) {
-
           wx.hideLoading()
           this.checkoutOpenid(e)
           return "true";
@@ -762,22 +757,18 @@ Page({
           //put方式 网络请求失败
           return "false";
         }
-      }).catch((res) => {
-        console.log("catch的请求", res)
       })
     } else {
       api.post(url, data).then((res) => {
-        console.log("post请求的返回数据：", res)
+        //console.log("post请求的返回数据：", res)
         //post 请求成功
         if (res.data == true) {
           // post 成功
           // upload.success()
-          console.log("进行下一步")
+          //console.log("进行下一步")
           wx.hideLoading()
-          console.log("预约出现")
-
+          // //console.log("预约出现")
           this.checkoutOpenid(e)
-
           return "true";
         } else {
           //post 网络请求失败
@@ -794,9 +785,9 @@ Page({
       showCancel: false,
       success(res) {
         if (res.confirm) {
-          console.log('用户点击确定')
+          //console.log('用户点击确定')
         } else if (res.cancel) {
-          console.log('用户点击取消')
+          //console.log('用户点击取消')
         }
       }
     })
@@ -808,7 +799,7 @@ Page({
     query.selectViewport().scrollOffset()
     let pos = null
     query.exec(function (res) {
-      console.log("元素位置",res)
+      //console.log("元素位置",res)
       res[0].top       // #the-id节点的上边界坐标
       res[1].scrollTop // 显示区域的竖直滚动位置
       let miss = res[1].scrollTop + res[0].top - 100;
@@ -822,7 +813,7 @@ Page({
   },
   // 滚动到必选项
   scroll:function(name){
-    console.log("滚动到",name)
+    //console.log("滚动到",name)
     this.find_position(name)
 
   },
@@ -852,7 +843,7 @@ Page({
     })
     msg_list.push(bixuan_msg[0])
     msg_list.forEach(function(value, index) {
-      console.log("val", value)
+      //console.log("val", value)
       switch (value) {
         case "expectPost":
           that.show_error("请选择期望岗位")
@@ -901,24 +892,24 @@ Page({
     let result = form_verify.form_verify(upload_data)
     let old_result = result.split("|")
     let pass_list = ['functionField','selfEvaluation']
-    console.log("old_result", old_result)
+    //console.log("old_result", old_result)
     pass_list.forEach(function(value,index){
       if(value){
         let my_index = old_result.indexOf(value)
         if(my_index >-1){
-          console.log("my——index",my_index)
-          console.log("删除",value)
+          //console.log("my——index",my_index)
+          //console.log("删除",value)
           old_result.splice(my_index, 1)
         }
       }
     })
-    console.log("old_result", old_result)
+    //console.log("old_result", old_result)
     result = old_result.join("|")
     if (result) {
-      console.log("表单验证", result)
+      //console.log("表单验证", result)
       that.wrong_msg(result)
     } else {
-      console.log("表单验证直接通过")
+      //console.log("表单验证直接通过")
       that.setData({ redname:''})
       return true
     }
@@ -936,22 +927,16 @@ Page({
     console.log("要上传的数据", upload_data)
     let result = that.form_v()
     if (result) {
-      let status = wx.getStorageSync('status')
-      console.log("状态：", status.jobInformation)
-      if (status.jobInformation) {
+      // let status = wx.getStorage('status')
+      console.log("状态：", this.data.status)
+      if (this.data.status.jobInformation) {
         that.shangchuan_data(upload_data, "put", e)
-        that.switch_false()
-        upload.load()
-        that.setData({
-          status: "ok"
-        })
+        // that.switch_false()
+        // upload.load()
       } else {
         that.shangchuan_data(upload_data, "post", e)
-        that.switch_false()
-        upload.load()
-        that.setData({
-          status: "ok"
-        })
+        // that.switch_false()
+        // upload.load()
       }
       // wx.showToast({
       //   title: "提交成功！",
@@ -984,7 +969,7 @@ Page({
     let baseId = this.data.baseId
     let url = "/job/info/baseId/" + baseId
     api.get(url).then((res) => {
-      console.log("用户已经填写的数据", res.data)
+      //console.log("用户已经填写的数据", res)
       if (res.data != null && res.data) {
         this.setData({
           old_data: res.data,
@@ -992,17 +977,19 @@ Page({
         })
         this.split_data()
       }
+    }).catch(e => {
+
     })
   },
   find: function(arr, dst) {
-    // console.log("arr",arr)
-    console.log("arr是什么", arr)
-    console.log("dst", dst)
+    // //console.log("arr",arr)
+    //console.log("arr是什么", arr)
+    //console.log("dst", dst)
     if (typeof(arr) != "undefined") {
       var i = arr.length;
       while (i -= 1) {
         if (arr[i] == dst) {
-          console.log("iiiiiiiiiii", i)
+          //console.log("iiiiiiiiiii", i)
           return i;
         }
       }
@@ -1017,7 +1004,7 @@ Page({
     }
   },
   split_data: function(name) {
-    console.log("开始分割数据")
+    //console.log("开始分割数据")
     let old_data = this.data.old_data
     let plan = this.data.plan
     let salary = this.data.salary
@@ -1026,25 +1013,25 @@ Page({
     let old_industry = old_data.industry
     old_industry = this.isnull(old_industry)
     if (old_industry) {
-      console.log("行业选择")
+      //console.log("行业选择")
       let industry_list = old_industry.split("|")
-      console.log("行业选择选择的结果", industry_list)
+      //console.log("行业选择选择的结果", industry_list)
       this.setData({ industry_list})
     }
 
     let functionField = old_data.functionField
     functionField = this.isnull(functionField)
     if (functionField) {
-      console.log("职能领域选择")
+      //console.log("职能领域选择")
       let functionField_str = functionField
       this.setData({ functionField})
       // let zhineng_list = this.data.zhineng_list
-      // // console.log("zhineng_list", zhineng_list)
+      // // //console.log("zhineng_list", zhineng_list)
       // if (typeof(zhineng_list) != "undefined") {
       //   let functionField_index = zhineng_list.indexOf(functionField)
 
       //   plan[2].index = functionField_index
-      //   console.log("行业选择选择的结果", plan)
+      //   //console.log("行业选择选择的结果", plan)
       // }
 
 
@@ -1108,10 +1095,10 @@ Page({
       let that = this
       let items = that.data.items
       let first_checked = that.data.first_checked
-      console.log("expectPost", expectPost)
+      //console.log("expectPost", expectPost)
       if (first_num == 0) {
         // 将销售类岗位打钩
-        console.log("销售打钩")
+        //console.log("销售打钩")
         items[0].checked = true
         first_checked = false
         // 属于销售类岗位
@@ -1120,33 +1107,33 @@ Page({
         expec_list.push(first_name)
         expec_list.shift()
         let len = expec_list.length
-        console.log("expec_list", expec_list)
+        //console.log("expec_list", expec_list)
         var sale_work_index_list = []
         var sales_work = that.data.sales_work
         expec_list.forEach(function(value, index) {
           let sales_work_list = that.data.sales_work_list
-          // console.log("sales_work_list", sales_work_list)
-          // console.log("value",value)
+          // //console.log("sales_work_list", sales_work_list)
+          // //console.log("value",value)
           let sales_work_index = sales_work_list.indexOf(value)
-          // console.log("sales_work_index", sales_work_index)
+          // //console.log("sales_work_index", sales_work_index)
           if (sales_work_index > -1) {
             sales_work[sales_work_index].checked = true
             sale_work_index_list.push(sales_work_index)
           } else {
-            console.log("销售中的其他", value)
+            //console.log("销售中的其他", value)
             // 销售岗位中的其他
             sales_work[5].checked = true
             sale_work_index_list.push(5)
             sales_work[5].hidden = false
             sales_work[5].value = value
-            console.log("给其他赋值")
+            //console.log("给其他赋值")
             that.setData({
               first_values: value
             })
           }
         })
-        console.log("销售岗位的索引有", sale_work_index_list)
-        console.log("销售岗位初始状态", sales_work)
+        //console.log("销售岗位的索引有", sale_work_index_list)
+        //console.log("销售岗位初始状态", sales_work)
         that.setData({
           sales_work: sales_work,
           first_checked: first_checked,
@@ -1169,7 +1156,7 @@ Page({
 
       }
     }
-    console.log("first_values", this.data.first_values)
+    //console.log("first_values", this.data.first_values)
 
   },
   belong_question: function(quetion, answer) {
@@ -1184,12 +1171,12 @@ Page({
       })
     } else if (quetion == "企业性质") {
       // this.data.qiye.option = answer
-      // console.log("企业性质长度", answer.length)
+      // //console.log("企业性质长度", answer.length)
       // let new_qiye_check_list = this.data.qiye_check_list
       // for (let i = 0; i < answer.length; i++) {
       //   new_qiye_check_list.push(false)
       // }
-      // console.log("企业选择框", new_qiye_check_list)
+      // //console.log("企业选择框", new_qiye_check_list)
 
       this.setData({
         enterpriseQuality_option: answer,
@@ -1204,7 +1191,7 @@ Page({
         functionField_option: answer
       })
     }
-    console.log("开始分发数据")
+    //console.log("开始分发数据")
     this.recover_data()
   },
   /**
@@ -1223,17 +1210,14 @@ Page({
         if (status.base && status.customerResources && status.workHistory && status.professionalSkills && status.characterPower && status.jobInformation) {
           this.yuyue(e)
         } else {
-          wx.showToast({
-            title: '全部填写完成才可预约',
-            icon: 'none',
-            duration: 3000
+          wx.navigateTo({
+            url: '../index/index',
           })
         }
       }
     })
     wx.hideLoading()
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -1256,7 +1240,7 @@ Page({
     let url = '/v1/school/provinces'
     let that = this
     api.get(url).then((res) => {
-      console.log("省份",res.data)
+      //console.log("省份",res.data)
       that.setData({ workPlaceProvinces:res.data})
     })
   },
@@ -1264,13 +1248,13 @@ Page({
     let that = this
     let url = '/v1/school/cities?pid=' + uid
     api.get(url).then((res) => {
-      // console.log("城市列表",res.data)
+      // //console.log("城市列表",res.data)
       that.setData({ workPlaceCitys:res.data})
     })
   },
   // 城市选择
   workPlaceProvincesChange:function(e){
-    console.log("省改变",e)
+    //console.log("省改变",e)
     let that = this
     let province_index = e.detail.value
     let workPlaceProvinces = that.data.workPlaceProvinces
@@ -1303,10 +1287,10 @@ Page({
       })
     }
 
-    // console.log("uid",uid)
+    // //console.log("uid",uid)
   },
   workPlaceCityChange:function(e){
-    console.log("城市改变",e)
+    //console.log("城市改变",e)
     let that = this
     let city_index = e.detail.value
     let workPlaceCitys = that.data.workPlaceCitys
@@ -1323,40 +1307,13 @@ Page({
 
 
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function() {
-    // console.log("页面显示")
-    // // 初始化 定时器
-    this.setData({
-      timer_switch: false
-    })
-    // var timer_switch = this.data.timer_switch
-    // console.log(timer_switch)
-    // if (timer_switch) {
-    //   this.timer_sender();
-    // }
-    // // 数据渲染完成后，先获取本地baseid ，然后请求网络，获取 userid
-    // var baseId = this.data.baseId
-    // if (baseId) {
-    //   console.log("baseId存在，页面显示不需要重新获取")
-    // } else {
-    // }
-    // var baseId = this.data.baseId
-    // this.get_id(baseId)
-    // console.log("用户id为",user_id)
-  },
-
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function() {
-    console.log("页面隐藏")
+    //console.log("页面隐藏")
     this.switch_false()
   },
-
   /**
    * 生命周期函数--监听页面卸载
    */

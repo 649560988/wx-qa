@@ -5,7 +5,7 @@ import wxValidate from '../../utils/wxValidate.js'
 import upload from '../../utils/upload.js'
 import form_verify from '../../utils/formVerify.js'
 import replace from '../../utils/replaceSpecialChar.js'
-
+const app=getApp()
 // 9.1 日 剩下 负责行业 和负责产品服务 
 // 自动提交 和手动提交
 const util = require('../../utils/util.js')
@@ -14,6 +14,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    Loading:true,
+    winHeight: app.globalData.my_height, //窗口高度
+    CustomBar: app.globalData.CustomBar,
+    content:'正在获取数据...',
     // 重写 workhistory 
     my_workhistory: {
       "workHistories": [{
@@ -47,6 +51,7 @@ Page({
         }
       ]
     },
+    changeToNow:[],
 
     //判断其他属于哪一个
     current_chose:null,
@@ -419,12 +424,12 @@ Page({
 
   // 头部 输入框 
   header_key_input: function(e) {
-    console.log("头部aaa", e)
+    ////console.log("头部aaa", e)
     let that = this
     let baseId = that.data.baseId
     let pid = e.currentTarget.dataset.pid
     let year = e.currentTarget.dataset.year
-    console.log("年份", year)
+    ////console.log("年份", year)
     let value = e.detail.value
     let category = e.currentTarget.dataset.name
     let my_workhistory = that.data.my_workhistory
@@ -448,7 +453,7 @@ Page({
     let my_workhistory = that.data.my_workhistory
     let pid = e.currentTarget.dataset.pid;
     let value = e.detail.value
-    console.log("公司输入", e)
+    //console.log("公司输入", e)
     my_workhistory.workHistories[pid].moodyhas = value
     that.setData({
       my_workhistory
@@ -457,7 +462,7 @@ Page({
 
   // 公司主营业务
   mainBusiness_change: function(e) {
-    console.log("主营业务", e)
+    //console.log("主营业务", e)
     let that = this
     let options = that.data.options
     let mainBusiness_my_str = that.data.mainBusiness_my_str
@@ -484,17 +489,17 @@ Page({
   },
   // 删除 主营
   del_mainBusiness: function(e) {
-    console.log("主营业务按钮删除", e)
+    //console.log("主营业务按钮删除", e)
     let that = this
     let mainBusiness_my_chosed = that.data.mainBusiness_my_chosed
     let mainBusiness_my_str = that.data.mainBusiness_my_str
     let value = e.currentTarget.dataset.value
     let pid = e.currentTarget.dataset.pid
     let len = mainBusiness_my_chosed[pid].length
-    // console.log('长度',len)
+    // //console.log('长度',len)
     if (len > 0) {
       let my_index = mainBusiness_my_chosed[pid].indexOf(value)
-      // console.log("索引",my_index)
+      // //console.log("索引",my_index)
       if (my_index > -1) {
         mainBusiness_my_chosed[pid].splice(my_index, 1)
         mainBusiness_my_str[pid] = ''
@@ -521,7 +526,7 @@ Page({
         one_str_list.forEach(function(value, index) {
           let my_index = options.indexOf(value)
           if (my_index > -1) {
-            console.log('my_inr', my_index)
+            //console.log('my_inr', my_index)
             base_list.push(my_index)
           }
         })
@@ -543,7 +548,7 @@ Page({
   },
   // 个人中心等首次弹窗
   salesIndicators_model: function(e) {
-    console.log("个人首次弹窗", e)
+    //console.log("个人首次弹窗", e)
     let salesIndicators_model_first = this.data.salesIndicators_model_first
     // let pid = 
     let index = e.currentTarget.dataset.index
@@ -588,10 +593,10 @@ Page({
     let industry_chosed_list = that.data.industry_chosed_list
     let history = that.data.my_workhistory
     industry_chosed_list.forEach(function(value, index) {
-      console.log("index", index)
-      console.log("value", value)
+      //console.log("index", index)
+      //console.log("value", value)
       let str = value.join("|")
-      console.log("str", str)
+      //console.log("str", str)
       history.workHistories[index].industry = str
     })
     that.setData({
@@ -600,7 +605,7 @@ Page({
   },
   // 行业的删除 按钮
   del_industry: function(e) {
-    console.log("行业的删除", e)
+    //console.log("行业的删除", e)
     let that = this
     let industry_chosed_list = that.data.industry_chosed_list
     let industry_show_chosed_str = that.data.industry_show_chosed_str
@@ -619,7 +624,7 @@ Page({
   },
   // 行业 新增为多选
   industry_change: function(e) {
-    console.log("行业多选事件", e)
+    //console.log("行业多选事件", e)
     let that = this
     // 储存答案
     let indus_first_answer = that.data.indus_first_answer
@@ -631,13 +636,13 @@ Page({
     let index = e.detail.value
     let chose_str = indus_first_answer[index]
     let parentIndex = that.data.parentIndex
-    console.log("选中的字符串是", chose_str)
+    //console.log("选中的字符串是", chose_str)
     if (parentIndex > industry_chosed_list.length) {
       industry_chosed_list.push([])
     }
     // 判断重新选择的在不在已选择列表中
     let is_exist = industry_chosed_list[pid].indexOf(chose_str)
-    // console.log("is_exist", is_exist)
+    // //console.log("is_exist", is_exist)
     if (is_exist > -1) {
       wx.showToast({
         title: '所选项已存在',
@@ -656,7 +661,7 @@ Page({
   },
   // 头部负责产品和服务 改变事件
   first_header_change: function(e) {
-    console.log("头部负责产品改变", e)
+    //console.log("头部负责产品改变", e)
     let that = this
     let uid = e.currentTarget.dataset.uid
     let index = e.currentTarget.dataset.index
@@ -665,7 +670,7 @@ Page({
     let value = e.detail.value
     let chose_str = first_answer[value]
     that.getSecond(chose_str, '')
-    // console.log("已经选择的第一题是", chose_str)
+    // //console.log("已经选择的第一题是", chose_str)
     header_products_services[index][uid] = chose_str
     header_products_services[index][1] = null
     that.setData({
@@ -674,7 +679,7 @@ Page({
   },
   // 头部的第二个选项
   second_header_change: function(e) {
-    console.log("头部负责产品改变第二个", e)
+    //console.log("头部负责产品改变第二个", e)
     let that = this
     let index = e.currentTarget.dataset.index
     let uid = e.currentTarget.dataset.uid
@@ -691,12 +696,12 @@ Page({
   header_qita_textarea: function(e) {
     let that = this
     let header_productsServices_content_list = that.data.header_productsServices_content_list
-    console.log("其他 多选框eeeeeee", e)
+    //console.log("其他 多选框eeeeeee", e)
     let index = e.currentTarget.dataset.index
     let value = e.detail.value
-    // console.log("index", index)
-    // console.log("value", value)
-    // console.log("列表长度", header_productsServices_content_list)
+    // //console.log("index", index)
+    // //console.log("value", value)
+    // //console.log("列表长度", header_productsServices_content_list)
     header_productsServices_content_list[index] = value
     that.setData({
       header_productsServices_content_list
@@ -706,7 +711,7 @@ Page({
   qita_textarea: function(e) {
     let that = this
     let productsServices_content_list = that.data.productsServices_content_list
-    console.log("其他 多选框eeeeeee", e)
+    //console.log("其他 多选框eeeeeee", e)
     let pid = e.currentTarget.dataset.pid
     let content = e.detail.value
     productsServices_content_list[pid] = content
@@ -723,14 +728,14 @@ Page({
     let that = this
     let url = "/dictionary/second?sectionLevel=" + first_q
     api.get(url).then((res) => {
-      // console.log(res.data)
+      // //console.log(res.data)
       let indus_first_answer = res.data
       if (name == "industry") {
         that.setData({
           indus_second_answer: indus_first_answer
         })
       } else {
-        console.log("获取负责产品的第二题选项", indus_first_answer)
+        //console.log("获取负责产品的第二题选项", indus_first_answer)
         that.setData({
           productsServices_second_answer: indus_first_answer
         })
@@ -745,7 +750,7 @@ Page({
     let pid = e.currentTarget.dataset.pid
     let uid = e.currentTarget.dataset.uid
     let name = e.currentTarget.dataset.name
-    console.log("eeeee", e)
+    //console.log("eeeee", e)
     // 题目
     let indus_first_answer = that.data.productsServices_first_answer
     // 存储数据
@@ -763,23 +768,23 @@ Page({
     //    置空第二个选项
     old_base_str_list[1] = ""
     old_base_chose_list[1] = ""
-    console.log("开始获取负责产品第二个选项")
+    //console.log("开始获取负责产品第二个选项")
     that.getSecond(chose_str, name)
-    console.log("old_base_chose_list", old_base_chose_list)
-    console.log("old_base_str_list", old_base_str_list)
-    console.log("chose_str", chose_str)
+    //console.log("old_base_chose_list", old_base_chose_list)
+    //console.log("old_base_str_list", old_base_str_list)
+    //console.log("chose_str", chose_str)
     indus_str_answer[pid] = old_base_str_list
     industry_index_list[pid] = old_base_chose_list
     that.setData({
       productsServices_first_index_list: industry_index_list,
       productsServices_first_str_list: indus_str_answer
     })
-    console.log("industry_index_list", industry_index_list)
+    //console.log("industry_index_list", industry_index_list)
 
   },
   // 其他弹出框字改变
   model_textarea:function(e){
-    console.log("弹出其他输入框",e)
+    //console.log("弹出其他输入框",e)
     let that = this
     let value = e.detail.value
     that.setData({
@@ -787,13 +792,13 @@ Page({
     })
   },
   bitian_qita:function(e){
-    console.log("必填其他弹出",e)
+    //console.log("必填其他弹出",e)
     let that = this
     let temp_qita = that.data.temp_qita
     let pid = e.currentTarget.dataset.pid
     let category = e.currentTarget.dataset.name
     if (category == 'other_mainBusiness'){
-      console.log("主营业务其他",e)
+      //console.log("主营业务其他",e)
       let mainBusiness_my_chosed = that.data.mainBusiness_my_chosed
       let one_list = mainBusiness_my_chosed[pid]
       if(temp_qita){
@@ -817,7 +822,7 @@ Page({
     let productsServices_my_str = that.data.productsServices_my_str
     let one_list = productsServices_my_str[pid]
     if (temp_qita){
-      console.log("tianxie",temp_qita)
+      //console.log("tianxie",temp_qita)
       that.setData({ modalName:''})
       let len = one_list.length
       if (len>0){
@@ -839,7 +844,7 @@ Page({
   },
   // 删除按钮
   del_productsServices_my_str:function(e){
-    console.log("负责产品服务的删除",e)
+    //console.log("负责产品服务的删除",e)
     let that = this
     let productsServices_my_str = that.data.productsServices_my_str
     let pid = e.currentTarget.dataset.pid
@@ -860,15 +865,15 @@ Page({
     let productsServices_my_str = that.data.productsServices_my_str
     let len = productsServices_my_str.length
     for(let i=0;i<len;i++){
-      console.log("目前索引",i)
+      //console.log("目前索引",i)
       let base_str=productsServices_my_str[i].join("|")
-      console.log("写入的字符串",base_str)
+      //console.log("写入的字符串",base_str)
       my_workhistory.workHistories[i].productsServices = base_str
     }
     that.setData({ my_workhistory})
   },
   secondchange: function(e) {
-    console.log(e)
+    //console.log(e)
     let that = this
     let index = parseInt(e.detail.value)
     let pid = e.currentTarget.dataset.pid
@@ -882,24 +887,24 @@ Page({
     let old_base_str_list = indus_str_answer[pid]
 
     var indus_second_answer = that.data.productsServices_second_answer
-    console.log("负责产品选择", indus_second_answer)
+    //console.log("负责产品选择", indus_second_answer)
 
     let chose_str = indus_second_answer[index]
     // 重新赋值
-    console.log("选中的字符串", chose_str)
+    //console.log("选中的字符串", chose_str)
 
     old_base_chose_list[uid] = index
     old_base_str_list[uid] = chose_str
     indus_str_answer[pid] = old_base_str_list
     industry_index_list[pid] = old_base_chose_list
-    console.log("industry_index_list", industry_index_list)
-    console.log("indus_str_answer", indus_str_answer)
+    //console.log("industry_index_list", industry_index_list)
+    //console.log("indus_str_answer", indus_str_answer)
 
     that.setData({
       productsServices_first_index_list: industry_index_list,
       productsServices_first_str_list: indus_str_answer
     })
-    console.log("负责产品的全部数据", indus_str_answer)
+    //console.log("负责产品的全部数据", indus_str_answer)
     // 结果写入 字典对象
     that.write_to_history(pid);
   },
@@ -909,9 +914,9 @@ Page({
     let productsServices_my_str = this.data.productsServices_my_str
     let productsServices_first_str_list = this.data.productsServices_first_str_list
     productsServices_first_str_list.forEach(function(value, index) {
-      console.log("索引", index)
-      console.log("值", value)
-      console.log("父级ID",pid)
+      //console.log("索引", index)
+      //console.log("值", value)
+      //console.log("父级ID",pid)
       if(index == pid){
       if (value[0]) {
         let str = value[0] + "-" + value[1]
@@ -932,7 +937,7 @@ Page({
       productsServices_my_str,
     })
     that.write_productsServices_my_str()
-    console.log("productsServices_my_str", productsServices_my_str)
+    //console.log("productsServices_my_str", productsServices_my_str)
   },
 
   /**
@@ -941,7 +946,7 @@ Page({
   checkboxChange: function(e) {
 
     let that = this
-    console.log("checkoutbox选择框", e)
+    //console.log("checkoutbox选择框", e)
     let name = e.currentTarget.dataset.name
     if (name == "dimissionCause") {
       // 离职原因处理
@@ -964,8 +969,8 @@ Page({
     for (let i = 0; i < len; i++) {
       let one_list = new_area_show_list[i]
       one_list.forEach(function(value, index) {
-        console.log("键", index)
-        console.log("值", value)
+        //console.log("键", index)
+        //console.log("值", value)
         if (value != true) {
           responsible_area_content[i][index] = null
         }
@@ -978,7 +983,7 @@ Page({
   },
   // 负责区域确定按钮
   responsibleArea_confirm: function(e) {
-    console.log("负责区域确定按钮", e)
+    //console.log("负责区域确定按钮", e)
     let that = this
     let responsibleArea_str = that.data.responsibleArea_str
     let pid = e.currentTarget.dataset.pid
@@ -1000,7 +1005,7 @@ Page({
       let show_responsibleArea_list = []
       responsibleArea_str_list.forEach(function(value, index) {
         let my_value_list = value.split("-")
-        console.log("my_value_list", my_value_list)
+        //console.log("my_value_list", my_value_list)
         let arae_str = ""
         if (my_value_list[0]) {
           let area_name = responsible_areaAption[my_value_list[0]].value
@@ -1041,24 +1046,24 @@ Page({
     that.set_null()
     that.area_data_parse(pid)
 
-    console.log("responsible_area_checked", new_area_show_list)
+    //console.log("responsible_area_checked", new_area_show_list)
   },
   // 公司主营业务
   mainBusiness: function(e) {
     var that = this
     let index = e.currentTarget.dataset.index
-    console.log("选中的索引", index)
+    //console.log("选中的索引", index)
     // 父级判定
     let pid = e.currentTarget.dataset.pid
     let name = e.currentTarget.dataset.name
     let main_business_checked = that.data.main_business_checked
     main_business_checked[pid][index] = !main_business_checked[pid][index]
-    // console.log("主营业务的选择框状态", main_business_checked)
+    // //console.log("主营业务的选择框状态", main_business_checked)
     let history = that.data.history
     let mainBusiness = ""
     // 遍历选中的 进行组合
     main_business_checked[pid].forEach(function(value, index) {
-      // console.log("选择的val", index)
+      // //console.log("选择的val", index)
       if (value == true) {
         let str1 = index.toString()
         mainBusiness += str1 + "|"
@@ -1069,9 +1074,9 @@ Page({
       main_business_checked: main_business_checked,
       history: history
     })
-    console.log("主营业务的选择", mainBusiness)
-    console.log("主营业务的选择框状态", main_business_checked)
-    console.log("history", history)
+    //console.log("主营业务的选择", mainBusiness)
+    //console.log("主营业务的选择框状态", main_business_checked)
+    //console.log("history", history)
     // base_dict['mainBusiness'] = mainBusiness
     // 控制第6个其他选项
   },
@@ -1088,8 +1093,8 @@ Page({
     let base_str = ""
     let history = that.data.my_workhistory
     dimission_cause_checked[pid].forEach(function(value, index) {
-      console.log("值", value)
-      console.log("键", index)
+      //console.log("值", value)
+      //console.log("键", index)
       index = index.toString()
       let has_checked = chose_list.indexOf(index)
       if (has_checked > -1) {
@@ -1101,7 +1106,7 @@ Page({
           base_str += str2
 
         }
-        console.log("组合好的离职原因", base_str)
+        //console.log("组合好的离职原因", base_str)
         // } else if (index == 7) {
         //   dimission_cause_checked[pid][index] = false
         //   history.workHistories[pid].otherCause = null
@@ -1114,9 +1119,9 @@ Page({
       dimission_cause_checked: dimission_cause_checked,
       my_workhistory: history
     })
-    console.log("dimission_cause_checked", dimission_cause_checked)
-    console.log("dimission_cause_content", dimission_cause_content)
-    console.log("history", history)
+    //console.log("dimission_cause_checked", dimission_cause_checked)
+    //console.log("dimission_cause_content", dimission_cause_content)
+    //console.log("history", history)
 
   },
 
@@ -1134,7 +1139,7 @@ Page({
           lizhi: false
         })
       } else {
-        console.log("长度一致hide_model")
+        //console.log("长度一致hide_model")
       }
     } else {
       hide_model.pop()
@@ -1150,7 +1155,7 @@ Page({
     // 不是手动增加的 用下面的
     // let workHistories = that.data.history.workHistories
     // let parentIndex = workHistories.length
-    // console.log("workHistories", workHistories)
+    // //console.log("workHistories", workHistories)
     let pass_list = this.new_form_verify()
     if (pass_list == true) {
       let parentIndex = this.data.parentIndex
@@ -1158,7 +1163,7 @@ Page({
       that.setData({
         parentIndex: parentIndex
       })
-      console.log("页面个数", parentIndex)
+      //console.log("页面个数", parentIndex)
       // 页面数据的增加
       // for(let i=0;i<parentIndex;i++){
       that.main_business_func("add")
@@ -1206,14 +1211,14 @@ Page({
     // 不是手动增加的 用下面的
     // let workHistories = that.data.history.workHistories
     // let parentIndex = workHistories.length
-    // console.log("workHistories", workHistories)
+    // //console.log("workHistories", workHistories)
     let parentIndex = this.data.parentIndex
     if (parentIndex > 1) {
       parentIndex -= 1
       that.setData({
         parentIndex: parentIndex
       })
-      console.log("页面个数", parentIndex)
+      //console.log("页面个数", parentIndex)
       // 页面数据的增加
       // for(let i=0;i<parentIndex;i++){
       that.main_business_func()
@@ -1247,12 +1252,12 @@ Page({
     let base_workHistories = this.data.base_workHistories
     let new_obj = {}
     // Object.keys(base_workHistories).forEach(function(value,index){
-    //   console.log("vaule",value)
+    //   //console.log("vaule",value)
     //   new_obj
     // })
     // new_obj = base_workHistories
-    console.log("改变前的结果", history)
-    console.log("改变前的base_workHistories结果", new_obj)
+    //console.log("改变前的结果", history)
+    //console.log("改变前的base_workHistories结果", new_obj)
     if (type == "add") {
       history.workHistories.push(new_obj)
     } else {
@@ -1261,8 +1266,8 @@ Page({
     this.setData({
       my_workhistory: history
     })
-    console.log("改变后的结果", history)
-    console.log("改变后的base_workHistories结果", base_workHistories)
+    //console.log("改变后的结果", history)
+    //console.log("改变后的base_workHistories结果", base_workHistories)
   },
   // 负责行业 增加
   industry_first_func: function(type) {
@@ -1307,7 +1312,7 @@ Page({
         productsServices_content_list.push(null)
         productsServices_my_str.push([])
       } else {
-        console.log("长度保持一致new_productsServices_first_str_list")
+        //console.log("长度保持一致new_productsServices_first_str_list")
       }
 
     } else {
@@ -1463,8 +1468,8 @@ Page({
       let new_area_show_list = this.data.area_show_list
       // let base_chose_list = this.data.base_chose_list
       new_area_show_list.push(base_chose)
-      console.log("初始化new_area_show_list", new_area_show_list)
-      console.log("初始化base_chose_list", base_chose)
+      //console.log("初始化new_area_show_list", new_area_show_list)
+      //console.log("初始化base_chose_list", base_chose)
       this.setData({
         parentIndex: parentIndex + 1,
         data_list: new_data_list,
@@ -1479,8 +1484,8 @@ Page({
         productsServices_first_index_list: productsServices_first_index_list,
         productsServices_first_str_list: productsServices_first_str_list,
       })
-      // console.log(new_data_list)
-      // console.log("公司主营业务其他按钮选择情况", textarea_checked)
+      // //console.log(new_data_list)
+      // //console.log("公司主营业务其他按钮选择情况", textarea_checked)
 
 
     } else {
@@ -1490,7 +1495,7 @@ Page({
         duration: 2000
       })
     }
-    console.log(parentIndex)
+    //console.log(parentIndex)
   },
 
   // 删除页面
@@ -1540,7 +1545,7 @@ Page({
         productsServices_first_str_list
 
       })
-      console.log("删除后的", new_area_show_list)
+      //console.log("删除后的", new_area_show_list)
     } else {
       wx.showToast({
         title: '请先新增数据',
@@ -1571,25 +1576,36 @@ Page({
     this.setData({
       my_workhistory: history
     })
-    console.log("开始时间改变history", history)
+    //console.log("开始时间改变history", history)
   },
   endTimeChange(e) {
     let pid = e.currentTarget.dataset.pid
+    if(pid===0){
+      if(this.data.changeToNow){
+        let chose_date = null
+        let history = this.data.my_workhistory
+        history.workHistories[pid].endTime = chose_date
+        this.setData({
+          my_workhistory: history
+        })
+        return
+      }
+    }
     let chose_date = e.detail.value
     let history = this.data.my_workhistory
     history.workHistories[pid].endTime = chose_date
     this.setData({
       my_workhistory: history
     })
-    console.log("结束时间改变history", history)
+    //console.log("结束时间改变history", history)
   },
   // 自动聚焦
   autofocus: function(e) {
-    console.log("自动聚焦")
+    //console.log("自动聚焦")
   },
   // 输入事件
   bindKeyInput: function(e) {
-    console.log("所有的输入事件", e)
+    //console.log("所有的输入事件", e)
     let that = this
     let content = e.detail.value
     let pid = e.currentTarget.dataset.pid
@@ -1599,8 +1615,8 @@ Page({
     let mainBusiness_textarea_list = this.data.textarea_checked
     let dismiss_checked = this.data.dismiss_checked
 
-    console.log("name====", name)
-    console.log("content====", content)
+    //console.log("name====", name)
+    //console.log("content====", content)
     let history = that.data.my_workhistory
     // 主营业务 选择框
     let main_business_checked = that.data.main_business_checked
@@ -1616,14 +1632,14 @@ Page({
       }
     } else if (name == "dimissionCause" && dimission_cause_checked[pid][index]) {
       dimission_cause_content[pid][index] = content
-      console.log("其他离职原因离职原因", dimission_cause_content)
+      //console.log("其他离职原因离职原因", dimission_cause_content)
       that.setData({
         dimission_cause_content: dimission_cause_content
       })
       // 拼接离职原因
       that.pinjie_lizhi(dimission_cause_checked, dimission_cause_content, pid)
     } else if (year) {
-      console.log("year存在", year)
+      //console.log("year存在", year)
     } else if (name == "salesIndicators") {
       history.workHistories[pid].salesIndicators = content
     } else if (name == "completion") {
@@ -1640,7 +1656,7 @@ Page({
     that.setData({
       my_workhistory: history
     })
-    console.log("监控键盘输入history", history)
+    //console.log("监控键盘输入history", history)
   },
 
   // 处理离职原因字符串拼接
@@ -1648,9 +1664,9 @@ Page({
     let history = this.data.my_workhistory
     let parentIndex = this.data.parentIndex
     let len = dimission_cause_checked.length
-    console.log("dimission_cause_checked长度", len)
-    console.log("dimission_cause_checked", dimission_cause_checked)
-    console.log("dimission_cause_content", dimission_cause_content)
+    //console.log("dimission_cause_checked长度", len)
+    //console.log("dimission_cause_checked", dimission_cause_checked)
+    //console.log("dimission_cause_content", dimission_cause_content)
     for (let i = 1; i < len; i++) {
       let base_str = ""
       dimission_cause_checked[i].forEach(function(value, index) {
@@ -1660,9 +1676,9 @@ Page({
           base_str += str1
         }
       })
-      console.log("拼接好的离职原因", base_str)
-      console.log("history", history)
-      console.log("iiiiiiii", i)
+      //console.log("拼接好的离职原因", base_str)
+      //console.log("history", history)
+      //console.log("iiiiiiii", i)
       history.workHistories[i].dimissionCause = base_str
     }
     this.setData({
@@ -1671,7 +1687,7 @@ Page({
   },
   // 负责区域函数相关
   responsibleArea_input: function(e) {
-    // console.log("负责区域",e)
+    // //console.log("负责区域",e)
     let that = this
     that.set_null()
     let content = e.detail.value
@@ -1689,7 +1705,7 @@ Page({
     that.setData({
       responsible_area_content: responsible_area_content
     })
-    console.log("responsible_area_content", responsible_area_content)
+    //console.log("responsible_area_content", responsible_area_content)
     that.area_data_parse(pid)
   },
   // 组合区域内容
@@ -1699,16 +1715,16 @@ Page({
     let responsible_area_checked = that.data.responsible_area_checked
     let len = responsible_area_content.length
     for (let i = 0; i < len; i++) {
-      // console.log("i",i)
+      // //console.log("i",i)
       let base_list = responsible_area_checked[i]
       let responsible_content_list = responsible_area_content[i]
 
-      console.log("base_list", base_list)
-      console.log("responsible_content_list", responsible_content_list)
+      //console.log("base_list", base_list)
+      //console.log("responsible_content_list", responsible_content_list)
       let base_str = ""
       base_list.forEach(function(value, index) {
-        console.log("base_list---val", value)
-        console.log("base_list---index", index)
+        //console.log("base_list---val", value)
+        //console.log("base_list---index", index)
         if (value) {
           let str = responsible_content_list[index]
           if (str) {
@@ -1720,10 +1736,10 @@ Page({
           }
         }
       })
-      console.log("组合好的负责区域内容", base_str)
+      //console.log("组合好的负责区域内容", base_str)
       let history = that.data.my_workhistory
       history.workHistories[pid].responsibleArea = base_str
-      console.log("负责区域history", history)
+      //console.log("负责区域history", history)
       that.setData({
         my_workhistory: history,
         responsibleArea_str: base_str
@@ -1746,6 +1762,9 @@ Page({
         duration: 2000
       })
     } else {
+      // _this.setData({
+      //   Loading:true
+      // })
       wx.request({
         url: 'https://open.api.tianyancha.com/services/open/search/2.0?word=' + name,
         method: 'GET',
@@ -1760,15 +1779,19 @@ Page({
               res.data.result.items.forEach(function(item, index) {
                 value[index] = replace.replaceSpecialChar(item.name)
               })
-              console.log('value', value)
+              //console.log('value', value)
               let organizationalCode_hide = _this.data.organizationalCode_hide
               organizationalCode_hide[pid] = false
               _this.setData({
                 customernameList: value,
                 organizationalCode_hide,
-                open: true
+                open: true,
+                Loading: false
               })
             } else {
+              _this.setData({
+                Loading:false
+              })
               wx.showToast({
                 title: '请增加字数',
                 icon: 'none',
@@ -1776,6 +1799,9 @@ Page({
               })
             }
           } else {
+            _this.setData({
+              Loading: false
+            })
             wx.showToast({
               title: '查询失败',
               icon: 'none',
@@ -1784,21 +1810,24 @@ Page({
           }
         },
         fail(error) {
-          console.log('error', error)
+          _this.setData({
+            Loading: false
+          })
+          //console.log('error', error)
         }
       })
     }
   },
   selectShowItem: function(e) {
-    console.log('点击公司', e)
+    //console.log('点击公司', e)
     let that = this
     let chose_index = e.currentTarget.dataset.mmindex
     let pid = e.currentTarget.dataset.pid
     let customernameList = that.data.customernameList
     let company_name = customernameList[chose_index]
-    console.log("选择的公司", company_name)
+    //console.log("选择的公司", company_name)
     let my_workhistory = that.data.my_workhistory
-    console.log("嘎嘎嘎", my_workhistory)
+    //console.log("嘎嘎嘎", my_workhistory)
     my_workhistory.workHistories[pid].moodyhas = company_name
     let organizationalCode_hide = that.data.organizationalCode_hide
     organizationalCode_hide[pid] = true
@@ -1819,7 +1848,7 @@ Page({
       },
       success(res) {
         if (res.statusCode === 200) {
-          console.log('res.data', res.data)
+          //console.log('res.data', res.data)
           if (res.data.result != null) {
             let my_workhistory = _this.data.my_workhistory
             my_workhistory.workHistories[parentindex].organizationalCode = res.data.result.creditCode
@@ -1848,22 +1877,22 @@ Page({
         }
       },
       fail(error) {
-        console.log('error', error)
+        //console.log('error', error)
       }
     })
   },
   keyExperiencesContentChange(e) {
     let key_experiences_content = this.data.key_experiences_content
     let pid = e.currentTarget.dataset.pid
-    console.log("111eeeeee", e)
+    //console.log("111eeeeee", e)
     let index = e.currentTarget.dataset.index
     key_experiences_content[pid][index] = e.detail.value
     this.setData({
       key_experiences_content: key_experiences_content
     })
     // let history = this.data.my_workhistory
-    // console.log("关键经历组合后的history", history)
-    console.log("key_experiences_content", key_experiences_content)
+    // //console.log("关键经历组合后的history", history)
+    //console.log("key_experiences_content", key_experiences_content)
     this.zuhe_keyExperiencesData()
   },
   // 组合关键经历的数据 
@@ -1884,13 +1913,13 @@ Page({
           base_str += str2
         }
       })
-      console.log("遍历选择框后的结果", base_str)
+      //console.log("遍历选择框后的结果", base_str)
       history.workHistories[i].keyExperiences = base_str
     }
     this.setData({
       my_workhistory: history
     })
-    console.log("遍历选择框后的结果history", history)
+    //console.log("遍历选择框后的结果history", history)
   },
   // 关键内容的选择框 内容 二维列表
   // key_experiences_checked: [
@@ -1908,7 +1937,7 @@ Page({
     let checked_list = e.detail.value
     // 关键内容的选择框 内容 二维列表
     let base_str = ''
-    console.log("选中的关键经历有", checked_list)
+    //console.log("选中的关键经历有", checked_list)
     key_experiences_checked[pid].forEach(function(value, index) {
       index = index.toString()
       let has_checked = checked_list.indexOf(index)
@@ -1927,12 +1956,12 @@ Page({
       key_experiences_checked: key_experiences_checked,
       my_workhistory: history
     })
-    console.log("关键经历组合后的history", history)
+    //console.log("关键经历组合后的history", history)
   },
   keyExperiencesCheckboxChange: function(e) {
     let data = [0, 0, 0, 0, 0]
     let pid = e.currentTarget.dataset.pid
-    console.log("pid", pid)
+    //console.log("pid", pid)
     e.detail.value.forEach(function(item, index) {
       switch (item) {
         case '0':
@@ -1965,13 +1994,13 @@ Page({
       selected: selected,
       checked_box: checked_box
     })
-    console.log("checked_box", checked_box)
-    console.log("selected", selected)
+    //console.log("checked_box", checked_box)
+    //console.log("selected", selected)
 
     this.keyExperiencesData(e)
   },
   habitationProvincesChange: function(e) {
-    console.log("下拉框事件", e)
+    //console.log("下拉框事件", e)
     let that = this
     let content = e.detail.value
     let pid = e.currentTarget.dataset.pid
@@ -1985,7 +2014,7 @@ Page({
       my_workhistory: history,
       salary_index: salary_index
     })
-    console.log("薪资水平history", history)
+    //console.log("薪资水平history", history)
   },
   bindPickerChange: function(e) {
     this.setData({
@@ -1998,7 +2027,7 @@ Page({
     let that = this
     let history = this.data.my_workhistory
     let workHistoryExtends = this.data.my_workhistory.workHistoryExtends
-    console.log("workHistoryExtends", workHistoryExtends)
+    //console.log("workHistoryExtends", workHistoryExtends)
     for (let i = 0; i < 3; i++) {
       let salesIndicators = workHistoryExtends[i].salesIndicators
       let completion = workHistoryExtends[i].completion
@@ -2034,88 +2063,113 @@ Page({
     let result = that.yeji_zhibiao()
 
     if (result) {
-      console.log("========================================")
-      console.log("workHistories_list", workHistories_list)
+      //console.log("========================================")
+      //console.log("workHistories_list", workHistories_list)
       // 判断长度 如页面长度大于1 
       // 余下的都要验证--》写了一个，全都要写，一个没写可以通过
       let my_len = workHistories_list.length
-      console.log("储存的数据的长度", my_len)
+      //console.log("储存的数据的长度", my_len)
       for (let i = 0; i < my_len; i++) {
         let one_history = workHistories_list[i]
-        console.log("asdja", one_history.startTime)
+        //console.log("asdja", one_history.startTime)
         if ('startTime' in one_history && one_history.startTime) {
-          console.log("开始时间存在")
+          //console.log("开始时间存在")
         } else {
-          console.log("开始时间不存在")
+          //console.log("开始时间不存在")
           that.verify_values("startTime","startTime"+i)
           return
         }
-        if ('endTime' in one_history && one_history.endTime) {
-          console.log("endTime存在")
+        if(i===0){
+          if (this.data.changeToNow){
+            // if ('endTime' in one_history && one_history.endTime) {
+            //   //console.log("endTime存在")
+            // } else {
+            //   //console.log("endTime不存在")
+            //   // that.verify_values("endTime")
+            //   that.verify_values("endTime", "endTime" + i)
+            //   return
+            // }
+            //console.log("选择至今")
+          }else{
+            if ('endTime' in one_history && one_history.endTime) {
+              //console.log("endTime存在")
+            } else {
+              //console.log("endTime不存在")
+              // that.verify_values("endTime")
+              that.verify_values("endTime", "endTime" + i)
+              return
+            }
+          }
+       
+        }else{
+     if ('endTime' in one_history && one_history.endTime) {
+          //console.log("endTime存在")
         } else {
-          console.log("endTime不存在")
+          //console.log("endTime不存在")
           // that.verify_values("endTime")
           that.verify_values("endTime", "endTime" + i)
 
           return
         }
+        }
+   
         if ('moodyhas' in one_history && one_history.moodyhas) {
-          console.log("moodyhas存在")
+          //console.log("moodyhas存在")
         } else {
-          console.log("moodyhas不存在")
+          //console.log("moodyhas不存在")
           that.verify_values("moodyhas", "moodyhas" + i)
           // that.verify_values("moodyhas")
           return
         }
         if ('organizationalCode' in one_history && one_history.organizationalCode) {
-          console.log("organizationalCode存在")
+          //console.log("organizationalCode存在")
         } else {
-          console.log("organizationalCode不存在")
+          //console.log("organizationalCode不存在")
           that.verify_values("organizationalCode", "organizationalCode" + i)
 
           // that.verify_values("organizationalCode")
           return
         }
         if ('job' in one_history && one_history.job) {
-          console.log("job存在")
+          //console.log("job存在")
         } else {
-          console.log("job不存在")
+          //console.log("job不存在")
           that.verify_values("job", "job" + i)
 
           // that.verify_values("job")
           return
         }
         if ('mainBusiness' in one_history && one_history.mainBusiness) {
-          console.log("mainBusiness存在")
+          //console.log("mainBusiness存在")
         } else {
-          console.log("mainBusiness不存在")
+          //console.log("mainBusiness不存在")
           that.verify_values("mainBusiness", "mainBusiness" + i)
 
           // that.verify_values("mainBusiness")
           return
         }
         if ('responsibleArea' in one_history && one_history.responsibleArea) {
-          console.log("responsibleArea存在")
+          //console.log("responsibleArea存在")
         } else {
-          console.log("responsibleArea不存在")
+          //console.log("responsibleArea不存在")
           that.verify_values("responsibleArea", "responsibleArea" + i)
 
           // that.verify_values("responsibleArea")
           return
         }
         if ('industry' in one_history && one_history.industry) {
-          console.log("industry存在")
+          //console.log("industry存在")
         } else {
-          console.log("industry不存在")
+          //console.log("industry不存在")
           that.verify_values("industry", "industry" + i)
 
           // that.verify_values("industry")
           return
         }
         if ('productsServices' in one_history && one_history.productsServices) {
-          console.log("productsServices存在")
+          //console.log("productsServices存在")
         } else {
-          console.log("productsServices不存在")
+          //console.log("productsServices不存在")
           that.verify_values("productsServices", "productsServices" + i)
 
           // that.verify_values("productsServices")
@@ -2133,8 +2187,8 @@ Page({
     let that = this
     let history = this.data.history
     let workHistories_list = this.data.history.workHistories
-    console.log("========================================")
-    console.log("workHistories_list", workHistories_list)
+    //console.log("========================================")
+    //console.log("workHistories_list", workHistories_list)
     let workHistoryExtends = this.data.history.workHistoryExtends
     let str = form_verify.form_verify(workHistoryExtends[0])
     let str2 = form_verify.form_verify(workHistoryExtends[1])
@@ -2151,7 +2205,7 @@ Page({
         str3_list[position_2] = ""
         str3_list[position] = ""
         str3_list[position_3] = ""
-        console.log("删除第一个的endtime", str3_list)
+        //console.log("删除第一个的endtime", str3_list)
         str3_list.forEach(function(v, i) {
           if (v) {
             v = v + "|"
@@ -2162,7 +2216,7 @@ Page({
         let str3_list = str3.split("|")
         let position = str3_list.indexOf("salary")
         str3_list[position] = ""
-        console.log("删除除了第一个的salary", str3_list)
+        //console.log("删除除了第一个的salary", str3_list)
         str3_list.forEach(function(v, i) {
           if (v) {
             v = v + "|"
@@ -2172,7 +2226,7 @@ Page({
       }
       base_str += str4
     })
-    console.log("总的空值数据", base_str)
+    //console.log("总的空值数据", base_str)
     if (base_str) {
       let more_null_list = base_str.split("|")
       let base_null_list = []
@@ -2187,12 +2241,12 @@ Page({
           result_list.push[true]
         }
       })
-      console.log("验证结果", result_list)
+      //console.log("验证结果", result_list)
       return result_list
       // 验证不通过
     } else {
       // 验证通过
-      console.log("直接全部验证通过")
+      //console.log("直接全部验证通过")
 
       return true
     }
@@ -2206,9 +2260,9 @@ Page({
       showCancel: false,
       success(res) {
         if (res.confirm) {
-          console.log('用户点击确定')
+          //console.log('用户点击确定')
         } else if (res.cancel) {
-          console.log('用户点击取消')
+          //console.log('用户点击取消')
         }
       }
     })
@@ -2216,7 +2270,7 @@ Page({
   // 组织机构代码
   bindinputOrganizationalCode:function(e){
     let that = this
-    console.log("组织机构代码输入",e)
+    //console.log("组织机构代码输入",e)
     let pid = e.currentTarget.dataset.pid
     let value = e.detail.value
     let my_workhistory = that.data.my_workhistory
@@ -2231,11 +2285,11 @@ Page({
     query.selectViewport().scrollOffset()
     let pos = null
     query.exec(function (res) {
-      console.log("元素位置", res)
+      //console.log("元素位置", res)
       res[0].top // #the-id节点的上边界坐标
       res[1].scrollTop // 显示区域的竖直滚动位置
       let miss = res[1].scrollTop + res[0].top -100 ;
-      console.log("Math.abs(res[0].bottom)", miss)
+      //console.log("Math.abs(res[0].bottom)", miss)
       wx.pageScrollTo({
         // selector:'#expectPost',
         scrollTop: miss,
@@ -2245,7 +2299,7 @@ Page({
   },
   // 滚动到必选项
   scroll: function (name) {
-    console.log("滚动到", name)
+    //console.log("滚动到", name)
     this.find_position(name)
   },
   verify_values: function(value, year) {
@@ -2327,7 +2381,7 @@ Page({
         this.show_error("请选择管理规模")
         break;
       default:
-        console.log("全部通过")
+        //console.log("全部通过")
         return true
     }
     this.setData({
@@ -2338,9 +2392,13 @@ Page({
   },
   // 表单提交 
   formSubmit: function(e) {
+    this.setData({
+      Loading:true,
+      content:'保存数据中...'
+    })
     let salary = this.data.my_workhistory.workHistories[0].salary
     let salary_index = this.data.salary_index
-    console.log("薪资索引", salary_index)
+    //console.log("薪资索引", salary_index)
     // if (salary_index == null || salary_index == "") {
     //   wx.showModal({
     //     title: '温馨提示',
@@ -2348,9 +2406,9 @@ Page({
     //     showCancel: false,
     //     success(res) {
     //       if (res.confirm) {
-    //         console.log('用户点击确定')
+    //         //console.log('用户点击确定')
     //       } else if (res.cancel) {
-    //         console.log('用户点击取消')
+    //         //console.log('用户点击取消')
     //       }
     //     }
     //   })
@@ -2358,10 +2416,14 @@ Page({
     // }
     let pass_list = this.new_form_verify()
     if (pass_list == true) {
-      console.log("验证通过")
+      //console.log("验证通过")
       this.upload_data()
     } else {
-      console.log("验证失败")
+      //console.log("验证失败")
+      this.setData({
+        Loading: false,
+        content: '保存数据中...'
+      })
     }
   },
   // 替换头部第二个选择框中的其他
@@ -2377,7 +2439,7 @@ Page({
     that.setData({
       header_products_services
     })
-    console.log("替换其他后的内容header_products_services", header_products_services)
+    //console.log("替换其他后的内容header_products_services", header_products_services)
     this.header_write_to_history();
   },
   // 拼接头部产品服务信息
@@ -2385,8 +2447,8 @@ Page({
     let history = this.data.my_workhistory
     let header_products_services = this.data.header_products_services
     header_products_services.forEach(function(value, index) {
-      console.log("拼接头部value", value)
-      console.log("拼接头部index", index)
+      //console.log("拼接头部value", value)
+      //console.log("拼接头部index", index)
       if (value[0]) {
         let base_str = value[0] + "|" + value[1]
         history.workHistoryExtends[index].productsServices = base_str
@@ -2395,7 +2457,7 @@ Page({
     this.setData({
       my_workhistory: history
     })
-    console.log("替换后的结果my_workhistory，", history)
+    //console.log("替换后的结果my_workhistory，", history)
   },
   // 替换第二个选择框中的其他
   tihuan_second_qita: function() {
@@ -2412,7 +2474,7 @@ Page({
     this.setData({
       productsServices_first_str_list: productsServices_first_str_list
     })
-    console.log("替换其他后的内容productsServices_first_str_list", productsServices_first_str_list)
+    //console.log("替换其他后的内容productsServices_first_str_list", productsServices_first_str_list)
     this.write_to_history();
 
   },
@@ -2436,7 +2498,7 @@ Page({
         // 数据库id 不存在 
         let url = "/work/history"
         api.post(url, history).then(function(res) {
-          console.log("先删除后上传返回的数据", res)
+          //console.log("先删除后上传返回的数据", res)
           if (res.data == true) {
             upload.success()
             wx.navigateTo({
@@ -2450,7 +2512,7 @@ Page({
       // 数据库id 不存在 
       let url = "/work/history"
       api.post(url, history).then(function(res) {
-        console.log("直接上传返回的数据", res)
+        //console.log("直接上传返回的数据", res)
         if (res.data == true) {
           upload.success()
           wx.navigateTo({
@@ -2460,14 +2522,14 @@ Page({
       })
     }
 
-    console.log("上传的数据", history)
+    //console.log("上传的数据", history)
     // let sj_id = history.workHistories[parentIndex -1].id
     // if (sj_id) { 
     //   // 此处有疑问 。数据库id存在 说明是更新操作 
     //   // 但是如果用户新增页面， 数据库id 将不存在 我也不能本地加1 考虑多人上传时候
     //   let url = "/work/history"
     //   api.put(url, history).then(function (res) {
-    //     console.log("返回的数据", res)
+    //     //console.log("返回的数据", res)
     //     if (res.data == true) {
     //       upload.success()
     //     }
@@ -2476,7 +2538,7 @@ Page({
     //   // 数据库id 不存在 
     //   let url = "/work/history"
     //   api.post(url, history).then(function (res) {
-    //     console.log("返回的数据", res)
+    //     //console.log("返回的数据", res)
     //     if (res.data == true) {
     //       upload.success()
     //     }
@@ -2488,22 +2550,26 @@ Page({
   get_user_data: function() {
     let that = this
     let baseId = that.data.baseId
-    console.log("即将用的baseID", baseId)
+    //console.log("即将用的baseID", baseId)
     if (baseId) {
       let parentIndex = that.data.parentIndex
       let url = "/work/history/baseId/" + baseId
       api.get(url).then(function(res) {
-        console.log("返回的数据", res)
+        //console.log("返回的数据", res)
         let len = res.data.workHistories.length
         that.setData({
           parentIndex: len,
-          my_workhistory: res.data
+          my_workhistory: res.data,
+          Loading:false
         })
         that.recover_data()
       })
     } else {
+      this.setData({
+        Loading: false,
+      })
       // baseId 不存在
-      console.log(" baseId 不存在")
+      //console.log(" baseId 不存在")
     }
   },
   // 数据还原
@@ -2582,10 +2648,10 @@ Page({
     for (let i = 0; i < workHistoryExtends.length; i++) {
       header_products_services.push([null, null])
       let main_str = history.workHistoryExtends[i].productsServices
-      console.log("头部的负责产品信息", main_str)
+      //console.log("头部的负责产品信息", main_str)
       if (main_str) {
         let main_list = main_str.split("|")
-        console.log("main_list", main_list)
+        //console.log("main_list", main_list)
         header_products_services[i][0] = main_list[0]
         header_products_services[i][1] = main_list[1]
       }
@@ -2611,7 +2677,7 @@ Page({
       if (main_str) {
         let base_list = main_str.split("|")
         productsServices_my_str[i]=base_list
-        // console.log("main_list", main_list)
+        // //console.log("main_list", main_list)
         // productsServices_first_str_list[i][0] = main_list[0]
         // productsServices_first_str_list[i][1] = main_list[1]
       }
@@ -2621,7 +2687,7 @@ Page({
       // productsServices_first_str_list: productsServices_first_str_list,
       // productsServices_first_index_list
     })
-    console.log("还原后的productsServices_my_str", productsServices_my_str)
+    //console.log("还原后的productsServices_my_str", productsServices_my_str)
   },
   // 时间还原
   recover_timer: function() {
@@ -2632,17 +2698,18 @@ Page({
       let startTime = history.workHistories[i].startTime
       let endTime = history.workHistories[i].endTime
       if (startTime) {
-        console.log("startTime", startTime.substring(0, 10))
+        //console.log("startTime", startTime.substring(0, 10))
         history.workHistories[i].startTime = startTime.substring(0, 10)
       }
-      if (i == 0 && endTime == null) {
-        console.log("将第一个设置为至今")
+      if (i == 0 && endTime != null) {
+        //console.log("将第一个设置为至今")
         that.setData({
-          index: 0
+          // index: 0
+          changeToNow:false
         })
       }
       if (endTime) {
-        console.log("endTime", endTime.substring(0, 10))
+        //console.log("endTime", endTime.substring(0, 10))
         history.workHistories[i].endTime = endTime.substring(0, 10)
       }
     }
@@ -2657,7 +2724,7 @@ Page({
     let parentIndex = that.data.parentIndex
     let dimission_cause_checked = []
     let dimission_cause_content = []
-    // console.log("起始main_business_checked", main_business_checked)
+    // //console.log("起始main_business_checked", main_business_checked)
 
     let main_business_str = ""
     for (let i = 0; i < parentIndex; i++) {
@@ -2666,22 +2733,22 @@ Page({
       let main_str = history.workHistories[i].dimissionCause
       if (main_str) {
         let main_list = main_str.split("|")
-        console.log("main_list", main_list)
+        //console.log("main_list", main_list)
         // main_list = ["0-adas","1-asdasda",]
         main_list.forEach(function(value, index) {
           if (value) {
             let value_list = value.split("-")
-            console.log("value_list", value_list)
-            console.log("iiiiiiiiiiiiii", i)
+            //console.log("value_list", value_list)
+            //console.log("iiiiiiiiiiiiii", i)
             // [0,"adas"]
             let myindex = parseInt(value_list[0])
             let content = value_list[1]
-            console.log("myindex", myindex)
-            console.log("content", content)
+            //console.log("myindex", myindex)
+            //console.log("content", content)
 
             dimission_cause_checked[i][myindex] = true
             dimission_cause_content[i][myindex] = content
-            // console.log("dimission_cause_checked", dimission_cause_checked)
+            // //console.log("dimission_cause_checked", dimission_cause_checked)
           }
         })
       }
@@ -2704,14 +2771,14 @@ Page({
       let main_str = history.workHistories[i].keyExperiences
       if (main_str) {
         let main_list = main_str.split("|")
-        console.log("main_list", main_list)
+        //console.log("main_list", main_list)
         main_list.forEach(function(value, index) {
           if (value) {
-            console.log("value存在", value)
+            //console.log("value存在", value)
             value = value.split("-")
             let index = value[0]
             let con = value[1]
-            console.log("索引", index)
+            //console.log("索引", index)
             key_experiences_checked[i][index] = true
             key_experiences_content[i][index] = con
           }
@@ -2739,14 +2806,14 @@ Page({
       let main_str = history.workHistories[i].responsibleArea
       if (main_str) {
         let main_list = main_str.split("|")
-        console.log("main_list", main_list)
+        //console.log("main_list", main_list)
         main_list.forEach(function(value, index) {
           if (value) {
-            console.log("value存在", value)
+            //console.log("value存在", value)
             value = value.split("-")
             let my_index = value[0]
             let con = value[1]
-            console.log("索引", my_index)
+            //console.log("索引", my_index)
             responsible_area_checked[i][my_index] = true
             responsible_area_content[i][my_index] = con
             let my_str = ''
@@ -2776,19 +2843,19 @@ Page({
     for (let i = 0; i < parentIndex; i++) {
       let main_str = history.workHistories[i].mainBusiness
       mainBusiness_my_chosed.push([])
-      console.log("主营业务main_str", main_str)
+      //console.log("主营业务main_str", main_str)
       if (main_str == '0' || main_str) {
         let main_list = main_str.split("|")
-        console.log("主营业务", main_list)
+        //console.log("主营业务", main_list)
         main_list.forEach(function(value, index) {
           if (value == '0' || value) {
-            console.log("value存在", value)
+            //console.log("value存在", value)
             let my_index = parseInt(value)
             let one_str = options[my_index]
             mainBusiness_my_chosed[i].push(one_str)
-            // console.log("main_business_checked", main_business_checked)
+            // //console.log("main_business_checked", main_business_checked)
             // main_business_checked[i][value] = true
-            // console.log("main_business_checked", main_business_checked)
+            // //console.log("main_business_checked", main_business_checked)
           }
         })
       }
@@ -2804,7 +2871,10 @@ Page({
       this.get_user_data();
       // this.searchContent(userIdEnc)
     } else {
-      console.log("用户未填写过")
+      //console.log("用户未填写过")
+      this.setData({
+        Loading: false,
+      })
     }
     this.setData(({
       status
@@ -2814,6 +2884,13 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
+    let wechatid = wx.getStorageSync('wechatid')
+    if (wechatid) {
+      console.log('wechatid', wechatid)
+      this.setData({
+        wechatid,
+      })
+    }
     // 9.5日 记录
     // 首先进入页面以后先给存储页面数据的基础对象 添加已知的元素 baseId id等
     // 获取数据库 记录以后进行数据的还原 数据的分发存储 和对默认数据的赋值 
@@ -2821,6 +2898,10 @@ Page({
     // let base_workHistories = this.data.base_workHistories
     // 需要将 负责产品服务的 字符串反解析 为存储的 二维列表中的值
     //  关键经历 的也要反解析
+    this.setData({
+      Loading:true,
+      content:'正在获取数据...'
+    })
     let userIdEnc = wx.getStorageSync('userIdEnc')
     console.log("缓存中的baseID", userIdEnc)
     // 头部三年业绩指标
@@ -2831,13 +2912,12 @@ Page({
       todayTime: util.formatTime(new Date()),
       baseId: userIdEnc
     })
-    console.log('todayTime', util.formatTime(new Date()))
-    console.log("今年", thisyear),
+    //console.log('todayTime', util.formatTime(new Date()))
+    //console.log("今年", thisyear),
 
       this.initValidate();
     // this.get_baseId();
     this.panduan_cunzai()
-
   },
 
   get_baseId: function() {
@@ -2851,16 +2931,16 @@ Page({
     // var baseID = 123
     var that = this
     let url = "/work/history/baseId/" + baseId
-    console.log("baseId", baseId)
+    //console.log("baseId", baseId)
     api.get(url).then((res) => {
-      console.log("首次请求返回的数据", res)
+      //console.log("首次请求返回的数据", res)
       let len = res.data.workHistories.length
-      console.log("len", len)
+      //console.log("len", len)
       if (len == 0) {
         // 用户没有上传过
-        console.log("用户未填写过，手动提交一次，并且获取id")
+        //console.log("用户未填写过，手动提交一次，并且获取id")
         let base_dict = res.data
-        console.log("baseId", baseId)
+        //console.log("baseId", baseId)
         let data_dict = {}
         data_dict.baseId = baseId
         base_dict.workHistories.push(data_dict)
@@ -2869,7 +2949,7 @@ Page({
         // workHistories[0].baseId =baseId
         let post_url = "/work/history"
         api.post(post_url, base_dict).then(function(res) {
-          console.log("首次post的结果", res)
+          //console.log("首次post的结果", res)
           that.get_id(baseId)
         })
       } else {
@@ -2892,8 +2972,8 @@ Page({
         for (let i = 0; i < len; i++) {
           that.addnew()
         }
-        console.log("用户已填写过，使用更新接口", uid)
-        console.log("写入workHistories的结果是", workHistories)
+        //console.log("用户已填写过，使用更新接口", uid)
+        //console.log("写入workHistories的结果是", workHistories)
       }
     })
   },
@@ -3013,19 +3093,19 @@ Page({
     let that = this
     let url = "/dictionary/first?question=" + first_q
     api.get(url).then((res) => {
-      // console.log(res.data)
+      // //console.log(res.data)
       let indus_first_answer = res.data
       if (name == "industry") {
         that.setData({
           indus_first_answer: indus_first_answer
         })
       } else {
-        console.log("负责产品第一题获取成功")
+        //console.log("负责产品第一题获取成功")
         that.setData({
           productsServices_first_answer: indus_first_answer
         })
       }
-      console.log(indus_first_answer)
+      //console.log(indus_first_answer)
     })
   },
   /**
@@ -3034,6 +3114,23 @@ Page({
   onReady: function() {
     this.getFirst("负责行业", "industry")
     this.getFirst("负责产品/服务", "productsServices")
+  },
+  changeToNow:function(e){
+    //console.log('e',e)
+    let pid = e.currentTarget.dataset.pid
+    if(pid===0){
+    if(!this.data.changeToNow){
+      let chose_date = null
+      let history = this.data.my_workhistory
+      history.workHistories[pid].endTime = chose_date
+      this.setData({
+        my_workhistory: history
+      })
+    }
+    }
+    this.setData({
+      changeToNow: !this.data.changeToNow
+    })
   },
 
   /**

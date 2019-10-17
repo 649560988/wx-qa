@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/videoPart/videoPart",
     "pages/secondPart/secondpart",
     "pages/sixthPart/sixthPart",
+    "pages/videoPart/videoPart",
     "pages/thirdPart/thirdPart",
     "pages/fifthPart/fifthPart",
     "pages/scrollview/scrollview",
